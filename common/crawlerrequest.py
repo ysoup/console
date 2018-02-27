@@ -5,12 +5,12 @@ import requests
 # 封装爬虫请求模块
 
 
-class CrawlerRequest:
+class CrawlerRequest(object):
     def __init__(self, url):
         self.url = url
 
-    def crawler_get(self):
-        response = requests.get(url=self.url)
+    def crawler_get(self, url):
+        response = requests.get(url=url)
         print('状态码', response.status_code)
         return response
 
