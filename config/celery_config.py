@@ -48,7 +48,7 @@ CELERY_QUEUES = (
 
 # 路由
 CELERY_ROUTES = {
-    'crawler.spider.send': {'queue': 'task_crawler', 'routing_key': 'task_crawler'},
+    'crawler.spider.schudule_crawler_task': {'queue': 'task_crawler', 'routing_key': 'task_crawler'},
 }
 # 默认的交换机名字为 tasks
 CELERY_DEFAULT_EXCHANGE = 'tasks'
@@ -60,7 +60,7 @@ CELERY_DEFAULT_ROUTING_KEY = 'default'
 # 定时任务
 CELERYBEAT_SCHEDULE = {
     'test': {
-        'task': 'crawler.spider.send',
+        'task': 'crawler.spider.schudule_crawler_task',
         'schedule': timedelta(seconds=30),
         # 'args': (redis_db),
         # 'options': {'queue': 'my_period_task'}
