@@ -3,6 +3,7 @@ import redis
 
 
 def connetcredis():
-    pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
-    red = redis.Redis(connection_pool=pool)
-    return red
+    #r = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
+    pool = redis.ConnectionPool(host='127.0.0.1', port=6379, decode_responses=True)
+    r = redis.Redis(connection_pool=pool)
+    return r
