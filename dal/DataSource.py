@@ -8,11 +8,4 @@ from datasource.configtools import getconnstring
 from peewee import *
 
 demo = getconnstring('demo')
-demo_database = MySQLDatabase('demo',
-                                        # max_connections=8,
-                                        # stale_timeout=300,
-                                        threadlocals=True, **{'host': demo.host,
-                                                              'password': demo.passwd,
-                                                              'port': demo.port,
-                                                              'user': demo.user,
-                                                              'charset': demo.charset})
+demo_database = MySQLDatabase('demo', **{'host': demo.host, 'password': demo.passwd, 'port': demo.port, 'user': demo.user, 'charset': demo.charset})

@@ -1,6 +1,7 @@
 # encoding=utf-8
 
 import json
+import time
 
 
 def compare_string(str1, str2):
@@ -24,3 +25,11 @@ def json_convert_str(str1):
 
 def str_convert_json(str1):
     return json.loads(str1)
+
+
+def get_current_date():
+    return time.strftime('%Y-%m-%d', time.localtime(time.time()))
+
+
+def get_current_time():
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))

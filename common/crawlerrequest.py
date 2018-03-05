@@ -9,10 +9,10 @@ class CrawlerRequest(object):
     def __init__(self, url):
         self.url = url
 
-    def crawler_get(self, url):
-        response = requests.get(url=url)
+    def crawler_get(self):
+        response = requests.get(url=self.url)
         print('状态码', response.status_code)
-        return response
+        return response.text
 
     def crawler_post(self):
         response = requests.post(url=self.url)
