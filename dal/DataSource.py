@@ -7,5 +7,6 @@ sys.path.append(parentUrl)
 from datasource.configtools import getconnstring
 from peewee import *
 
+
 demo = getconnstring('demo')
 demo_database = MySQLDatabase('demo', **{'host': demo.host, 'password': demo.passwd, 'port': demo.port, 'user': demo.user, 'charset': demo.charset})

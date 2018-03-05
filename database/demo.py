@@ -24,6 +24,7 @@ class TestSpider(BaseModel):
     content = CharField()
     author = CharField()
     source_link = CharField()
+    content_id = IntegerField()
     current_time = CharField()
     create_time = DateTimeField(default=datetime.datetime.now)
     update_time = DateTimeField(default=datetime.datetime.now)

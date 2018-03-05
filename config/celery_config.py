@@ -44,11 +44,13 @@ CELERY_DISABLE_RATE_LIMITS = True
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
     Queue('task_crawler', Exchange('task_crawler'), routing_key='task_crawler'),
+    Queue('task_crawler_duplicate', Exchange('task_crawler_duplicate'), routing_key='task_crawler_duplicate'),
 )
 
 # 路由
 CELERY_ROUTES = {
     'crawler.spider.schudule_crawler_task': {'queue': 'task_crawler', 'routing_key': 'task_crawler'},
+    'crawler.duplicate_removal.duplicate_removal_work': {'queue': 'task_crawler_duplicate', 'routing_key': 'task_crawler_duplicate'},
 }
 # 默认的交换机名字为 tasks
 CELERY_DEFAULT_EXCHANGE = 'tasks'
@@ -59,12 +61,18 @@ CELERY_DEFAULT_ROUTING_KEY = 'default'
 
 # 定时任务
 CELERYBEAT_SCHEDULE = {
-    'test': {
+    'jinse_crawler_schedule': {
         'task': 'crawler.spider.schudule_crawler_task',
         'schedule': timedelta(seconds=30),
         # 'args': (redis_db),
         # 'options': {'queue': 'my_period_task'}
     },
+    'crawler_duplicate_schedule': {
+        'task': 'crawler.duplicate_removal.duplicate_removal_work',
+        'schedule': timedelta(seconds=30),
+        # 'args': (redis_db),
+        # 'options': {'queue': 'my_period_task'}
+    }
 }
 ################################################
 # 启动worker的命令
