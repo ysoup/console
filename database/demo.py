@@ -1,7 +1,6 @@
 __author__ = 'Administrator'
 from peewee import *
 import datetime
-import yaml
 import logging
 from dal.DataSource import demo_database
 logger = logging.getLogger('peewee')

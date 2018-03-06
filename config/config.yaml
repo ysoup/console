@@ -1,0 +1,31 @@
+redis:
+  - name: ""
+    host:
+    - "127.0.0.1"
+    port: ""
+    db: 0
+    timeout: 0.1
+    log:
+        prefix: ""
+        level: "DEBUG"
+        ages: "daily"
+        path: "/data/crawler/log"
+        max_log_file_size: "41943040"
+        slow_than: 0.02
+
+db:
+   dezhsc:
+   adapter: "mysql2"
+   host: ""
+   user: ""
+   password: ""
+   database: ""
+   charset: "utf8"
+   test: true
+   logger: "/data/crawler/log/db_demo.log"
+   slaves:
+         - "127.0.0.1"
+   max_connections: 8
+   pool_timeout: 5
+   pool_sleep_time: 0.001
+   single_threaded: false

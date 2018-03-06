@@ -10,9 +10,10 @@ from common.initRedis import connetcredis
 from common.untils import *
 from common.constants import CompareResult, RedisConstantsKey, DuplicateRemovalCache
 from database.demo import TestSpider
+from celerymain.main import app
 
 
-# @app.task(ignore_result=True)
+@app.task(ignore_result=True)
 def send(url):
     # 读取数据缓存做增量抓取
     print("正在抓取链接", url)
@@ -37,8 +38,7 @@ def send(url):
         if com_ret == CompareResult.StrSame.value:
             return
         else:
-            # 异步入库操作
-            # todo
+            # todo 异步入库操作
             for data in crawler_data:
                 row = TestSpider.select().where(TestSpider.content_id == data["content_id"])
                 if len(row) == 0:
