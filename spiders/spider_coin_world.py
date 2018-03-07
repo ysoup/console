@@ -6,8 +6,7 @@ parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
 import requests
 from common.untils import *
-
-
+from bs4 import BeautifulSoup
 def crawler_coin_world_information(url):
     response = requests.get(url)
     data = str_convert_json(response.text)
@@ -25,3 +24,9 @@ def crawler_coin_world_information(url):
                     dic["author"] = ""
                     crawler_ls.append(dic)
     return crawler_ls
+
+
+def crawler_coin_world_market(url):
+    response = requests.get(url)
+    data = BeautifulSoup(response.text, "html.parser")
+    # print(data.find(id="coinTable"))

@@ -39,10 +39,14 @@ def coin_world_information(url):  # 币世界快讯
 
 @app.task(ignore_result=True)
 def schudule_coin_world_information():
-    app.send_task('crawler.spider.send', args=("http://www.bishijie.com/api/news/?size=5",),
-                  queue='task_crawler',
-                  routing_key='task_crawler')
+    app.send_task('crawler.coin_world.coin_world_information', args=("http://www.bishijie.com/api/news/?size=5",),
+                  queue='task_crawler_coin_wold',
+                  routing_key='task_coin_world')
 
 
-# if __name__ == "__main__":
-#     coin_world_information("http://www.bishijie.com/api/news/?size=5")
+def coin_world_market(url): # 行情
+    crawler_data = crawler_coin_world_market(url)
+
+
+if __name__ == "__main__":
+    coin_world_market("http://www.bishijie.com/hangqing")
