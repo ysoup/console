@@ -49,7 +49,7 @@ def schudule_coin_world_information():
                   routing_key='task_coin_world')
 
 
-def coin_world_market(url): # 行情
+def coin_world_market(url):  # 行情
     crawler_data = crawler_coin_world_market(url)
 
 
