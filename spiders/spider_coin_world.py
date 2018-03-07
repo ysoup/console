@@ -7,6 +7,8 @@ sys.path.append(parentUrl)
 import requests
 from common.untils import *
 from bs4 import BeautifulSoup
+
+
 def crawler_coin_world_information(url):
     response = requests.get(url)
     data = str_convert_json(response.text)

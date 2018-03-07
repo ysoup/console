@@ -15,19 +15,24 @@ from celerymain.main import app
 def coin_world_information(url):  # 币世界快讯
     date = get_current_date()
     crawler_data = crawler_coin_world_information(url)
-    if len(crawler_data) != 0:
+    if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
         for data in crawler_data:
             cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.DEMO_CRAWLER_SAVE.value, data["content_id"]))
             if not cache_data is None:
                 str1 = str_convert_json(cache_data)
                 distance = get_str_distance(data["content"], str1["content"])
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
-                    CoinWorldInformation.update(content=data["content"]).where(CoinWorldInformation.content_id == data["content_id"])
-                    connetcredis().set("%s_%s" % (RedisConstantsKey.DEMO_CRAWLER_SAVE.value, data["content_id"]), json_convert_str(data))
-                    connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),json_convert_str(data))
+                    CoinWorldInformation.update(content=data["content"]).where(CoinWorldInformation.content_id ==
+                                                                               data["content_id"])
+                    connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["content_id"]),
+                                       json_convert_str(data))
+                    connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                                        json_convert_str(data))
             else:
-                connetcredis().set("%s_%s" % (RedisConstantsKey.DEMO_CRAWLER_SAVE.value, data["content_id"]), json_convert_str(data))
-                connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),json_convert_str(data))
+                connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["content_id"]),
+                                   json_convert_str(data))
+                connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                                    json_convert_str(data))
                 CoinWorldInformation.create(
                     content=data["content"],
                     content_id=data["content_id"],
@@ -44,9 +49,9 @@ def schudule_coin_world_information():
                   routing_key='task_coin_world')
 
 
-def coin_world_market(url): # 行情
+def coin_world_market(url):  # 行情
     crawler_data = crawler_coin_world_market(url)
 
 
-if __name__ == "__main__":
-    coin_world_market("http://www.bishijie.com/hangqing")
+# if __name__ == "__main__":
+#     coin_world_market("http://www.bishijie.com/hangqing")
