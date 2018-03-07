@@ -2,6 +2,7 @@
 
 import json
 import time
+from simhash import Simhash
 
 
 def compare_string(str1, str2):
@@ -33,3 +34,8 @@ def get_current_date():
 
 def get_current_time():
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+
+
+def get_str_distance(str1, str2):
+    distance = (Simhash(str1).distance(Simhash(str2)))
+    return distance

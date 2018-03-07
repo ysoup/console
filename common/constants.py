@@ -11,6 +11,8 @@ class CompareResult(Enum):
 @unique
 class RedisConstantsKey(Enum):
     DEMO_CRAWLER_SAVE = "demo_crawler_save"
+    CRAWLER_JIN_SE = "crawler_jin_se"  # 金色财经
+    CRAWLER_COIN_WORLD = "crawler_coin_world"  # 币世界
 
 
 @unique

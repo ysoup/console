@@ -1,7 +1,6 @@
 __author__ = 'Administrator'
 from peewee import *
 import datetime
-import yaml
 import logging
 from dal.DataSource import demo_database
 logger = logging.getLogger('peewee')
@@ -24,6 +23,7 @@ class TestSpider(BaseModel):
     content = CharField()
     author = CharField()
     source_link = CharField()
+    content_id = IntegerField()
     current_time = CharField()
     create_time = DateTimeField(default=datetime.datetime.now)
     update_time = DateTimeField(default=datetime.datetime.now)
