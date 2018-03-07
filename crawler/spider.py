@@ -11,10 +11,11 @@ from common.untils import *
 from common.constants import CompareResult, RedisConstantsKey, DuplicateRemovalCache
 from database.demo import TestSpider
 from celerymain.main import app
+import logging
 
 
 @app.task(ignore_result=True)
-def send(url):
+def send(url):  # 金色财经快讯
     # 读取数据缓存做增量抓取
     print("正在抓取链接", url)
     # 判断数据缓存是否存在

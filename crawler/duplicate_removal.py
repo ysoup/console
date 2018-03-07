@@ -6,14 +6,14 @@ currentUrl = os.path.dirname(__file__)
 parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
 from simhash import Simhash
-# from celerymain.main import app
+from celerymain.main import app
 from common.initRedis import connetcredis
 from common.constants import *
 from common.untils import *
 from database.demo import TestSpider
 
 
-# @app.task()
+@app.task()
 def duplicate_removal_work():
     # 从redis集合中获取获取
     red = connetcredis()
@@ -55,8 +55,8 @@ def duplicate_removal_work():
 
 
 
-if __name__ == "__main__":
-    duplicate_removal()
+# if __name__ == "__main__":
+#     duplicate_removal()
 #     r = connetcredis()
 #     r.set('name', 'junxi')
 #     print(r['name'])
