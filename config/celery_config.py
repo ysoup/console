@@ -45,12 +45,14 @@ CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
     Queue('task_crawler', Exchange('task_crawler'), routing_key='task_crawler'),
     Queue('task_crawler_duplicate', Exchange('task_crawler_duplicate'), routing_key='task_crawler_duplicate'),
+    Queue('task_crawler_coin_wold', Exchange('task_coin_world'), routing_key='task_coin_world'),
 )
 
 # 路由
 CELERY_ROUTES = {
     'crawler.spider.schudule_crawler_task': {'queue': 'task_crawler', 'routing_key': 'task_crawler'},
     'crawler.duplicate_removal.duplicate_removal_work': {'queue': 'task_crawler_duplicate', 'routing_key': 'task_crawler_duplicate'},
+    'crawler.coin_world.schudule_coin_world_information': {'queue': 'task_crawler_coin_wold', 'routing_key': 'task_coin_world'},
 }
 # 默认的交换机名字为 tasks
 CELERY_DEFAULT_EXCHANGE = 'tasks'
@@ -69,6 +71,12 @@ CELERYBEAT_SCHEDULE = {
     },
     'crawler_duplicate_schedule': {
         'task': 'crawler.duplicate_removal.duplicate_removal_work',
+        'schedule': timedelta(seconds=30),
+        # 'args': (redis_db),
+        # 'options': {'queue': 'my_period_task'}
+    },
+    'crawler_coin_world__information_schedule': {
+        'task': 'crawler.coin_world.schudule_coin_world_information',
         'schedule': timedelta(seconds=30),
         # 'args': (redis_db),
         # 'options': {'queue': 'my_period_task'}
