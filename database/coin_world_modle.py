@@ -1,9 +1,6 @@
 from peewee import *
-
-from peewee import *
-import datetime
-import logging
 from dal.DataSource import coin_world_database
+import logging
 logger = logging.getLogger('peewee')
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler())
@@ -22,11 +19,11 @@ class CoinWorldInformation(BaseModel):
     author = CharField(null=True)
     content = CharField(null=True)
     content_id = IntegerField()
-    create_time = DateTimeField(default=datetime.datetime.now)
+    create_time = DateTimeField(null=True)
     id = IntegerField()
     source_link = CharField(null=True)
     title = CharField(null=True)
-    update_time = DateTimeField(default=datetime.datetime.now)
+    update_time = DateTimeField(null=True)
 
     class Meta:
         table_name = 'coin_world_information'

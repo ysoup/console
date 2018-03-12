@@ -23,19 +23,10 @@ dbpassword=Percona5.7.17
 dbcharset=utf8
 
 [discuzdb]
-dbhost=192.168.2.86
+dbhost=127.0.0.1
 dbport=3306
 dbname=discuzdb
 dbuser=root
 dbpassword=Percona5.7.17
-dbcharset=utf8
-
-
-[discuzdbss]
-dbhost=10.56.0.175
-dbport=3306
-dbname=discuzdb
-dbuser=discuz
-dbpassword=Aibitou.88
 dbcharset=utf8
 

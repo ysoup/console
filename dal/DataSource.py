@@ -21,5 +21,5 @@ coin_world_database = MySQLDatabase('coin_world', **{'host': coin_world.host, 'p
 
 # discuzdb
 discuzdb = getconnstring('discuzdb')
-discuzdb = MySQLDatabase('discuzdb', **{'host': discuzdb.host, 'password': discuzdb.passwd, 'port': discuzdb.port, 'user': discuzdb.user, 'charset': discuzdb.charset})
+discuzdb_database = MySQLDatabase('discuzdb', **{'host': discuzdb.host, 'password': discuzdb.passwd, 'port': discuzdb.port, 'user': discuzdb.user, 'charset': discuzdb.charset})
 
