@@ -1,8 +1,8 @@
 __author__ = 'Administrator'
 from peewee import *
 import datetime
-import logging
 from dal.DataSource import demo_database
+import logging
 logger = logging.getLogger('peewee')
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler())

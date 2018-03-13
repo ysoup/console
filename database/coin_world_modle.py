@@ -1,9 +1,16 @@
 from peewee import *
-from dal.DataSource import coin_world_database
-import logging
-logger = logging.getLogger('peewee')
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+import sys
+import os
+currentUrl = os.path.dirname(__file__)
+parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
+sys.path.append(parentUrl)
+from common.initDb import InitDb
+from common.constants import SpidersDataModel
+import datetime
+
+coin_world = InitDb(SpidersDataModel.MODEL_COIN_WORLD.value)
+coin_world_database = coin_world.connect()
+coin_world.wirte_logger()
 
 
 class UnknownField(object):
@@ -19,11 +26,11 @@ class CoinWorldInformation(BaseModel):
     author = CharField(null=True)
     content = CharField(null=True)
     content_id = IntegerField()
-    create_time = DateTimeField(null=True)
+    create_time = DateTimeField(default=datetime.datetime.now)
     id = IntegerField()
     source_link = CharField(null=True)
     title = CharField(null=True)
-    update_time = DateTimeField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         table_name = 'coin_world_information'

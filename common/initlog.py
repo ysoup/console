@@ -1,27 +1,39 @@
 # encoding=utf-8
-
 import logging
-import sys
-# 程序级别日志
-logger = logging.getLogger("test")
-formatter = logging.Formatter('%(asctime)s %(levelname)-3s: %(message)s')
-file_handler = logging.FileHandler("test.log")
-file_handler.setFormatter(formatter)
-
-# 控制台日志
-console_handler = logging.StreamHandler(sys.stdout)
-console_handler.formatter = formatter  # 也可以直接给formatter赋值
-# 为logger添加的日志处理器
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
-
-# 指定日志的最低输出级别，默认为WARN级别
-logger.setLevel(logging.INFO)
+from common.constants import CrawlerLogName
 
 
+class Logger(object):
+    def __init__(self, path, name=CrawlerLogName.OPERTATION_PEEWEE_MODEL.value):
+        logger = logging.getLogger(name)
+        logger.setLevel(logging.DEBUG)
+        # 建立一个filehandler来把日志记录在文件里，级别为debug以上
+        fh = logging.FileHandler(path)
+        fh.setLevel(logging.DEBUG)
+        # 建立一个streamhandler来把日志打在CMD窗口上，级别为error以上
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.ERROR)
+        # 设置日志格式
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        ch.setFormatter(formatter)
+        fh.setFormatter(formatter)
+        # 将相应的handler添加在logger对象中
+        logger.addHandler(ch)
+        logger.addHandler(fh)
 
+    def debug(self, message):
+        self.logger.debug(message)
 
-if __name__ == "__main__":
-    logger.info("测试>>>>>>>>")
+    def info(self, message):
+        self.logger.info(message)
+
+    def war(self, message):
+        self.logger.warn(message)
+
+    def error(self, message):
+        self.logger.error(message)
+
+    def cri(self, message):
+        self.logger.critical(message)
 
 
