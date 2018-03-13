@@ -1,0 +1,42 @@
+{"redis":[],
+  "db": {
+    "jin_se": {
+      "host": "127.0.0.1",
+      "user": "root",
+      "port": 3306,
+      "password": "root",
+      "database": "jin_se",
+      "charset": "utf8",
+      "test": true,
+      "logger": "/data/log/db/db_jin_se.log",
+      "slaves": [],
+      "max_connections": 8,
+      "pool_timeout": 5,
+      "pool_sleep_time": 0.001
+    },
+    "coin_world": {
+      "host": "127.0.0.1",
+      "user": "root",
+      "port": 3306,
+      "password": "root",
+      "database": "coin_world",
+      "charset": "utf8",
+      "test": true,
+      "logger": "/data/log/db/db_coin_world.log",
+      "slaves": [],
+      "max_connections": 8,
+      "pool_timeout": 5,
+      "pool_sleep_time": 0.001
+    }
+  },
+  "log":{
+    "jin_se":{
+      "work_path":"/data/log/work/work_jin_se.log",
+      "spider_path":"/data/log/spider/spider_jin_se.log"
+    },
+    "coin_world":{
+      "work_path":"/data/log/work/work_coin_world.log",
+      "spider_path":"/data/log/spider/spider_coin_world.log"
+    }
+  }
+}

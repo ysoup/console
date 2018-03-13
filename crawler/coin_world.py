@@ -9,12 +9,16 @@ from common.untils import *
 from common.constants import RedisConstantsKey, GetListLength, DuplicateRemovalCache
 from database.coin_world_modle import CoinWorldInformation
 from celerymain.main import app
+from common.initlog import Logger
+
+logger = Logger(kind="work_path", name="jin_se")
 
 
 @app.task(ignore_result=True)
 def coin_world_information(url):  # 币世界快讯
+    logger.info("抓取链接:%s" % url)
     date = get_current_date()
-    crawler_data = crawler_coin_world_information(url)
+    crawler_data = crawler_coin_world_information(url, logger)
     if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
         for data in crawler_data:
             cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.DEMO_CRAWLER_SAVE.value, data["content_id"]))
@@ -53,5 +57,5 @@ def coin_world_market(url):  # 行情
     crawler_data = crawler_coin_world_market(url)
 
 
-if __name__ == "__main__":
-    coin_world_information("http://www.bishijie.com/api/news/?size=5")
+# if __name__ == "__main__":
+#     coin_world_information("http://www.bishijie.com/api/news/?size=5")

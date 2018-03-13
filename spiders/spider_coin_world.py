@@ -9,7 +9,7 @@ from common.untils import *
 from bs4 import BeautifulSoup
 
 
-def crawler_coin_world_information(url):
+def crawler_coin_world_information(url, logger):
     response = requests.get(url)
     data = str_convert_json(response.text)
     crawler_ls = []
