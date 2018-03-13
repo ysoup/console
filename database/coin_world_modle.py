@@ -1,12 +1,16 @@
 from peewee import *
-
-from peewee import *
+import sys
+import os
+currentUrl = os.path.dirname(__file__)
+parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
+sys.path.append(parentUrl)
+from common.initDb import InitDb
+from common.constants import SpidersDataModel
 import datetime
-import logging
-from dal.DataSource import coin_world_database
-logger = logging.getLogger('peewee')
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+
+coin_world = InitDb(SpidersDataModel.MODEL_COIN_WORLD.value)
+coin_world_database = coin_world.connect()
+coin_world.wirte_logger()
 
 
 class UnknownField(object):

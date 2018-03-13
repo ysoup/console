@@ -25,3 +25,12 @@ class DuplicateRemovalCache(Enum):
 class GetListLength(Enum):
     GET_LIST_LENGTH = 0
     GET_NOMBAL_NUM = 3
+
+@unique
+class SpidersDataModel(Enum):
+    MODEL_JIN_SE = "jin_se"
+    MODEL_COIN_WORLD = "coin_world"
+
+@unique
+class CrawlerLogName(Enum):
+    OPERTATION_PEEWEE_MODEL = "peewee"

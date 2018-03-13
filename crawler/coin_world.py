@@ -53,5 +53,5 @@ def coin_world_market(url):  # 行情
     crawler_data = crawler_coin_world_market(url)
 
 
-# if __name__ == "__main__":
-#     coin_world_market("http://www.bishijie.com/hangqing")
+if __name__ == "__main__":
+    coin_world_information("http://www.bishijie.com/api/news/?size=5")

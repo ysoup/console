@@ -1,10 +1,18 @@
+import sys
+import os
 from peewee import *
 import datetime
-import logging
-from dal.DataSource import ji_se_database
-logger = logging.getLogger('peewee')
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+
+currentUrl = os.path.dirname(__file__)
+parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
+sys.path.append(parentUrl)
+from common.initDb import InitDb
+from common.constants import SpidersDataModel
+
+
+jin_se = InitDb(SpidersDataModel.MODEL_JIN_SE.value)
+jin_se_database = jin_se.connect()
+jin_se.wirte_logger()
 
 
 class UnknownField(object):
@@ -13,7 +21,7 @@ class UnknownField(object):
 
 class BaseModel(Model):
     class Meta:
-        database = ji_se_database
+        database = jin_se_database
 
 
 class JinseInformation(BaseModel):

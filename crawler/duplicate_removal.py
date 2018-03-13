@@ -5,12 +5,33 @@ import os
 currentUrl = os.path.dirname(__file__)
 parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
-from simhash import Simhash
 from celerymain.main import app
 from common.initRedis import connetcredis
-from common.constants import *
 from common.untils import *
-from database.demo import TestSpider
+from database.ablink_portal_summary import AblinkPortalSummary
+import time
+from common.constants import GetListLength, DuplicateRemovalCache
+
+
+@app.task()
+def async_get_data():
+    date = get_current_date()
+    rows = AblinkPortalSummary.select().order_by(AblinkPortalSummary.obtaindate.desc()).limit(1000)
+    content_ls = []
+    for row in rows:
+        time_local = time.localtime(row.obtaindate)
+        dt = time.strftime("%Y-%m-%d", time_local)
+        if dt == date:
+            content_ls.append(row.title)
+    return content_ls
+
+
+@app.task()
+def async_create_data(title, source_name):
+    obtain_date = int(time.time())
+    AblinkPortalSummary.create(title=title,
+                               source=source_name,
+                               obtaindate=obtain_date)
 
 
 @app.task()
@@ -34,29 +55,30 @@ def duplicate_removal_work():
                     del data[j]
             i = i + 1
         # 去重数据异步入库并且查询当天数据
-        rows = TestSpider.select().where(TestSpider.current_time == date)
-        if len(rows) == GetListLength.GET_LIST_LENGTH.value:
-            # 数据库操作
-            TestSpider.create(title=com_data["title"],
-                              content=com_data["content"],
-                              source_link=com_data["source_name"],
-                              current_time=date)
+        # 链接服务器操作数据库
+        # 异步查询
+        result = async_get_data.apply_async()
+        base_data = result.get()
+        if len(base_data) == GetListLength.GET_LIST_LENGTH.value:
+            print("aaa")
+            # todo数据库操作
+            # for com_data in data:
+            #     AblinkPortalSummary.create(title=com_data["title"],
+            #                                content=com_data["content"],
+            #                                source_link=com_data["source_name"],
+            #                                current_time=date)
         else:
             for com_data in data:
-                for row in rows:
-                    distance = (Simhash(com_data["content"]).distance(Simhash(row.content)))
+                for row in base_data:
+                    distance = get_str_distance(com_data["content"], row.content)
                     if distance >= GetListLength.GET_NOMBAL_NUM.value:
-                        TestSpider.create(title=com_data["title"],
-                                          content=com_data["content"],
-                                          source_link=com_data["source_name"],
-                                          current_time=date)
+                        async_create_data.apply_async((com_data["title"] ,com_data["source_name"]))
         # 清空数据集合
         red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
 
 
-
 # if __name__ == "__main__":
-#     duplicate_removal()
+#     asyn_get_data()
 #     r = connetcredis()
 #     r.set('name', 'junxi')
 #     print(r['name'])
