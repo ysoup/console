@@ -1,0 +1,36 @@
+from peewee import *
+import sys
+import os
+currentUrl = os.path.dirname(__file__)
+parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
+sys.path.append(parentUrl)
+from common.initDb import InitDb
+from common.constants import SpidersDataModel
+import datetime
+
+new_flash = InitDb(SpidersDataModel.MODEL_NEW_FLASH.value)
+new_flash_database = new_flash.connect()
+new_flash.wirte_logger()
+
+
+class UnknownField(object):
+    def __init__(self, *_, **__): pass
+
+
+class BaseModel(Model):
+    class Meta:
+        database = new_flash_database
+
+
+class NewFlashInformation(BaseModel):
+    author = CharField(null=True)
+    content = CharField(null=True)
+    content_id = IntegerField(null=True)
+    create_time = DateTimeField(default=datetime.datetime.now)
+    source_name = CharField(null=True)
+    title = CharField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'new_flash_information'
+
