@@ -18,5 +18,6 @@ def crawler_jinse(url):
                 dic = {}
                 dic["content"] = ls["content"]
                 dic["content_id"] = ls["id"]
+                dic["source_name"] = "jin_se"
                 crawler_ls.append(dic)
     return crawler_ls

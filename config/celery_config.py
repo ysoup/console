@@ -4,14 +4,14 @@ from kombu import Exchange, Queue
 # 某个程序中出现的队列，在broker中不存在，则立刻创建它
 CELERY_CREATE_MISSING_QUEUES = True
 
-CELERY_IMPORTS = ("crawler.spider")
+CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
-BROKER_URL = 'redis://localhost:6379/0'
+BROKER_URL = 'redis://10.31.253.60:6379/0'
 
 # 后端缓存设置
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+CELERY_RESULT_BACKEND = 'redis://10.31.253.60:6379/1'
 
 # 后端数据存储设置
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
@@ -43,23 +43,23 @@ CELERY_DISABLE_RATE_LIMITS = True
 
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
-    Queue('task_crawler', Exchange('task_crawler'), routing_key='task_crawler'),
-    Queue('task_crawler_duplicate', Exchange('task_crawler_duplicate'), routing_key='task_crawler_duplicate'),
-    Queue('task_crawler_coin_wold', Exchange('task_coin_world'), routing_key='task_coin_world'),
+    Queue('jin_se', Exchange('jin_se'), routing_key='jin_se'),
+    Queue('coin_wold', Exchange('coin_world'), routing_key='coin_world'),
+    Queue('duplicate_removal', Exchange('duplicate_removal'), routing_key='duplicate_removal')
 )
 
-# 路由
-CELERY_ROUTES = {
-    'crawler.spider.schudule_crawler_task': {'queue': 'task_crawler', 'routing_key': 'task_crawler'},
-    'crawler.duplicate_removal.duplicate_removal_work': {'queue': 'task_crawler_duplicate', 'routing_key': 'task_crawler_duplicate'},
-    'crawler.coin_world.schudule_coin_world_information': {'queue': 'task_crawler_coin_wold', 'routing_key': 'task_coin_world'},
-}
-# 默认的交换机名字为 tasks
-CELERY_DEFAULT_EXCHANGE = 'tasks'
-# 默认的交换机类型为 topic
-CELERY_DEFAULT_EXCHANGE_KEY = 'topic'
-# 默认的路由键是default键符合上面的 default 队列.
-CELERY_DEFAULT_ROUTING_KEY = 'default'
+# # 路由
+# CELERY_ROUTES = {
+#     'crawler.spider.schudule_crawler_task': {'queue': 'task_crawler', 'routing_key': 'task_crawler'},
+#     'crawler.duplicate_removal.duplicate_removal_work': {'queue': 'task_crawler_duplicate', 'routing_key': 'task_crawler_duplicate'},
+#     'crawler.coin_world.schudule_coin_world_information': {'queue': 'task_crawler_coin_wold', 'routing_key': 'task_coin_world'},
+# }
+# # 默认的交换机名字为 tasks
+# CELERY_DEFAULT_EXCHANGE = 'tasks'
+# # 默认的交换机类型为 topic
+# CELERY_DEFAULT_EXCHANGE_KEY = 'topic'
+# # 默认的路由键是default键符合上面的 default 队列.
+# CELERY_DEFAULT_ROUTING_KEY = 'default'
 
 # 定时任务
 CELERYBEAT_SCHEDULE = {
@@ -67,19 +67,19 @@ CELERYBEAT_SCHEDULE = {
         'task': 'crawler.spider.schudule_crawler_task',
         'schedule': timedelta(seconds=60),
         # 'args': (redis_db),
-        # 'options': {'queue': 'my_period_task'}
+        # 'options': {'queue': 'jin_se', 'routing_key': 'jin_se'}
     },
     'crawler_duplicate_schedule': {
         'task': 'crawler.duplicate_removal.duplicate_removal_work',
         'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
-        # 'options': {'queue': 'my_period_task'}
+        'options': {'queue': 'duplicate_removal', 'routing_key': 'duplicate_removal'}
     },
     'crawler_coin_world__information_schedule': {
         'task': 'crawler.coin_world.schudule_coin_world_information',
         'schedule': timedelta(seconds=60),
         # 'args': (redis_db),
-        # 'options': {'queue': 'my_period_task'}
+        # 'options': {'queue': 'coin_wold', 'routing_key': 'coin_wold'}
     }
 }
 ################################################
