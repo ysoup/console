@@ -17,7 +17,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
 
 # 并发worker数
-CELERYD_CONCURRENCY = 5
+CELERYD_CONCURRENCY = 2
 
 # 时区设置
 CELERY_TIMEZONE = 'Asia/Shanghai'
@@ -65,19 +65,19 @@ CELERY_DEFAULT_ROUTING_KEY = 'default'
 CELERYBEAT_SCHEDULE = {
     'jinse_crawler_schedule': {
         'task': 'crawler.spider.schudule_crawler_task',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(seconds=60),
         # 'args': (redis_db),
         # 'options': {'queue': 'my_period_task'}
     },
     'crawler_duplicate_schedule': {
         'task': 'crawler.duplicate_removal.duplicate_removal_work',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
         # 'options': {'queue': 'my_period_task'}
     },
     'crawler_coin_world__information_schedule': {
         'task': 'crawler.coin_world.schudule_coin_world_information',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(seconds=60),
         # 'args': (redis_db),
         # 'options': {'queue': 'my_period_task'}
     }

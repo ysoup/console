@@ -25,7 +25,7 @@ class BaseModel(Model):
 class CoinWorldInformation(BaseModel):
     author = CharField(null=True)
     content = CharField(null=True)
-    content_id = IntegerField()
+    content_id = AutoField()
     create_time = DateTimeField(default=datetime.datetime.now)
     id = IntegerField()
     source_link = CharField(null=True)
@@ -34,8 +34,4 @@ class CoinWorldInformation(BaseModel):
 
     class Meta:
         table_name = 'coin_world_information'
-        indexes = (
-            (('id', 'content_id'), True),
-        )
-        primary_key = CompositeKey('content_id', 'id')
 

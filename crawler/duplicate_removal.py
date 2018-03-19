@@ -8,30 +8,12 @@ sys.path.append(parentUrl)
 from celerymain.main import app
 from common.initRedis import connetcredis
 from common.untils import *
-from database.ablink_portal_summary import AblinkPortalSummary
+from database.new_flash_model import NewFlashInformation
 import time
 from common.constants import GetListLength, DuplicateRemovalCache
+from common.initlog import Logger
 
-
-@app.task()
-def async_get_data():
-    date = get_current_date()
-    rows = AblinkPortalSummary.select().order_by(AblinkPortalSummary.obtaindate.desc()).limit(1000)
-    content_ls = []
-    for row in rows:
-        time_local = time.localtime(row.obtaindate)
-        dt = time.strftime("%Y-%m-%d", time_local)
-        if dt == date:
-            content_ls.append(row.title)
-    return content_ls
-
-
-@app.task()
-def async_create_data(title, source_name):
-    obtain_date = int(time.time())
-    AblinkPortalSummary.create(title=title,
-                               source=source_name,
-                               obtaindate=obtain_date)
+logger = Logger(kind="work_path", name="duplicate_removal")
 
 
 @app.task()
@@ -56,23 +38,36 @@ def duplicate_removal_work():
             i = i + 1
         # 去重数据异步入库并且查询当天数据
         # 链接服务器操作数据库
-        # 异步查询
-        result = async_get_data.apply_async()
-        base_data = result.get()
-        if len(base_data) == GetListLength.GET_LIST_LENGTH.value:
-            print("aaa")
-            # todo数据库操作
-            # for com_data in data:
-            #     AblinkPortalSummary.create(title=com_data["title"],
-            #                                content=com_data["content"],
-            #                                source_link=com_data["source_name"],
-            #                                current_time=date)
+        # todo 异步查询
+        rows = NewFlashInformation.select().order_by(NewFlashInformation.create_time.desc()).limit(1000)
+        content_ls = []
+        for row in rows:
+            init_time = time.strptime(row.create_time, "%Y-%m-%d %H:%M:%S")
+            new_time = time.strftime("%Y-%m-%d", init_time)
+            if new_time == date:
+                content_ls.append(row.content)
+        if len(content_ls) == GetListLength.GET_LIST_LENGTH.value:
+            for com_data in data:
+                query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
+                                                                NewFlashInformation.source_name == com_data["source_name"])
+                if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                    NewFlashInformation.create(content=com_data["content"],
+                                               content_id=com_data["content_id"],
+                                               source_name=com_data["source_name"]
+                                               )
         else:
             for com_data in data:
-                for row in base_data:
+                for row in content_ls:
                     distance = get_str_distance(com_data["content"], row.content)
                     if distance >= GetListLength.GET_NOMBAL_NUM.value:
-                        async_create_data.apply_async((com_data["title"] ,com_data["source_name"]))
+                        query_data = NewFlashInformation.select().where(
+                            NewFlashInformation.content_id == com_data["content_id"],
+                            NewFlashInformation.source_name == com_data["source_name"])
+                        if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                            NewFlashInformation.create(content=com_data["content"],
+                                                       content_id=com_data["content_id"],
+                                                       source_name=com_data["source_name"]
+                                                       )
         # 清空数据集合
         red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
 

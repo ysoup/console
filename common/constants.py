@@ -30,6 +30,7 @@ class GetListLength(Enum):
 class SpidersDataModel(Enum):
     MODEL_JIN_SE = "jin_se"
     MODEL_COIN_WORLD = "coin_world"
+    MODEL_NEW_FLASH = "new_flash"
 
 @unique
 class CrawlerLogName(Enum):

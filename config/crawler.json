@@ -37,6 +37,9 @@
     "coin_world":{
       "work_path":"/data/log/work/work_coin_world.log",
       "spider_path":"/data/log/spider/spider_coin_world.log"
+    },
+    "duplicate_removal":{
+      "work_path":"/data/log/work/work_duplicate_removal.log"
     }
   }
 }
