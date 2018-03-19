@@ -28,5 +28,18 @@
       "pool_timeout": 5,
       "pool_sleep_time": 0.001
     }
+  },
+  "log":{
+    "jin_se":{
+      "work_path":"/data/log/work/work_jin_se.log",
+      "spider_path":"/data/log/spider/spider_jin_se.log"
+    },
+    "coin_world":{
+      "work_path":"/data/log/work/work_coin_world.log",
+      "spider_path":"/data/log/spider/spider_coin_world.log"
+    },
+    "duplicate_removal":{
+      "work_path":"/data/log/work/work_duplicate_removal.log"
+    }
   }
 }

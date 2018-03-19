@@ -21,10 +21,12 @@ def coin_world_information(url):  # 币世界快讯
     crawler_data = crawler_coin_world_information(url, logger)
     if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
         for data in crawler_data:
-            cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.DEMO_CRAWLER_SAVE.value, data["content_id"]))
+            cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["content_id"]))
+            logger.info("币世界数据缓存返回:%s" % cache_data)
             if not cache_data is None:
                 str1 = str_convert_json(cache_data)
                 distance = get_str_distance(data["content"], str1["content"])
+                logger.info("币世界抓取与数据缓存相似度:%s" % distance)
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
                     CoinWorldInformation.update(content=data["content"]).where(CoinWorldInformation.content_id ==
                                                                                data["content_id"])
@@ -49,13 +51,13 @@ def coin_world_information(url):  # 币世界快讯
 @app.task(ignore_result=True)
 def schudule_coin_world_information():
     app.send_task('crawler.coin_world.coin_world_information', args=("http://www.bishijie.com/api/news/?size=5",),
-                  queue='task_crawler_coin_wold',
-                  routing_key='task_coin_world')
+                  queue='coin_wold',
+                  routing_key='coin_wold')
 
 
 def coin_world_market(url):  # 行情
     crawler_data = crawler_coin_world_market(url)
 
 
-# if __name__ == "__main__":
-#     coin_world_information("http://www.bishijie.com/api/news/?size=5")
+if __name__ == "__main__":
+    coin_world_information("http://www.bishijie.com/api/news/?size=5")

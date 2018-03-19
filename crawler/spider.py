@@ -14,7 +14,7 @@ from database.jin_se_modle import JinseInformation
 from celerymain.main import app
 
 
-# @app.task(ignore_result=True)
+@app.task(ignore_result=True)
 def send(url):  # 金色财经快讯
     # 读取数据缓存做增量抓取
     date = get_current_date()
@@ -49,8 +49,8 @@ def send(url):  # 金色财经快讯
 
 @app.task(ignore_result=True)
 def schudule_crawler_task():
-    app.send_task('crawler.spider.send', args=("http://www.jinse.com/ajax/lives/getList?id=0&flag=up",), queue='task_crawler',
-                  routing_key='task_crawler')
+    app.send_task('crawler.spider.send', args=("http://www.jinse.com/ajax/lives/getList?id=0&flag=up",), queue='jin_se',
+                  routing_key='jin_se')
 
 if __name__ == "__main__":
     send("http://www.jinse.com/ajax/lives/getList?id=0&flag=up")

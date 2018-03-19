@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 
 def crawler_coin_world_information(url, logger):
     response = requests.get(url)
+    logger.info("抓取币世界http返回状态码:%s" % response.status_code)
     data = str_convert_json(response.text)
     crawler_ls = []
     if data.__contains__('data'):
@@ -24,7 +25,9 @@ def crawler_coin_world_information(url, logger):
                     dic["source_link"] = ""
                     dic["title"] = ""
                     dic["author"] = ""
+                    dic["source_name"] = "coin_world"
                     crawler_ls.append(dic)
+    logger.info("抓取币世界返回数据:%s" % crawler_ls)
     return crawler_ls
 
 
