@@ -17,7 +17,7 @@ CELERY_RESULT_BACKEND = 'redis://10.31.253.60:6379/1'
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
 
 # 并发worker数
-CELERYD_CONCURRENCY = 2
+CELERYD_CONCURRENCY = 1
 
 # 时区设置
 CELERY_TIMEZONE = 'Asia/Shanghai'
@@ -43,9 +43,9 @@ CELERY_DISABLE_RATE_LIMITS = True
 
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
-    Queue('jin_se', Exchange('jin_se'), routing_key='jin_se'),
-    Queue('coin_wold', Exchange('coin_world'), routing_key='coin_world'),
-    Queue('duplicate_removal', Exchange('duplicate_removal'), routing_key='duplicate_removal')
+    Queue('jin_se_task', exchange=Exchange('jin_se_task'), routing_key='jin_se_info'),
+    Queue('coin_wold_task', exchange=Exchange('coin_world_task'), routing_key='coin_world_info'),
+    Queue('duplicate_removal_task', exchange=Exchange('duplicate_removal_task'), routing_key='duplicate_removal_info')
 )
 
 # # 路由
@@ -65,21 +65,21 @@ CELERY_QUEUES = (
 CELERYBEAT_SCHEDULE = {
     'jinse_crawler_schedule': {
         'task': 'crawler.spider.schudule_crawler_task',
-        'schedule': timedelta(seconds=60),
+        'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
-        # 'options': {'queue': 'jin_se', 'routing_key': 'jin_se'}
+        'options': {'queue': 'jin_se_task', 'routing_key': 'jin_se_info'}
     },
     'crawler_duplicate_schedule': {
-        'task': 'crawler.duplicate_removal.duplicate_removal_work',
-        'schedule': timedelta(seconds=90),
+        'task': 'crawler.duplicate_removal.schudule_duplicate_removal_work',
+        'schedule': timedelta(seconds=75),
         # 'args': (redis_db),
-        'options': {'queue': 'duplicate_removal', 'routing_key': 'duplicate_removal'}
+        'options': {'queue': 'duplicate_removal_task', 'routing_key': 'duplicate_removal_info'}
     },
-    'crawler_coin_world__information_schedule': {
+    'crawler_coin_world': {
         'task': 'crawler.coin_world.schudule_coin_world_information',
-        'schedule': timedelta(seconds=60),
+        'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
-        # 'options': {'queue': 'coin_wold', 'routing_key': 'coin_wold'}
+        'options': {'queue': 'coin_wold_task', 'routing_key': 'coin_wold_info'}
     }
 }
 ################################################
