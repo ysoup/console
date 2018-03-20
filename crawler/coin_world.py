@@ -11,12 +11,12 @@ from database.coin_world_modle import CoinWorldInformation
 from celerymain.main import app
 from common.initlog import Logger
 
-logger = Logger(kind="work_path", name="jin_se")
+logger = Logger(kind="work_path", name="coin_world")
 
 
 @app.task(ignore_result=True)
 def coin_world_information(url):  # 币世界快讯
-    logger.info("抓取链接:%s" % url)
+    logger.info("币世界抓取链接:%s" % url)
     date = get_current_date()
     crawler_data = crawler_coin_world_information(url, logger)
     if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
@@ -51,13 +51,13 @@ def coin_world_information(url):  # 币世界快讯
 @app.task(ignore_result=True)
 def schudule_coin_world_information():
     app.send_task('crawler.coin_world.coin_world_information', args=("http://www.bishijie.com/api/news/?size=5",),
-                  queue='coin_wold',
-                  routing_key='coin_wold')
+                  queue='coin_wold_task',
+                  routing_key='coin_world_info')
 
 
-def coin_world_market(url):  # 行情
-    crawler_data = crawler_coin_world_market(url)
+# def coin_world_market(url):  # 行情
+#     crawler_data = crawler_coin_world_market(url)
 
 
-if __name__ == "__main__":
-    coin_world_information("http://www.bishijie.com/api/news/?size=5")
+# if __name__ == "__main__":
+#     coin_world_information("http://www.bishijie.com/api/news/?size=5")

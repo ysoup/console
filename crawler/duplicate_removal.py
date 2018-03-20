@@ -15,15 +15,19 @@ from common.initlog import Logger
 
 logger = Logger(kind="work_path", name="duplicate_removal")
 
+print("aaaa")
+
 
 @app.task()
 def duplicate_removal_work():
     # 从redis集合中获取获取
+    logger.info("=====开始数据去重服务====")
     red = connetcredis()
     date = get_current_date()
     data = red.smembers("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
     if len(data) != GetListLength.GET_LIST_LENGTH.value:
         data = [str_convert_json(x) for x in data]
+        logger.info("数据去重服务集合数据:%s" % data)
         i = GetListLength.GET_LIST_LENGTH.value
         while i < len(data):
             for j in range(i + 1, len(data)):
@@ -42,10 +46,11 @@ def duplicate_removal_work():
         rows = NewFlashInformation.select().order_by(NewFlashInformation.create_time.desc()).limit(1000)
         content_ls = []
         for row in rows:
-            init_time = time.strptime(row.create_time, "%Y-%m-%d %H:%M:%S")
+            init_time = time.strptime(str(row.create_time), "%Y-%m-%d %H:%M:%S")
             new_time = time.strftime("%Y-%m-%d", init_time)
             if new_time == date:
                 content_ls.append(row.content)
+        logger.info("数据去重服务查询当天快讯:%s" % content_ls)
         if len(content_ls) == GetListLength.GET_LIST_LENGTH.value:
             for com_data in data:
                 query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
@@ -58,7 +63,7 @@ def duplicate_removal_work():
         else:
             for com_data in data:
                 for row in content_ls:
-                    distance = get_str_distance(com_data["content"], row.content)
+                    distance = get_str_distance(com_data["content"], row)
                     if distance >= GetListLength.GET_NOMBAL_NUM.value:
                         query_data = NewFlashInformation.select().where(
                             NewFlashInformation.content_id == com_data["content_id"],
@@ -70,13 +75,18 @@ def duplicate_removal_work():
                                                        )
         # 清空数据集合
         red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
+        logger.info("=====数据去重服务结束====")
 
+
+@app.task(ignore_result=True)
+def schudule_duplicate_removal_work():
+    app.send_task('crawler.duplicate_removal.duplicate_removal_work', queue='duplicate_removal_task', routing_key='duplicate_removal_info')
 
 # if __name__ == "__main__":
-#     asyn_get_data()
-#     r = connetcredis()
-#     r.set('name', 'junxi')
-#     print(r['name'])
-#     print(r.get('name'))  # 取出键name对应的值
-#     print(type(r.get('name')))
-#     # duplicate_removal
+    # asyn_get_data()
+    # r = connetcredis()
+    # r.set('name', 'junxi')
+    # print(r['name'])
+    # print(r.get('name'))  # 取出键name对应的值
+    # print(type(r.get('name')))
+    # duplicate_removal_work()
