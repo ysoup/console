@@ -15,8 +15,6 @@ from common.initlog import Logger
 
 logger = Logger(kind="work_path", name="duplicate_removal")
 
-print("aaaa")
-
 
 @app.task()
 def duplicate_removal_work():
@@ -35,9 +33,10 @@ def duplicate_removal_work():
                     break
                 str1 = data[i]["content"]
                 str2 = data[j]["content"]
+                distance1 = (Simhash(str1.split("】")[-1]).distance(Simhash(str2.split("】")[-1])))
                 distance = (Simhash(str1).distance(Simhash(str2)))
                 # 相同的数据
-                if distance <= GetListLength.GET_NOMBAL_NUM.value:
+                if distance <= GetListLength.GET_NOMBAL_NUM.value or distance1 <= GetListLength.GET_NOMBAL_NUM.value:
                     del data[j]
             i = i + 1
         # 去重数据异步入库并且查询当天数据
@@ -64,7 +63,8 @@ def duplicate_removal_work():
             for com_data in data:
                 for row in content_ls:
                     distance = get_str_distance(com_data["content"], row)
-                    if distance >= GetListLength.GET_NOMBAL_NUM.value:
+                    distance1 = (Simhash(com_data["content"].split("】")[-1]).distance(Simhash(row.split("】")[-1])))
+                    if distance >= GetListLength.GET_NOMBAL_NUM.value and distance1 >= GetListLength.GET_NOMBAL_NUM.value:
                         query_data = NewFlashInformation.select().where(
                             NewFlashInformation.content_id == com_data["content_id"],
                             NewFlashInformation.source_name == com_data["source_name"])
