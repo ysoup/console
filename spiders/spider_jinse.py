@@ -24,10 +24,10 @@ def crawler_jinse(url, logger):
                 for ls in data["data"]["%s" % date_key]:
                     dic = {}
                     dic["content"] = ls["content"]
-                    num = re.search("微信", dic["content"]).span()
-                    if len(num) >= 1:
+                    num = re.search("微信", dic["content"])
+                    if num is not None:
                         continue
-                    dic["content"] = dic["content"].sub("币世界", "爱必投")
+                    dic["content"] = re.sub("币世界|小葱", "爱必投", dic["content"])
                     dic["source_link"] = ""
                     dic["content_id"] = ls["id"]
                     dic["source_name"] = "jin_se"

@@ -30,8 +30,18 @@ class NewFlashInformation(BaseModel):
     source_name = CharField(null=True)
     title = CharField(null=True)
     show = IntegerField(default=1)
+    category = CharField(default="")
     update_time = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         table_name = 'new_flash_information'
+
+
+class NewFlashCategory(BaseModel):
+    catname = CharField(null=True, unique=True)
+    keyword = CharField(default="")
+    show = IntegerField(default=0)
+
+    class Meta:
+        table_name = 'new_flash_category'
 
