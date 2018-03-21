@@ -33,10 +33,17 @@ def duplicate_removal_work():
                     break
                 str1 = data[i]["content"]
                 str2 = data[j]["content"]
-                distance1 = (Simhash(str1.split("】")[-1]).distance(Simhash(str2.split("】")[-1])))
-                distance = (Simhash(str1).distance(Simhash(str2)))
-                # 相同的数据
-                if distance <= GetListLength.GET_NOMBAL_NUM.value or distance1 <= GetListLength.GET_NOMBAL_NUM.value:
+                # 全部
+                distance = get_str_distance(str1, str2)
+                str3 = str1.split("】")
+                str4 = str2.split("】")
+                # 内容
+                distance1 = get_str_distance(str3[-1], str4[-1])
+                # 标题
+                distance2 = get_str_distance(str3[0], str4[0])
+                # 内容前30个字符
+                distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
+                if distance <= 20 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
                     del data[j]
             i = i + 1
         # 去重数据异步入库并且查询当天数据
@@ -48,7 +55,7 @@ def duplicate_removal_work():
             init_time = time.strptime(str(row.create_time), "%Y-%m-%d %H:%M:%S")
             new_time = time.strftime("%Y-%m-%d", init_time)
             if new_time == date:
-                content_ls.append(row.content)
+                content_ls.append(row)
         logger.info("数据去重服务查询当天快讯:%s" % content_ls)
         if len(content_ls) == GetListLength.GET_LIST_LENGTH.value:
             for com_data in data:
@@ -61,18 +68,32 @@ def duplicate_removal_work():
                                                )
         else:
             for com_data in data:
+                flag = 1
                 for row in content_ls:
-                    distance = get_str_distance(com_data["content"], row)
-                    distance1 = (Simhash(com_data["content"].split("】")[-1]).distance(Simhash(row.split("】")[-1])))
-                    if distance >= GetListLength.GET_NOMBAL_NUM.value and distance1 >= GetListLength.GET_NOMBAL_NUM.value:
-                        query_data = NewFlashInformation.select().where(
-                            NewFlashInformation.content_id == com_data["content_id"],
-                            NewFlashInformation.source_name == com_data["source_name"])
-                        if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                            NewFlashInformation.create(content=com_data["content"],
-                                                       content_id=com_data["content_id"],
-                                                       source_name=com_data["source_name"]
-                                                       )
+                    str1 = com_data["content"]
+                    str2 = row
+                    # 全部
+                    distance = get_str_distance(str1, str2)
+                    str3 = str1.split("】")
+                    str4 = str2.split("】")
+                    # 内容
+                    distance1 = get_str_distance(str3[-1], str4[-1])
+                    # 标题
+                    distance2 = get_str_distance(str3[0], str4[0])
+                    # 内容前30个字符
+                    distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
+                    if distance <= 20 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                        flag = 0
+                        break
+                if flag == 1:
+                    query_data = NewFlashInformation.select().where(
+                        NewFlashInformation.content_id == com_data["content_id"],
+                        NewFlashInformation.source_name == com_data["source_name"])
+                    if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                        NewFlashInformation.create(content=com_data["content"],
+                                                   content_id=com_data["content_id"],
+                                                   source_name=com_data["source_name"]
+                                                   )
         # 清空数据集合
         red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
         logger.info("=====数据去重服务结束====")
