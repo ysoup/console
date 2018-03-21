@@ -7,7 +7,7 @@ sys.path.append(parentUrl)
 import requests
 from common.untils import *
 from bs4 import BeautifulSoup
-
+import re
 
 def crawler_coin_world_information(url, logger):
     response = requests.get(url)
@@ -21,6 +21,10 @@ def crawler_coin_world_information(url, logger):
                 for coin_world_data in coin_world_ls["buttom"]:
                     dic = {}
                     dic["content"] = coin_world_data["content"]
+                    num = re.search("微信", dic["content"]).span()
+                    if len(num) >= 1:
+                        continue
+                    dic["content"] = dic["content"].sub("币世界", "爱必投")
                     dic["content_id"] = coin_world_data["newsflash_id"]
                     dic["source_link"] = ""
                     dic["title"] = ""

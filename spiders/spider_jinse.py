@@ -6,6 +6,7 @@ parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
 import requests
 from common.untils import *
+import re
 
 
 def crawler_jinse(url, logger):
@@ -23,6 +24,10 @@ def crawler_jinse(url, logger):
                 for ls in data["data"]["%s" % date_key]:
                     dic = {}
                     dic["content"] = ls["content"]
+                    num = re.search("微信", dic["content"]).span()
+                    if len(num) >= 1:
+                        continue
+                    dic["content"] = dic["content"].sub("币世界", "爱必投")
                     dic["source_link"] = ""
                     dic["content_id"] = ls["id"]
                     dic["source_name"] = "jin_se"
