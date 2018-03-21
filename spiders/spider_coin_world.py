@@ -9,6 +9,7 @@ from common.untils import *
 from bs4 import BeautifulSoup
 import re
 
+
 def crawler_coin_world_information(url, logger):
     response = requests.get(url)
     logger.info("抓取币世界http返回状态码:%s" % response.status_code)
@@ -21,10 +22,10 @@ def crawler_coin_world_information(url, logger):
                 for coin_world_data in coin_world_ls["buttom"]:
                     dic = {}
                     dic["content"] = coin_world_data["content"]
-                    num = re.search("微信", dic["content"]).span()
-                    if len(num) >= 1:
+                    num = re.search("微信", dic["content"])
+                    if num is not None:
                         continue
-                    dic["content"] = dic["content"].sub("币世界", "爱必投")
+                    dic["content"] = re.sub("币世界|小葱", "爱必投", dic["content"])
                     dic["content_id"] = coin_world_data["newsflash_id"]
                     dic["source_link"] = ""
                     dic["title"] = ""

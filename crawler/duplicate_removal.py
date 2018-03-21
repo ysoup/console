@@ -8,7 +8,7 @@ sys.path.append(parentUrl)
 from celerymain.main import app
 from common.initRedis import connetcredis
 from common.untils import *
-from database.new_flash_model import NewFlashInformation
+from database.new_flash_model import NewFlashInformation, NewFlashCategory
 import time
 from common.constants import GetListLength, DuplicateRemovalCache
 from common.initlog import Logger
@@ -62,16 +62,18 @@ def duplicate_removal_work():
                 query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
                                                                 NewFlashInformation.source_name == com_data["source_name"])
                 if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                    category = check_content_type(com_data["content"])
                     NewFlashInformation.create(content=com_data["content"],
                                                content_id=com_data["content_id"],
-                                               source_name=com_data["source_name"]
+                                               source_name=com_data["source_name"],
+                                               category=category
                                                )
         else:
             for com_data in data:
                 flag = 1
                 for row in content_ls:
                     str1 = com_data["content"]
-                    str2 = row
+                    str2 = row.content
                     # 全部
                     distance = get_str_distance(str1, str2)
                     str3 = str1.split("】")
@@ -90,9 +92,11 @@ def duplicate_removal_work():
                         NewFlashInformation.content_id == com_data["content_id"],
                         NewFlashInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                        category = check_content_type(com_data["content"])
                         NewFlashInformation.create(content=com_data["content"],
                                                    content_id=com_data["content_id"],
-                                                   source_name=com_data["source_name"]
+                                                   source_name=com_data["source_name"],
+                                                   category=category
                                                    )
         # 清空数据集合
         red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
@@ -102,6 +106,7 @@ def duplicate_removal_work():
 @app.task(ignore_result=True)
 def schudule_duplicate_removal_work():
     app.send_task('crawler.duplicate_removal.duplicate_removal_work', queue='duplicate_removal_task', routing_key='duplicate_removal_info')
+
 
 # if __name__ == "__main__":
     # asyn_get_data()
