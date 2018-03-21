@@ -29,6 +29,7 @@ class NewFlashInformation(BaseModel):
     create_time = DateTimeField(default=datetime.datetime.now)
     source_name = CharField(null=True)
     title = CharField(null=True)
+    show = IntegerField(default=1)
     update_time = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
