@@ -20,9 +20,14 @@ logger = Logger(kind="work_path", name="duplicate_removal")
 def duplicate_removal_work():
     # 从redis集合中获取获取
     logger.info("=====开始数据去重服务====")
-    red = connetcredis()
+    redis = connetcredis()
     date = get_current_date()
-    data = red.smembers("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
+    # 判断队列长度
+    data = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
+    if data < 1:
+        return
+    # data = red.smembers("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
+    data = redis.lrange("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date), 0, -1)
     if len(data) != GetListLength.GET_LIST_LENGTH.value:
         data = [str_convert_json(x) for x in data]
         logger.info("数据去重服务集合数据:%s" % data)
@@ -99,7 +104,7 @@ def duplicate_removal_work():
                                                    category=category
                                                    )
         # 清空数据集合
-        red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
+        # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
         logger.info("=====数据去重服务结束====")
 
 

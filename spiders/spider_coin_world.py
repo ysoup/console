@@ -25,7 +25,7 @@ def crawler_coin_world_information(url, logger):
                     num = re.search("微信", dic["content"])
                     if num is not None:
                         continue
-                    dic["content"] = re.sub("币世界|小葱", "爱必投", dic["content"])
+                    dic["content"] = re.sub("币世界|小葱|金色财经", "爱必投", dic["content"])
                     dic["content_id"] = coin_world_data["newsflash_id"]
                     dic["source_link"] = ""
                     dic["title"] = ""
