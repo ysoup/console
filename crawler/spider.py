@@ -35,14 +35,16 @@ def send(url):  # 金色财经快讯
                                                                        data["content_id"])
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SE.value, data["content_id"]),
                                    json_convert_str(data))
-                connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
-                                    json_convert_str(data))
+                # 去重队列
+                connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                                     json_convert_str(data))
 
         else:
             connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SE.value, data["content_id"]),
                                json_convert_str(data))
-            connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
-                                json_convert_str(data))
+            # 去重队列
+            connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                                 json_convert_str(data))
             JinseInformation.create(
                 content=data["content"],
                 content_id=data["content_id"],

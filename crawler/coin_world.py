@@ -32,13 +32,18 @@ def coin_world_information(url):  # 币世界快讯
                                                                                data["content_id"])
                     connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["content_id"]),
                                        json_convert_str(data))
-                    connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                    # 去重队列
+                    connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
                                         json_convert_str(data))
+
+                    # connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                    #                     json_convert_str(data))
             else:
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["content_id"]),
                                    json_convert_str(data))
-                connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
-                                    json_convert_str(data))
+                # 去重队列
+                connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                                     json_convert_str(data))
                 CoinWorldInformation.create(
                     content=data["content"],
                     content_id=data["content_id"],
