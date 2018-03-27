@@ -13,6 +13,7 @@ class RedisConstantsKey(Enum):
     DEMO_CRAWLER_SAVE = "demo_crawler_save"
     CRAWLER_JIN_SE = "crawler_jin_se"  # 金色财经
     CRAWLER_COIN_WORLD = "crawler_coin_world"  # 币世界
+    DATA_SYN_WORK = "data_syn_work"
 
 
 @unique
@@ -31,6 +32,7 @@ class SpidersDataModel(Enum):
     MODEL_JIN_SE = "jin_se"
     MODEL_COIN_WORLD = "coin_world"
     MODEL_NEW_FLASH = "new_flash"
+    MODEL_DISCUZDB = "discuzdb"
 
 @unique
 class CrawlerLogName(Enum):

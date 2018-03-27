@@ -41,6 +41,20 @@
       "max_connections": 8,
       "pool_timeout": 5,
       "pool_sleep_time": 0.001
+    },
+    "new_flash": {
+      "host": "10.31.253.60",
+      "user": "root",
+      "port": 3306,
+      "password": "Aibitou.88",
+      "database": "new_flash",
+      "charset": "utf8",
+      "test": true,
+      "logger": "/data/log/db/db_new_flash.log",
+      "slaves": [],
+      "max_connections": 8,
+      "pool_timeout": 5,
+      "pool_sleep_time": 0.001
     }
   },
   "log":{
