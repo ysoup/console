@@ -23,7 +23,7 @@ def coin_world_information(url):  # 币世界快讯
         for data in crawler_data:
             cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["content_id"]))
             logger.info("币世界数据缓存返回:%s" % cache_data)
-            if not cache_data is None:
+            if cache_data is not None:
                 str1 = str_convert_json(cache_data)
                 distance = get_str_distance(data["content"], str1["content"])
                 logger.info("币世界抓取与数据缓存相似度:%s" % distance)

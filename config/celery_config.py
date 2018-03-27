@@ -4,7 +4,7 @@ from kombu import Exchange, Queue
 # 某个程序中出现的队列，在broker中不存在，则立刻创建它
 CELERY_CREATE_MISSING_QUEUES = True
 
-CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal")
+CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.data_syn")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
@@ -45,8 +45,8 @@ CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
     Queue('jin_se_task', exchange=Exchange('jin_se_task'), routing_key='jin_se_info'),
     Queue('coin_wold_task', exchange=Exchange('coin_world_task'), routing_key='coin_world_info'),
-    Queue('duplicate_removal_task', exchange=Exchange('duplicate_removal_task'), routing_key='duplicate_removal_info')
-)
+    Queue('duplicate_removal_task', exchange=Exchange('duplicate_removal_task'), routing_key='duplicate_removal_info'),
+    Queue('data_syn_task', exchange=Exchange('data_syn_task'), routing_key='data_syn_info'))
 
 # # 路由
 # CELERY_ROUTES = {
@@ -80,6 +80,12 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'coin_wold_task', 'routing_key': 'coin_wold_info'}
+    },
+    'data_syn_work': {
+        'task': 'crawler.data_syn.schudule_data_syn_work',
+        'schedule': timedelta(seconds=120),
+        # 'args': (redis_db),
+        'options': {'queue': 'data_syn_task', 'routing_key': 'data_syn_info'}
     }
 }
 ################################################
