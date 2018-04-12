@@ -46,7 +46,9 @@ CELERY_QUEUES = (
     Queue('jin_se_task', exchange=Exchange('jin_se_task'), routing_key='jin_se_info'),
     Queue('coin_wold_task', exchange=Exchange('coin_world_task'), routing_key='coin_world_info'),
     Queue('duplicate_removal_task', exchange=Exchange('duplicate_removal_task'), routing_key='duplicate_removal_info'),
-    Queue('data_syn_task', exchange=Exchange('data_syn_task'), routing_key='data_syn_info'))
+    Queue('data_syn_task', exchange=Exchange('data_syn_task'), routing_key='data_syn_info'),
+    Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
+    Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'))
 
 # # 路由
 # CELERY_ROUTES = {
@@ -86,6 +88,18 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=120),
         # 'args': (redis_db),
         'options': {'queue': 'data_syn_task', 'routing_key': 'data_syn_info'}
+    },
+    'eight_btc': {
+        'task': 'crawler.eight_btc.schudule_eight_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'eight_btc_task', 'routing_key': 'eight_btc_info'}
+    },
+    'bit_coin': {
+        'task': 'crawler.bit_coin.schudule_bit_coin_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'bit_coin_task', 'routing_key': 'bit_coin_info'}
     }
 }
 ################################################
