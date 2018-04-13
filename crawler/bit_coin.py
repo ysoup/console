@@ -47,5 +47,5 @@ def schudule_bit_coin_information():
                   routing_key='bit_coin_info')
 
 
-# if __name__ == "__main__":
-#     bit_coin_information("http://www.bitcoin86.com/news/list_1_1.html")
+if __name__ == "__main__":
+    bit_coin_information("http://www.bitcoin86.com/news/list_1_1.html")

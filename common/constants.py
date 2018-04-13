@@ -43,6 +43,14 @@ class SpidersDataModel(Enum):
     MODEL_DISCUZDB = "discuzdb"
     MODEL_EIGHT_BITE = "eight_bite"
 
+
 @unique
 class CrawlerLogName(Enum):
     OPERTATION_PEEWEE_MODEL = "peewee"
+
+
+@unique
+class GetBaiDuAi(Enum):
+    APP_ID = '11092811'
+    API_KEY = 'huEevuInLRqMFrNgcsK2rkxg'
+    SECRET_KEY = 'KbAiQCrF78gqq3eRu6eFGrz9Vq5hBQc0'

@@ -12,24 +12,25 @@ from database.new_flash_model import NewFlashInformation, NewFlashCategory
 import time
 from common.constants import GetListLength, DuplicateRemovalCache
 from common.initlog import Logger
+from common.get_article_tag import GetBaiduNlp
 
 logger = Logger(kind="work_path", name="duplicate_removal")
 
 
-@app.task()
-def duplicate_removal_work():
+#@app.task()
+def information_duplicate_removal_work():
     # 从redis集合中获取获取
     logger.info("=====开始数据去重服务====")
     redis = connetcredis()
     date = get_current_date()
     # 判断队列长度
-    data = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
+    data = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date))
     if data < 1:
         return
-    data = redis.lrange("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date), 0, -1)
+    data = redis.lrange("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date), 0, -1)
     if len(data) != GetListLength.GET_LIST_LENGTH.value:
         data = [str_convert_json(x) for x in data]
-        logger.info("数据去重服务集合数据:%s" % data)
+        logger.info("资讯数据去重服务集合数据:%s" % data)
         i = GetListLength.GET_LIST_LENGTH.value
         while i < len(data):
             for j in range(i + 1, len(data)):
@@ -101,19 +102,19 @@ def duplicate_removal_work():
                                                    content_id=com_data["content_id"],
                                                    source_name=com_data["source_name"],
                                                    category=category
-                                                   )
+                                                    )
         # 清空数据集合
         # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
         logger.info("=====数据去重服务结束====")
 
 
-@app.task(ignore_result=True)
-def schudule_duplicate_removal_work():
-    app.send_task('crawler.duplicate_removal.duplicate_removal_work', queue='duplicate_removal_task', routing_key='duplicate_removal_info')
+# @app.task(ignore_result=True)
+# def schudule_information_duplicate_removal_work():
+#     app.send_task('crawler.duplicate_removal.duplicate_removal_work', queue='duplicate_removal_task', routing_key='duplicate_removal_info')
 
 
-# if __name__ == "__main__":
-    # asyn_get_data()
+if __name__ == "__main__":
+    information_duplicate_removal_work()
     # r = connetcredis()
     # r.set('name', 'junxi')
     # print(r['name'])
