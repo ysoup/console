@@ -55,7 +55,7 @@ class NewFlashExclusiveInformation(BaseModel):
     is_show = IntegerField(default=1)
     category = CharField(default="")
     img = CharField(null=True)
-    tag = IntegerField(default=0)
+    tag = CharField(null=True)
     is_delete = IntegerField(default=0)
     is_push = IntegerField(default=0)
     remarks = TextField(null=True)

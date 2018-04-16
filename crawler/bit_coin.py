@@ -27,10 +27,11 @@ def bit_coin_information(url):
                 BitCoinInformation.create(
                     content_id=data["content_id"],
                     content=data["content"],
-                    source_name=data["url"],
+                    source_name=data["source_name"],
                     title=data["title"],
                     author=data["author"],
-                    img=",".join(data["match_img"])
+                    img=",".join(data["match_img"]),
+                    crawler_url=data["url"]
                 )
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BIT_COIN.value, data["content_id"]),
                                    json_convert_str(data))

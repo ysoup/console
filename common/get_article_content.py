@@ -12,11 +12,9 @@ reTAG = r'<[\s\S]*?>|[ \t\r\f\v]'
 
 reIMG = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>')
 
-testreg = r'<a[\s\S]*?href=[\'|"]([\s\S]*?)[\'|"][\s\S]*?'
-
 
 class Extractor(object):
-    def __init__(self, url="", blockSize=3, timeout=30, image=False):
+    def __init__(self, content, url="", blockSize=3, timeout=30, image=False):
         self.url = url
         self.blockSize = blockSize
         self.timeout = timeout
@@ -24,6 +22,7 @@ class Extractor(object):
         self.rawPage = ""
         self.ctexts = []
         self.cblocks = []
+        self.content = content
 
     def getRawPage(self):
         try:
@@ -44,6 +43,7 @@ class Extractor(object):
         self.body = re.sub(reTRIM.format("script"), "", re.sub(reTRIM.format("style"), "", self.body))
         # self.body = re.sub(r"[\n]+","\n", re.sub(reTAG, "", self.body))
         self.body = re.sub(reTAG, "", self.body)
+        return self.body.replace("\n", "")
 
     def processBlocks(self):
         self.ctexts = self.body.split("\n")
@@ -67,18 +67,18 @@ class Extractor(object):
         self.body = reIMG.sub(r'{{\1}}', self.body)
 
     def getContext(self):
-        code, self.rawPage = self.getRawPage()
-        self.body = re.findall(reBODY, self.rawPage)[0]
+        # code, self.rawPage = self.getRawPage()
+        self.body = self.content
 
-        if DBUG: print(code, self.rawPage)
+        # if DBUG: print(code, self.rawPage)
 
         if self.saveImage:
             self.processImages()
-        self.processTags()
-        return self.processBlocks()
+        return self.processTags()
+        # return self.processBlocks()
         # print(len(self.body.strip("\n")))
 
 
-if __name__ == '__main__':
-    ext = Extractor(url="https://blog.csdn.net/hqc888688/article/details/73558824", blockSize=5, image=False)
-    print(ext.getContext())
+# if __name__ == '__main__':
+#     ext = Extractor(url="https://blog.csdn.net/hqc888688/article/details/73558824", blockSize=5, image=False)
+#     print(ext.getContext())

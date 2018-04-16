@@ -8,11 +8,12 @@ sys.path.append(parentUrl)
 from celerymain.main import app
 from common.initRedis import connetcredis
 from common.untils import *
-from database.new_flash_model import NewFlashInformation, NewFlashCategory
+from database.new_flash_model import NewFlashExclusiveInformation
 import time
 from common.constants import GetListLength, DuplicateRemovalCache
 from common.initlog import Logger
 from common.get_article_tag import GetBaiduNlp
+from common.get_article_content import Extractor
 
 logger = Logger(kind="work_path", name="duplicate_removal")
 
@@ -24,37 +25,41 @@ def information_duplicate_removal_work():
     redis = connetcredis()
     date = get_current_date()
     # 判断队列长度
-    data = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date))
-    if data < 1:
+    data_len = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date))
+    if data_len < 1:
         return
-    data = redis.lrange("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date), 0, -1)
+    i = 0
+    data = []
+    while i < data_len:
+        data_str = redis.lpop("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date))
+        data.append(str_convert_json(data_str))
+        i = i+1
     if len(data) != GetListLength.GET_LIST_LENGTH.value:
-        data = [str_convert_json(x) for x in data]
         logger.info("资讯数据去重服务集合数据:%s" % data)
         i = GetListLength.GET_LIST_LENGTH.value
         while i < len(data):
             for j in range(i + 1, len(data)):
                 if j >= len(data):
                     break
-                str1 = data[i]["content"]
-                str2 = data[j]["content"]
-                # 全部
-                distance = get_str_distance(str1, str2)
-                str3 = str1.split("】")
-                str4 = str2.split("】")
+                ext_1 = Extractor(content=data[i]["content"], blockSize=15, image=False)
+                ext_1_text = ext_1.getContext()
+                ext_2 = Extractor(content=data[j]["content"], blockSize=15, image=False)
+                ext_2_text = ext_2.getContext()
                 # 内容
-                distance1 = get_str_distance(str3[-1], str4[-1])
+                distance = get_str_distance(ext_1_text, ext_2_text)
                 # 标题
-                distance2 = get_str_distance(str3[0], str4[0])
-                # 内容前30个字符
-                distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
-                if distance <= 20 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                distance1 = get_str_distance(data[i]["title"], data[j]["title"])
+
+                data[i]["tag"], data[i]["category"] = get_content_tag(data[i]["title"], ext_1_text)
+                data[j]["tag"], data[j]["category"] = get_content_tag(data[j]["title"], ext_2_text)
+
+                if distance <= 20 or distance1 <= 18:
                     del data[j]
             i = i + 1
         # 去重数据异步入库并且查询当天数据
         # 链接服务器操作数据库
         # todo 异步查询
-        rows = NewFlashInformation.select().order_by(NewFlashInformation.create_time.desc()).limit(1000)
+        rows = NewFlashExclusiveInformation.select().order_by(NewFlashExclusiveInformation.create_time.desc()).limit(1000)
         content_ls = []
         for row in rows:
             init_time = time.strptime(str(row.create_time), "%Y-%m-%d %H:%M:%S")
@@ -64,48 +69,51 @@ def information_duplicate_removal_work():
         logger.info("数据去重服务查询当天快讯:%s" % content_ls)
         if len(content_ls) == GetListLength.GET_LIST_LENGTH.value:
             for com_data in data:
-                query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
-                                                                NewFlashInformation.source_name == com_data["source_name"])
+                query_data = NewFlashExclusiveInformation.select().where(NewFlashExclusiveInformation.content_id == com_data["content_id"],
+                                                                         NewFlashExclusiveInformation.source_name == com_data["source_name"])
                 if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                    category = check_content_type(com_data["content"])
-                    NewFlashInformation.create(content=com_data["content"],
-                                               content_id=com_data["content_id"],
-                                               source_name=com_data["source_name"],
-                                               category=category
-                                               )
+                    NewFlashExclusiveInformation.create(content=com_data["content"], content_id=com_data["content_id"],
+                                                        source_name=com_data["source_name"], category=com_data["category"],
+                                                        img=com_data["match_img"], title=com_data["title"],
+                                                        tag=com_data["tag"])
         else:
             for com_data in data:
                 flag = 1
                 for row in content_ls:
-                    str1 = com_data["content"]
-                    str2 = row.content
-                    # 全部
-                    distance = get_str_distance(str1, str2)
-                    str3 = str1.split("】")
-                    str4 = str2.split("】")
+                    ext_1 = Extractor(content=com_data["content"], blockSize=15, image=False)
+                    ext_1_text = ext_1.getContext()
+                    ext_2 = Extractor(content=row.content, blockSize=15, image=False)
+                    ext_2_text = ext_2.getContext()
                     # 内容
-                    distance1 = get_str_distance(str3[-1], str4[-1])
+                    distance = get_str_distance(ext_1_text, ext_2_text)
                     # 标题
-                    distance2 = get_str_distance(str3[0], str4[0])
-                    # 内容前30个字符
-                    distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
-                    if distance <= 20 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                    distance1 = get_str_distance(com_data["content"]["title"], row.title)
+
+                    if distance <= 20 or distance1 <= 18:
                         flag = 0
                         break
                 if flag == 1:
-                    query_data = NewFlashInformation.select().where(
-                        NewFlashInformation.content_id == com_data["content_id"],
-                        NewFlashInformation.source_name == com_data["source_name"])
+                    query_data = NewFlashExclusiveInformation.select().where(
+                        NewFlashExclusiveInformation.content_id == com_data["content_id"],
+                        NewFlashExclusiveInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                        category = check_content_type(com_data["content"])
-                        NewFlashInformation.create(content=com_data["content"],
-                                                   content_id=com_data["content_id"],
-                                                   source_name=com_data["source_name"],
-                                                   category=category
-                                                    )
+                        NewFlashExclusiveInformation.create(content=com_data["content"],
+                                                            content_id=com_data["content_id"],
+                                                            source_name=com_data["source_name"],
+                                                            category=com_data["category"],
+                                                            img=com_data["match_img"], title=com_data["title"],
+                                                            tag=com_data["tag"])
         # 清空数据集合
         # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
         logger.info("=====数据去重服务结束====")
+
+
+def get_content_tag(title, content):
+    res_1 = GetBaiduNlp(title, content)
+    key_word_1 = res_1.get_keyword()
+    tag_1 = ",".join([x["tag"] for x in key_word_1["items"]])
+    type = check_content_type(content)
+    return tag_1, type
 
 
 # @app.task(ignore_result=True)

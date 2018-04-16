@@ -23,12 +23,17 @@ def duplicate_removal_work():
     redis = connetcredis()
     date = get_current_date()
     # 判断队列长度
-    data = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
-    if data < 1:
+    data_len = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
+    if data_len < 1:
         return
+    i = 0
+    data = []
+    while i <= data_len:
+        data_str = redis.lpop("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date))
+        data.append(str_convert_json(data_str))
+        i = i + 1
     data = redis.lrange("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date), 0, -1)
     if len(data) != GetListLength.GET_LIST_LENGTH.value:
-        data = [str_convert_json(x) for x in data]
         logger.info("数据去重服务集合数据:%s" % data)
         i = GetListLength.GET_LIST_LENGTH.value
         while i < len(data):

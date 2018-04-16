@@ -49,7 +49,8 @@ def crawler_bit_coin_information(url, logger):
         dic["content"] = del_div.sub('', str(a)).strip()
         dic["match_img"] = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(dic["content"])
         dic["url"] = url
-        dic["author"] = "bit_coin"
+        dic["author"] = ""
+        dic["source_name"] = "bit_coin"
         logger.info("抓取巴比特http返回状态码:%s" % response.status_code)
         ls.append(dic)
 

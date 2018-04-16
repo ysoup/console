@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# encoding=utf-8
 from aip import AipNlp
 from common.constants import GetBaiDuAi
 
@@ -12,8 +12,10 @@ class GetBaiduNlp(object):
         self.content = content
         self.client = AipNlp(self.app_id, self.api_key, self.secret_key)
 
+    # 文章分类
     def get_topic(self):
-        return self.client.topic(self.title, self.content)
+        return self.client.topic(self.title.replace(u'\xa0', u' '), self.content.replace(u'\xa0', u' '))
 
+    # 文章标签
     def get_keyword(self):
-        return self.client.keyword(self.title, self.content)
+        return self.client.keyword(self.title.replace(u'\xa0', u' '), self.content.replace(u'\xa0', u' '))

@@ -30,6 +30,7 @@ class EightBiteInformation(BaseModel):
     source_name = CharField(null=True)
     title = CharField(null=True)
     img = CharField(null=True)
+    crawler_url = CharField(null=True)
     update_time = DateTimeField(default=datetime.datetime.now)
     create_time = DateTimeField(default=datetime.datetime.now)
     
@@ -44,6 +45,7 @@ class BitCoinInformation(BaseModel):
     source_name = CharField(null=True)
     title = CharField(null=True)
     img = CharField(null=True)
+    crawler_url = CharField(null=True)
     update_time = DateTimeField(default=datetime.datetime.now)
     create_time = DateTimeField(default=datetime.datetime.now)
 
