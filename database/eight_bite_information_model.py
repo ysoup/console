@@ -26,7 +26,7 @@ class BaseModel(Model):
 
 class EightBiteInformation(BaseModel):
     author = CharField(null=True)
-    content = CharField(null=True)
+    content = TextField(null=True)
     source_name = CharField(null=True)
     title = CharField(null=True)
     img = CharField(null=True)

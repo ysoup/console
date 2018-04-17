@@ -18,7 +18,7 @@ from common.get_article_content import Extractor
 logger = Logger(kind="work_path", name="duplicate_removal")
 
 
-#@app.task()
+@app.task()
 def information_duplicate_removal_work():
     # 从redis集合中获取获取
     logger.info("=====开始数据去重服务====")
@@ -75,7 +75,7 @@ def information_duplicate_removal_work():
                     NewFlashExclusiveInformation.create(content=com_data["content"], content_id=com_data["content_id"],
                                                         source_name=com_data["source_name"], category=com_data["category"],
                                                         img=com_data["match_img"], title=com_data["title"],
-                                                        tag=com_data["tag"])
+                                                        tag=com_data["tag"], author=com_data["author"])
         else:
             for com_data in data:
                 flag = 1
@@ -87,7 +87,7 @@ def information_duplicate_removal_work():
                     # 内容
                     distance = get_str_distance(ext_1_text, ext_2_text)
                     # 标题
-                    distance1 = get_str_distance(com_data["content"]["title"], row.title)
+                    distance1 = get_str_distance(com_data["title"], row.title)
 
                     if distance <= 20 or distance1 <= 18:
                         flag = 0
@@ -102,23 +102,25 @@ def information_duplicate_removal_work():
                                                             source_name=com_data["source_name"],
                                                             category=com_data["category"],
                                                             img=com_data["match_img"], title=com_data["title"],
-                                                            tag=com_data["tag"])
-        # 清空数据集合
-        # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
+                                                            tag=com_data["tag"], author=com_data["author"])
         logger.info("=====数据去重服务结束====")
 
 
 def get_content_tag(title, content):
     res_1 = GetBaiduNlp(title, content)
     key_word_1 = res_1.get_keyword()
+    # 标签
     tag_1 = ",".join([x["tag"] for x in key_word_1["items"]])
+    # 类型
     type = check_content_type(content)
+    # 摘要
+    # summary =
     return tag_1, type
 
 
-# @app.task(ignore_result=True)
-# def schudule_information_duplicate_removal_work():
-#     app.send_task('crawler.duplicate_removal.duplicate_removal_work', queue='duplicate_removal_task', routing_key='duplicate_removal_info')
+@app.task(ignore_result=True)
+def schudule_information_duplicate_removal_work():
+    app.send_task('crawler.duplicate_removal.duplicate_removal_work', queue='duplicate_removal_task', routing_key='duplicate_removal_info')
 
 
 if __name__ == "__main__":

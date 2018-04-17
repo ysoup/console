@@ -14,7 +14,7 @@ from database.eight_bite_information_model import EightBiteInformation
 logger = Logger(kind="work_path", name="coin_world")
 
 
-@app.task(ignore_result=True)
+#@app.task(ignore_result=True)
 def eight_information(url):
     logger.info("巴比特抓取链接:%s" % url)
     date = get_current_date()
@@ -26,15 +26,16 @@ def eight_information(url):
             if cache_data is None:
                 EightBiteInformation.create(
                     content=data["content"],
-                    source_name=data["url"],
+                    crawler_url=data["url"],
                     title=data["title"],
                     author=data["author"],
-                    img=",".join(data["match_img"])
+                    img=",".join(data["match_img"]),
+                    source_name=data["source_name"]
                 )
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BA_BI_TE.value, data["url"]),
                                    json_convert_str(data))
                 # 去重队列
-                rows = EightBiteInformation.select().where(EightBiteInformation.source_name == data["url"])
+                rows = EightBiteInformation.select().where(EightBiteInformation.crawler_url == data["url"])
                 for row in rows:
                     data["content_id"] = row.id
                     connetcredis().lpush(
@@ -48,3 +49,6 @@ def schudule_eight_information():
                   queue='eight_btc_task',
                   routing_key='eight_btc_info')
 
+
+if __name__ == "__main__":
+    eight_information("http://www.8btc.com/sitemap?pg=1")

@@ -1,6 +1,9 @@
 # encoding=utf-8
 from aip import AipNlp
 from common.constants import GetBaiDuAi
+import re
+
+Regx = r'/\xa0|/\u2022'
 
 
 class GetBaiduNlp(object):
@@ -14,8 +17,8 @@ class GetBaiduNlp(object):
 
     # 文章分类
     def get_topic(self):
-        return self.client.topic(self.title.replace(u'\xa0', u' '), self.content.replace(u'\xa0', u' '))
+        return self.client.topic(re.sub(r'/\xa0', u' ', self.title), re.sub(r'\xa0', u' ', self.content))
 
     # 文章标签
     def get_keyword(self):
-        return self.client.keyword(self.title.replace(u'\xa0', u' '), self.content.replace(u'\xa0', u' '))
+        return self.client.keyword(re.sub(r'\xa0|\u2022', u' ', self.title), re.sub(r'\xa0|\u2022', u' ', self.content))

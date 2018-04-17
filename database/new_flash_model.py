@@ -58,6 +58,7 @@ class NewFlashExclusiveInformation(BaseModel):
     tag = CharField(null=True)
     is_delete = IntegerField(default=0)
     is_push = IntegerField(default=0)
+    is_hot = IntegerField(default=0)
     remarks = TextField(null=True)
     img = CharField(null=True)
     create_time = DateTimeField(default=datetime.datetime.now)

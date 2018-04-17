@@ -28,11 +28,13 @@ def crawler_eight_btc_information(url, logger):
         a = content_soup.find_all("div", "article-content")[0]
         a.div.extract()
         a.div.extract()
-        a.div.extract()
+        if a.div is not None:
+            a.div.extract()
         del_div = re.compile(r'<div[\s\S]*?>|</div>')
         dic["content"] = del_div.sub('', str(a)).strip()
         dic["match_img"] = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(dic["content"])
         dic["url"] = url
+        dic["source_name"] = "eight_btc"
         logger.info("抓取巴比特http返回状态码:%s" % response.status_code)
         ls.append(dic)
         
