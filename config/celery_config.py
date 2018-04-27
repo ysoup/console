@@ -8,10 +8,10 @@ CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_rem
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
-BROKER_URL = 'redis://10.31.253.60:6379/0'
+BROKER_URL = 'redis://127.0.0.1:6379/0'
 
 # 后端缓存设置
-CELERY_RESULT_BACKEND = 'redis://10.31.253.60:6379/1'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
 
 # 后端数据存储设置
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
