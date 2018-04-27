@@ -4,7 +4,8 @@ from kombu import Exchange, Queue
 # 某个程序中出现的队列，在broker中不存在，则立刻创建它
 CELERY_CREATE_MISSING_QUEUES = True
 
-CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.data_syn")
+CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.data_syn",
+                  "crawler.eight_btc", "crawler.bit_coin", "crawler.information_duplicate_removal")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
@@ -90,13 +91,13 @@ CELERYBEAT_SCHEDULE = {
         # 'args': (redis_db),
         'options': {'queue': 'data_syn_task', 'routing_key': 'data_syn_info'}
     },
-    'eight_btc': {
+    'crawler_eight_btc': {
         'task': 'crawler.eight_btc.schudule_eight_information',
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'eight_btc_task', 'routing_key': 'eight_btc_info'}
     },
-    'bit_coin': {
+    'crawler_bit_coin': {
         'task': 'crawler.bit_coin.schudule_bit_coin_information',
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
