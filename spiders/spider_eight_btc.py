@@ -33,6 +33,7 @@ def crawler_eight_btc_information(url, logger):
         del_div = re.compile(r'<div[\s\S]*?>|</div>')
         dic["content"] = del_div.sub('', str(a)).strip()
         dic["match_img"] = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(dic["content"])
+        dic["match_img"] = ",".join(dic["match_img"])
         dic["url"] = url
         dic["source_name"] = "eight_btc"
         logger.info("抓取巴比特http返回状态码:%s" % response.status_code)

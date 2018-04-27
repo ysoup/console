@@ -14,6 +14,7 @@ from common.constants import GetListLength, DuplicateRemovalCache
 from common.initlog import Logger
 from common.get_article_tag import GetBaiduNlp
 from common.get_article_content import Extractor
+from common.hadoop_service import upload_images_hdfs
 
 logger = Logger(kind="work_path", name="duplicate_removal")
 
@@ -72,9 +73,19 @@ def information_duplicate_removal_work():
                 query_data = NewFlashExclusiveInformation.select().where(NewFlashExclusiveInformation.content_id == com_data["content_id"],
                                                                          NewFlashExclusiveInformation.source_name == com_data["source_name"])
                 if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                    # 图片处理
+                    start_img_ls = com_data["match_img"].split(",")
+                    i = 1
+                    res_img_ls = []
+                    for img_url in start_img_ls:
+                        new_img_url = upload_images_hdfs(img_url, com_data["source_name"],
+                                                        com_data["content_id"], i)
+                        com_data["content"] = com_data["content"].replace(img_url, new_img_url)
+                        res_img_ls.append(new_img_url)
+                        i = i + 1
                     NewFlashExclusiveInformation.create(content=com_data["content"], content_id=com_data["content_id"],
                                                         source_name=com_data["source_name"], category=com_data["category"],
-                                                        img=com_data["match_img"], title=com_data["title"],
+                                                        img=res_img_ls[0], title=com_data["title"],
                                                         tag=com_data["tag"], author=com_data["author"])
         else:
             for com_data in data:
@@ -97,11 +108,21 @@ def information_duplicate_removal_work():
                         NewFlashExclusiveInformation.content_id == com_data["content_id"],
                         NewFlashExclusiveInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                        # 图片处理
+                        start_img_ls = com_data["match_img"].split(",")
+                        i = 1
+                        res_img_ls = []
+                        for img_url in start_img_ls:
+                            new_img_url = upload_images_hdfs(img_url, com_data["source_name"],
+                                                             com_data["content_id"], i)
+                            com_data["content"] = com_data["content"].replace(img_url, new_img_url)
+                            res_img_ls.append(new_img_url)
+                            i = i + 1
                         NewFlashExclusiveInformation.create(content=com_data["content"],
                                                             content_id=com_data["content_id"],
                                                             source_name=com_data["source_name"],
                                                             category=com_data["category"],
-                                                            img=com_data["match_img"], title=com_data["title"],
+                                                            img=res_img_ls[0], title=com_data["title"],
                                                             tag=com_data["tag"], author=com_data["author"])
         logger.info("=====数据去重服务结束====")
 
@@ -120,11 +141,13 @@ def get_content_tag(title, content):
 
 @app.task(ignore_result=True)
 def schudule_information_duplicate_removal_work():
-    app.send_task('crawler.duplicate_removal.duplicate_removal_work', queue='duplicate_removal_task', routing_key='duplicate_removal_info')
+    app.send_task('crawler.information_duplicate_removal.information_duplicate_removal_work',
+                  queue='news_duplicate_removal_task',
+                  routing_key='news_duplicate_removal_info')
 
 
-if __name__ == "__main__":
-    information_duplicate_removal_work()
+# if __name__ == "__main__":
+#     information_duplicate_removal_work()
     # r = connetcredis()
     # r.set('name', 'junxi')
     # print(r['name'])

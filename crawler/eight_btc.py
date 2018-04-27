@@ -14,7 +14,7 @@ from database.eight_bite_information_model import EightBiteInformation
 logger = Logger(kind="work_path", name="coin_world")
 
 
-#@app.task(ignore_result=True)
+@app.task(ignore_result=True)
 def eight_information(url):
     logger.info("巴比特抓取链接:%s" % url)
     date = get_current_date()
@@ -29,7 +29,7 @@ def eight_information(url):
                     crawler_url=data["url"],
                     title=data["title"],
                     author=data["author"],
-                    img=",".join(data["match_img"]),
+                    img=data["match_img"],
                     source_name=data["source_name"]
                 )
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BA_BI_TE.value, data["url"]),
@@ -50,5 +50,5 @@ def schudule_eight_information():
                   routing_key='eight_btc_info')
 
 
-if __name__ == "__main__":
-    eight_information("http://www.8btc.com/sitemap?pg=1")
+# if __name__ == "__main__":
+#     eight_information("http://www.8btc.com/sitemap?pg=1")

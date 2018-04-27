@@ -28,6 +28,7 @@ def crawler_bit_coin_information(url, logger):
         ad = a.find_all("div", "ad akp-adv")
         if len(ad) != 0:
             a.div.extract()
+
         span_ls = a.find_all("span")
         if len(span_ls) != 0:
             a.span.extract()
@@ -40,8 +41,14 @@ def crawler_bit_coin_information(url, logger):
         #     del_span_2 = re.compile(r'<span[\s\S]*?class="source-info">[\s\S]*?|</span>')
         #     del_span_2.sub('', str(a)).strip()
         del_div = re.compile(r'<article[\s\S]*?>|</article>')
+        re_a_1 = re.compile(r'<a[\s\S]*?href=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>')
         dic["content"] = del_div.sub('', str(a)).strip()
+        dic["content"] = re_a_1.sub('', dic["content"])
+
+        re_a_2 = re.compile(r'</a>|<u>|</u>')
+        dic["content"] = re_a_2.sub('', dic["content"])
         dic["match_img"] = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(dic["content"])
+        dic["match_img"] = ",".join(dic["match_img"])
         dic["url"] = url
         dic["author"] = ""
         dic["source_name"] = "bit_coin"

@@ -48,7 +48,8 @@ CELERY_QUEUES = (
     Queue('duplicate_removal_task', exchange=Exchange('duplicate_removal_task'), routing_key='duplicate_removal_info'),
     Queue('data_syn_task', exchange=Exchange('data_syn_task'), routing_key='data_syn_info'),
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
-    Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'))
+    Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
+    Queue('information_duplicate_removal_work', exchange=Exchange('information_duplicate_removal_task'), routing_key='information_duplicate_removal_info'))
 
 # # 路由
 # CELERY_ROUTES = {
@@ -100,6 +101,12 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'bit_coin_task', 'routing_key': 'bit_coin_info'}
+    },
+    'information_duplicate_removal': {
+        'task': 'crawler.information_duplicate_removal.schudule_information_duplicate_removal_work',
+        'schedule': timedelta(seconds=75),
+        # 'args': (redis_db),
+        'options': {'queue': 'information_duplicate_removal_work', 'routing_key': 'information_duplicate_removal_info'}
     }
 }
 ################################################
