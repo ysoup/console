@@ -4,9 +4,9 @@ from kombu import Exchange, Queue
 # 某个程序中出现的队列，在broker中不存在，则立刻创建它
 CELERY_CREATE_MISSING_QUEUES = True
 
-# CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.data_syn",
-#                   "crawler.eight_btc", "crawler.bit_coin", "crawler.information_duplicate_removal")
-CELERY_IMPORTS = ("crawler.information_duplicate_removal")
+CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.data_syn",
+                  "crawler.eight_btc", "crawler.bit_coin", "crawler.information_duplicate_removal")
+
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
 BROKER_URL = 'redis://127.0.0.1:6379/0'
@@ -50,7 +50,8 @@ CELERY_QUEUES = (
     Queue('data_syn_task', exchange=Exchange('data_syn_task'), routing_key='data_syn_info'),
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
     Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
-    Queue('information_duplicate_removal_work', exchange=Exchange('information_duplicate_removal_task'), routing_key='information_duplicate_removal_info'))
+    Queue('news_duplicate_removal_task', exchange=Exchange('news_duplicate_removal_task'),
+          routing_key='news_duplicate_removal_info'))
 
 # # 路由
 # CELERY_ROUTES = {
@@ -107,7 +108,7 @@ CELERYBEAT_SCHEDULE = {
         'task': 'crawler.information_duplicate_removal.schudule_information_duplicate_removal_work',
         'schedule': timedelta(seconds=75),
         # 'args': (redis_db),
-        'options': {'queue': 'information_duplicate_removal_work', 'routing_key': 'information_duplicate_removal_info'}
+        'options': {'queue': 'news_duplicate_removal_task', 'routing_key': 'news_duplicate_removal_info'}
     }
 }
 ################################################
