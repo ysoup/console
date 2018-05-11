@@ -30,10 +30,9 @@ def duplicate_removal_work():
     i = 0
     data = []
     while i <= data_len:
-        data_str = redis.lpop("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date))
+        data_str = redis.lpop("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
         data.append(str_convert_json(data_str))
         i = i + 1
-    data = redis.lrange("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date), 0, -1)
     if len(data) != GetListLength.GET_LIST_LENGTH.value:
         logger.info("数据去重服务集合数据:%s" % data)
         i = GetListLength.GET_LIST_LENGTH.value
