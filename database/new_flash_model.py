@@ -67,3 +67,13 @@ class NewFlashExclusiveInformation(BaseModel):
     class Meta:
         table_name = 'new_flash_exclusive_information'
 
+
+class NewsCategory(BaseModel):
+    catname = CharField(null=True)
+    is_show = IntegerField(default=0)
+    is_delete = IntegerField(default=0)
+    keyword = CharField(default="")
+
+    class Meta:
+        table_name = 'news_category'
+

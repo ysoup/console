@@ -24,6 +24,7 @@ def duplicate_removal_work():
     date = get_current_date()
     # 判断队列长度
     data_len = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
+    category_data = redis.get("catch_infomation_categery_list")
     if data_len < 1:
         return
     i = 0
@@ -71,7 +72,7 @@ def duplicate_removal_work():
                 query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
                                                                 NewFlashInformation.source_name == com_data["source_name"])
                 if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                    category = check_content_type(com_data["content"])
+                    category = check_content_type(com_data["content"], category_data)
                     NewFlashInformation.create(content=com_data["content"],
                                                content_id=com_data["content_id"],
                                                source_name=com_data["source_name"],
@@ -101,7 +102,7 @@ def duplicate_removal_work():
                         NewFlashInformation.content_id == com_data["content_id"],
                         NewFlashInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                        category = check_content_type(com_data["content"])
+                        category = check_content_type(com_data["content"], check_content_type)
                         NewFlashInformation.create(content=com_data["content"],
                                                    content_id=com_data["content_id"],
                                                    source_name=com_data["source_name"],

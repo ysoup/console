@@ -42,18 +42,26 @@ def get_str_distance(str1, str2):
     return distance
 
 
-def check_content_type(str1):
+def check_content_type(str1, data):
     category = 0
-    category1 = re.search(r"监管|政策|法律|央行|实施|违法|财长|出台", str1)
-    category2 = re.search(r"\\%|下跌|上涨|涨跌|交易量|涨幅|跌幅|价格|大跌|暴跌|市值|反弹|期货|回血", str1)
-    category3 = re.search(r"发表|表示|说|宣布|认为|观点", str1)
-    category4 = re.search(r"公告|上线", str1)
-    if category1 is not None:
-        category = 1
-    elif category2 is not None:
-        category = 2
-    elif category3 is not None:
-        category = 4
-    elif category4 is not None:
-        category = 3
+    if data is not None:
+        data = json.loads(data)
+        for x in data:
+            for j in x["keyword"].split(","):
+                if j in str1:
+                    category = x["id"]
+                    break
     return category
+    # category1 = re.search(r"监管|政策|法律|央行|实施|违法|财长|出台", str1)
+    # category2 = re.search(r"\\%|下跌|上涨|涨跌|交易量|涨幅|跌幅|价格|大跌|暴跌|市值|反弹|期货|回血", str1)
+    # category3 = re.search(r"发表|表示|说|宣布|认为|观点", str1)
+    # category4 = re.search(r"公告|上线", str1)
+    # if category1 is not None:
+    #     category = 1
+    # elif category2 is not None:
+    #     category = 2
+    # elif category3 is not None:
+    #     category = 4
+    # elif category4 is not None:
+    #     category = 3
+    # return category

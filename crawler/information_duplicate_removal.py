@@ -52,8 +52,8 @@ def information_duplicate_removal_work():
                 # 标题
                 distance1 = get_str_distance(data[i]["title"], data[j]["title"])
 
-                data[i]["tag"], data[i]["category"] = get_content_tag(data[i]["title"], ext_1_text)
-                data[j]["tag"], data[j]["category"] = get_content_tag(data[j]["title"], ext_2_text)
+                data[i]["tag"], data[i]["category"] = get_content_tag(data[i]["title"], ext_1_text, redis)
+                data[j]["tag"], data[j]["category"] = get_content_tag(data[j]["title"], ext_2_text, redis)
 
                 if distance <= 20 or distance1 <= 18:
                     del data[j]
@@ -128,13 +128,15 @@ def information_duplicate_removal_work():
         logger.info("=====资讯数据去重服务结束====")
 
 
-def get_content_tag(title, content):
+def get_content_tag(title, content, redis):
     res_1 = GetBaiduNlp(title, content)
     key_word_1 = res_1.get_keyword()
     # 标签
     tag_1 = ",".join([x["tag"] for x in key_word_1["items"]])
     # 类型
-    type = check_content_type(content)
+    # 获取资讯类型缓存
+    data = redis.get("catch_news_categery_list")
+    type = check_content_type(content, data)
     # 摘要
     # summary =
     return tag_1, type
