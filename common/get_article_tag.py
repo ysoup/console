@@ -21,4 +21,5 @@ class GetBaiduNlp(object):
 
     # 文章标签
     def get_keyword(self):
-        return self.client.keyword(re.sub(r'\xa0|\u2022', u' ', self.title), re.sub(r'\xa0|\u2022', u' ', self.content))
+        return self.client.keyword(re.sub(r'\xa0|\u2022|\u200b', u' ', self.title), re.sub(r'\xa0|\u2022|\u200b', u' ',
+                                                                                           self.content))
