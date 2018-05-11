@@ -18,7 +18,7 @@ CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
 
 # 并发worker数
-CELERYD_CONCURRENCY = 1
+CELERYD_CONCURRENCY = 0
 
 # 时区设置
 CELERY_TIMEZONE = 'Asia/Shanghai'
