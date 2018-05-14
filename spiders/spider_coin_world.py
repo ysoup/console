@@ -31,7 +31,8 @@ def crawler_coin_world_information(url, logger):
                         if x in dic["content"]:
                             dic["modify_tag"] = 1
                             break
-                    dic["content"] = re.sub("币世界|小葱|金色财经|币 世 界", "爱必投", dic["content"])
+                    dic["content"] = re.sub("币世界|小葱|金色财经|币 世 界|bishijie.com|bishijie|《币 世 界》（bishijie.com）|"
+                                            "《币世界》（bishijie）", "爱必投", dic["content"])
                     dic["content_id"] = coin_world_data["newsflash_id"]
                     dic["source_link"] = ""
                     dic["title"] = ""
