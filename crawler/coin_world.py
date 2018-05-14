@@ -64,5 +64,5 @@ def schudule_coin_world_information():
 #     crawler_data = crawler_coin_world_market(url)
 
 
-# if __name__ == "__main__":
-#     coin_world_information("http://www.bishijie.com/api/news/?size=5")
+if __name__ == "__main__":
+    coin_world_information("http://www.bishijie.com/api/news/?size=5")
