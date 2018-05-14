@@ -29,7 +29,7 @@ def duplicate_removal_work():
         return
     i = 0
     data = []
-    while i <= data_len:
+    while i < data_len:
         data_str = redis.lpop("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
         data.append(str_convert_json(data_str))
         i = i + 1
@@ -118,7 +118,7 @@ def schudule_duplicate_removal_work():
 
 
 # if __name__ == "__main__":
-    # asyn_get_data()
+#     duplicate_removal_work()
     # r = connetcredis()
     # r.set('name', 'junxi')
     # print(r['name'])

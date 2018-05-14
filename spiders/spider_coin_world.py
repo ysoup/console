@@ -15,6 +15,7 @@ def crawler_coin_world_information(url, logger):
     logger.info("抓取币世界http返回状态码:%s" % response.status_code)
     data = str_convert_json(response.text)
     crawler_ls = []
+    modfiy_ls = ["币世界", "小葱", "金色财经", "币 世 界"]
     if data.__contains__('data'):
         for date_key in data["data"].keys():
             coin_world_ls = data["data"]["%s" % date_key]
@@ -25,7 +26,12 @@ def crawler_coin_world_information(url, logger):
                     num = re.search("微信", dic["content"])
                     if num is not None:
                         continue
-                    dic["content"] = re.sub("币世界|小葱|金色财经", "爱必投", dic["content"])
+                    dic["modify_tag"] = 0
+                    for x in modfiy_ls:
+                        if x in dic["content"]:
+                            dic["modify_tag"] = 1
+                            break
+                    dic["content"] = re.sub("币世界|小葱|金色财经|币 世 界", "爱必投", dic["content"])
                     dic["content_id"] = coin_world_data["newsflash_id"]
                     dic["source_link"] = ""
                     dic["title"] = ""
