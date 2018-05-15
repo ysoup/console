@@ -35,7 +35,7 @@ def bit_coin_information(url):
                         crawler_url=data["url"]
                     )
                 except Exception as e:
-                    logger.error("巴比特抓取持久化出错:", e)
+                    logger.error("比特币资讯网抓取持久化出错:%s" % e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BIT_COIN.value, data["content_id"]),
                                    json_convert_str(data))
             # 去重队列
