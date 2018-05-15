@@ -84,10 +84,16 @@ def information_duplicate_removal_work():
                         com_data["content"] = com_data["content"].replace(img_url, new_img_url)
                         res_img_ls.append(new_img_url)
                         i = i + 1
-                    NewFlashExclusiveInformation.create(content=com_data["content"], content_id=com_data["content_id"],
-                                                        source_name=com_data["source_name"], category=com_data["category"],
-                                                        img=res_img_ls[0], title=com_data["title"],
-                                                        tag=com_data["tag"], author=com_data["author"])
+                    try:
+                        NewFlashExclusiveInformation.create(content=com_data["content"],
+                                                            content_id=com_data["content_id"],
+                                                            source_name=com_data["source_name"],
+                                                            category=com_data["category"],
+                                                            img=res_img_ls[0], title=com_data["title"],
+                                                            tag=com_data["tag"], author=com_data["author"])
+                    except Exception as e:
+                        logger.error("资讯抓取持久化出错:%s" % e)
+
         else:
             for com_data in data:
                 flag = 1
@@ -119,20 +125,28 @@ def information_duplicate_removal_work():
                             com_data["content"] = com_data["content"].replace(img_url, new_img_url)
                             res_img_ls.append(new_img_url)
                             i = i + 1
-                        NewFlashExclusiveInformation.create(content=com_data["content"],
-                                                            content_id=com_data["content_id"],
-                                                            source_name=com_data["source_name"],
-                                                            category=com_data["category"],
-                                                            img=res_img_ls[0], title=com_data["title"],
-                                                            tag=com_data["tag"], author=com_data["author"])
+                        try:
+                            NewFlashExclusiveInformation.create(content=com_data["content"],
+                                                                content_id=com_data["content_id"],
+                                                                source_name=com_data["source_name"],
+                                                                category=com_data["category"],
+                                                                img=res_img_ls[0], title=com_data["title"],
+                                                                tag=com_data["tag"], author=com_data["author"])
+                        except Exception as e:
+                            logger.error("资讯抓取持久化出错:%s" % e)
         logger.info("=====资讯数据去重服务结束====")
 
 
 def get_content_tag(title, content, redis):
-    res_1 = GetBaiduNlp(title, content)
-    key_word_1 = res_1.get_keyword()
     # 标签
-    tag_1 = ",".join([x["tag"] for x in key_word_1["items"]])
+    try:
+        res_1 = GetBaiduNlp(title, content)
+        key_word_1 = res_1.get_keyword()
+        logger.info("百度标签返回结果:%s" % key_word_1)
+        tag_1 = ",".join([x["tag"] for x in key_word_1["items"]])
+    except Exception as e:
+        logger.error("百度自动标签出错:%s" % e)
+        tag_1 = ""
     # 类型
     # 获取资讯类型缓存
     data = redis.get("catch_news_categery_list")
