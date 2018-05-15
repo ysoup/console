@@ -43,17 +43,14 @@ def information_duplicate_removal_work():
             for j in range(i + 1, len(data)):
                 if j >= len(data):
                     break
-                ext_1 = Extractor(content=data[i]["content"], blockSize=15, image=False)
-                ext_1_text = ext_1.getContext()
-                ext_2 = Extractor(content=data[j]["content"], blockSize=15, image=False)
-                ext_2_text = ext_2.getContext()
-                # 内容
-                distance = get_str_distance(ext_1_text, ext_2_text)
+                content_1 = data[i]["content"]
+                content_2 = data[j]["content"]
+                distance, ext_1_text, ext_2_text = get_content_by_reg(content_1, content_2)
                 # 标题
                 distance1 = get_str_distance(data[i]["title"], data[j]["title"])
 
-                data[i]["tag"], data[i]["category"] = get_content_tag(data[i]["title"], ext_1_text, redis)
-                data[j]["tag"], data[j]["category"] = get_content_tag(data[j]["title"], ext_2_text, redis)
+                data[i]["category"] = get_content_tag(ext_1_text, redis)
+                data[j]["category"] = get_content_tag(ext_2_text, redis)
 
                 if distance <= 20 or distance1 <= 18:
                     del data[j]
@@ -84,26 +81,18 @@ def information_duplicate_removal_work():
                         com_data["content"] = com_data["content"].replace(img_url, new_img_url)
                         res_img_ls.append(new_img_url)
                         i = i + 1
-                    try:
-                        NewFlashExclusiveInformation.create(content=com_data["content"],
-                                                            content_id=com_data["content_id"],
-                                                            source_name=com_data["source_name"],
-                                                            category=com_data["category"],
-                                                            img=res_img_ls[0], title=com_data["title"],
-                                                            tag=com_data["tag"], author=com_data["author"])
-                    except Exception as e:
-                        logger.error("资讯抓取持久化出错:%s" % e)
+                    # 内容标签
+                    get_article_tag(com_data)
+
+                    save_news_data(com_data, res_img_ls)
 
         else:
             for com_data in data:
                 flag = 1
                 for row in content_ls:
-                    ext_1 = Extractor(content=com_data["content"], blockSize=15, image=False)
-                    ext_1_text = ext_1.getContext()
-                    ext_2 = Extractor(content=row.content, blockSize=15, image=False)
-                    ext_2_text = ext_2.getContext()
-                    # 内容
-                    distance = get_str_distance(ext_1_text, ext_2_text)
+                    content_1 = com_data["content"]
+                    content_2 = row.content
+                    distance, ext_1_text, ext_2_text = get_content_by_reg(content_1, content_2)
                     # 标题
                     distance1 = get_str_distance(com_data["title"], row.title)
 
@@ -125,35 +114,52 @@ def information_duplicate_removal_work():
                             com_data["content"] = com_data["content"].replace(img_url, new_img_url)
                             res_img_ls.append(new_img_url)
                             i = i + 1
-                        try:
-                            NewFlashExclusiveInformation.create(content=com_data["content"],
-                                                                content_id=com_data["content_id"],
-                                                                source_name=com_data["source_name"],
-                                                                category=com_data["category"],
-                                                                img=res_img_ls[0], title=com_data["title"],
-                                                                tag=com_data["tag"], author=com_data["author"])
-                        except Exception as e:
-                            logger.error("资讯抓取持久化出错:%s" % e)
+                        # 内容标签
+                        get_article_tag(com_data)
+                        save_news_data(com_data, res_img_ls)
         logger.info("=====资讯数据去重服务结束====")
 
 
-def get_content_tag(title, content, redis):
-    # 标签
+def get_content_by_reg(content_1, content_2):
+    ext_1 = Extractor(content=content_1, blockSize=15, image=False)
+    ext_1_text = ext_1.getContext()
+    ext_2 = Extractor(content=content_2, blockSize=15, image=False)
+    ext_2_text = ext_2.getContext()
+    # 内容
+    distance = get_str_distance(ext_1_text, ext_2_text)
+    return distance, ext_1_text, ext_2_text
+
+
+def save_news_data(com_data, res_img_ls):
     try:
-        res_1 = GetBaiduNlp(title, content)
+        NewFlashExclusiveInformation.create(content=com_data["content"],
+                                            content_id=com_data["content_id"],
+                                            source_name=com_data["source_name"],
+                                            category=com_data["category"],
+                                            img=res_img_ls[0], title=com_data["title"],
+                                            tag=com_data["tag"], author=com_data["author"])
+    except Exception as e:
+        logger.error("资讯抓取持久化出错:%s" % e)
+
+
+def get_article_tag(com_data):
+    try:
+        ext_1_1 = Extractor(content=com_data["content"], blockSize=15, image=False)
+        content = ext_1_1.getContext()
+        res_1 = GetBaiduNlp(com_data["title"], content)
         key_word_1 = res_1.get_keyword()
         logger.info("百度标签返回结果:%s" % key_word_1)
-        tag_1 = ",".join([x["tag"] for x in key_word_1["items"]])
+        com_data["tag"] = ",".join([x["tag"] for x in key_word_1["items"]])
     except Exception as e:
         logger.error("百度自动标签出错:%s" % e)
-        tag_1 = ""
-    # 类型
+        com_data["tag"] = ""
+
+
+def get_content_tag(content, redis):
     # 获取资讯类型缓存
     data = redis.get("catch_news_categery_list")
-    type = check_news_content_type(content, data)
-    # 摘要
-    # summary =
-    return tag_1, type
+    tag = check_news_content_type(content, data)
+    return tag
 
 
 @app.task(ignore_result=True)
