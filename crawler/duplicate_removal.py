@@ -101,7 +101,7 @@ def duplicate_removal_work():
                         NewFlashInformation.content_id == com_data["content_id"],
                         NewFlashInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                        category = check_content_type(com_data["content"], check_content_type)
+                        category = check_content_type(com_data["content"], category_data)
                         NewFlashInformation.create(content=com_data["content"],
                                                    content_id=com_data["content_id"],
                                                    source_name=com_data["source_name"],
