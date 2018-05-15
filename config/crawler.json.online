@@ -42,15 +42,15 @@
       "pool_timeout": 5,
       "pool_sleep_time": 0.001
     },
-    "new_flash": {
+    "eight_bite": {
       "host": "10.31.253.60",
       "user": "root",
       "port": 3306,
       "password": "Aibitou.88",
-      "database": "new_flash",
+      "database": "eight_bite",
       "charset": "utf8",
       "test": true,
-      "logger": "/data/log/db/db_new_flash.log",
+      "logger": "/data/log/db/db_eight_bite.log",
       "slaves": [],
       "max_connections": 8,
       "pool_timeout": 5,
@@ -69,5 +69,8 @@
     "duplicate_removal":{
       "work_path":"/data/log/work/work_duplicate_removal.log"
     }
-  }
+  },
+   "hadoop":{
+    "host":"http://hadoop.aibilink.com",
+    "port":"50070"}
 }
