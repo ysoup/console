@@ -34,7 +34,7 @@ def eight_information(url):
                         source_name=data["source_name"]
                     )
                 except Exception as e:
-                    logger.error("巴比特抓取持久化出错:"+e)
+                    logger.error("巴比特抓取持久化出错", e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BA_BI_TE.value, data["url"]),
                                    json_convert_str(data))
             # 去重队列
