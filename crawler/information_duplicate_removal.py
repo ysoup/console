@@ -136,7 +136,7 @@ def get_content_tag(title, content, redis):
     # 类型
     # 获取资讯类型缓存
     data = redis.get("catch_news_categery_list")
-    type = check_content_type(content, data)
+    type = check_news_content_type(content, data)
     # 摘要
     # summary =
     return tag_1, type

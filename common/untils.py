@@ -42,8 +42,22 @@ def get_str_distance(str1, str2):
     return distance
 
 
+def check_news_content_type(str1, data):
+    category = 0
+    if data is not None:
+        data = json.loads(data)
+        for x in data:
+            for j in x["keyword"].split(","):
+                if j in str1:
+                    category = x["id"]
+                    break
+    return category
+
+
 def check_content_type(str1, data):
     filter_content = ["空投", "糖果", "正式上线", "上币", "上币结果", "投票结果"]
+    modfiy_ls = ["币世界", "小葱", "金色财经", "币 世 界", "bishijie.com", "bishijie", "《币 世 界》（bishijie.com）",
+                 "《币世界》（bishijie）"]
     category = 0
     if data is not None:
         data = json.loads(data)
@@ -57,7 +71,16 @@ def check_content_type(str1, data):
         if x in str1:
             is_show = 0
             break
-    return category, is_show
+
+    modify_tag = 0
+    for x in modfiy_ls:
+        if x in str1:
+            modify_tag = 1
+            break
+    re.sub("币世界|小葱|金色财经|币 世 界|bishijie.com|bishijie|《币 世 界》（bishijie.com）|《币世界》（bishijie）", "爱必投", str1)
+    return category, is_show, modify_tag
+
+
     # category1 = re.search(r"监管|政策|法律|央行|实施|违法|财长|出台", str1)
     # category2 = re.search(r"\\%|下跌|上涨|涨跌|交易量|涨幅|跌幅|价格|大跌|暴跌|市值|反弹|期货|回血", str1)
     # category3 = re.search(r"发表|表示|说|宣布|认为|观点", str1)

@@ -32,6 +32,8 @@ class NewFlashInformation(BaseModel):
     is_show = IntegerField(default=1)
     category = CharField(default="")
     update_time = DateTimeField(default=datetime.datetime.now)
+    re_tag = IntegerField(default=0)
+    news_url = CharField(default="")
 
     class Meta:
         table_name = 'new_flash_information'

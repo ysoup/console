@@ -71,11 +71,13 @@ def duplicate_removal_work():
                 query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
                                                                 NewFlashInformation.source_name == com_data["source_name"])
                 if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                    category, is_show = check_content_type(com_data["content"], category_data)
+                    category, is_show, modify_tag = check_content_type(com_data["content"], category_data)
                     NewFlashInformation.create(content=com_data["content"],
                                                content_id=com_data["content_id"],
                                                source_name=com_data["source_name"],
-                                               category=category
+                                               category=category,
+                                               is_show=is_show,
+                                               re_tag=modify_tag
                                                )
         else:
             for com_data in data:
@@ -101,11 +103,13 @@ def duplicate_removal_work():
                         NewFlashInformation.content_id == com_data["content_id"],
                         NewFlashInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                        category, is_show = check_content_type(com_data["content"], category_data)
+                        category, is_show, modify_tag = check_content_type(com_data["content"], category_data)
                         NewFlashInformation.create(content=com_data["content"],
                                                    content_id=com_data["content_id"],
                                                    source_name=com_data["source_name"],
-                                                   category=category
+                                                   category=category,
+                                                   is_show=is_show,
+                                                   re_tag=modify_tag
                                                    )
         # 清空数据集合
         # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))

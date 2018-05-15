@@ -17,7 +17,6 @@ def crawler_jinse(url, logger):
     response = requests.get(url, headers=headers)
     crawler_ls = []
     logger.info("抓取金色财经http返回状态码:%s" % response.status_code)
-    modfiy_ls = ["币世界", "小葱", "金色财经", "币 世 界"]
     if response.status_code == 200:
         data = str_convert_json(response.text)
         if data.__contains__('data'):
@@ -28,12 +27,6 @@ def crawler_jinse(url, logger):
                     num = re.search("微信", dic["content"])
                     if num is not None:
                         continue
-                    dic["modify_tag"] = 0
-                    for x in modfiy_ls:
-                        if x in dic["content"]:
-                            dic["modify_tag"] = 1
-                            break
-                    dic["content"] = re.sub("币世界|小葱|金色财经|币 世 界", "爱必投", dic["content"])
                     dic["source_link"] = ""
                     dic["content_id"] = ls["id"]
                     dic["source_name"] = "jin_se"
