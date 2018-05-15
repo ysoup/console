@@ -34,13 +34,13 @@ def eight_information(url):
                 )
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BA_BI_TE.value, data["url"]),
                                    json_convert_str(data))
-                # 去重队列
-                rows = EightBiteInformation.select().where(EightBiteInformation.crawler_url == data["url"])
-                for row in rows:
-                    data["content_id"] = row.id
-                    connetcredis().lpush(
-                        "%s_%s" % (DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value, date),
-                        json_convert_str(data))
+            # 去重队列
+            rows = EightBiteInformation.select().where(EightBiteInformation.crawler_url == data["url"])
+            for row in rows:
+                data["content_id"] = row.id
+                connetcredis().lpush(
+                    "%s_%s" % (DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value, date),
+                    json_convert_str(data))
 
 
 @app.task(ignore_result=True)

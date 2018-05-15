@@ -11,7 +11,7 @@ def crawler_bit_coin_information(url, logger):
     soup = BeautifulSoup(response.text, "lxml")
     li = soup.find_all("article", "excerpt excerpt-1")
     ls = []
-    for li in li[0:4]:
+    for li in li[0:9]:
         dic = {}
         url = li.a.get("href")
         content_url = "http://www.bitcoin86.com" + url
