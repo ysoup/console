@@ -72,5 +72,7 @@
     "data_syn":{
       "work_path":"/data/log/work/work_data_syn.log"
     }
-  }
+  },
+  "hadoop":{
+  "host":""}
 }

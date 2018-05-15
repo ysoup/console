@@ -27,7 +27,6 @@ def crawler_jinse(url, logger):
                     num = re.search("微信", dic["content"])
                     if num is not None:
                         continue
-                    dic["content"] = re.sub("币世界|小葱|金色财经", "爱必投", dic["content"])
                     dic["source_link"] = ""
                     dic["content_id"] = ls["id"]
                     dic["source_name"] = "jin_se"

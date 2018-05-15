@@ -32,6 +32,8 @@ class NewFlashInformation(BaseModel):
     is_show = IntegerField(default=1)
     category = CharField(default="")
     update_time = DateTimeField(default=datetime.datetime.now)
+    re_tag = IntegerField(default=0)
+    news_url = CharField(default="")
 
     class Meta:
         table_name = 'new_flash_information'
@@ -44,4 +46,36 @@ class NewFlashCategory(BaseModel):
 
     class Meta:
         table_name = 'new_flash_category'
+
+
+class NewFlashExclusiveInformation(BaseModel):
+    author = CharField(null=True)
+    content = CharField(null=True)
+    content_id = IntegerField(null=True)
+    source_name = CharField(null=True)
+    title = CharField(null=True)
+    is_show = IntegerField(default=1)
+    category = CharField(default="")
+    img = CharField(null=True)
+    tag = CharField(null=True)
+    is_delete = IntegerField(default=0)
+    is_push = IntegerField(default=0)
+    is_hot = IntegerField(default=0)
+    remarks = TextField(null=True)
+    img = CharField(null=True)
+    create_time = DateTimeField(default=datetime.datetime.now)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'new_flash_exclusive_information'
+
+
+class NewsCategory(BaseModel):
+    catname = CharField(null=True)
+    is_show = IntegerField(default=0)
+    is_delete = IntegerField(default=0)
+    keyword = CharField(default="")
+
+    class Meta:
+        table_name = 'news_category'
 
