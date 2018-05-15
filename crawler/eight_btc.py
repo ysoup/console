@@ -24,14 +24,17 @@ def eight_information(url):
             cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.CRAWLER_BA_BI_TE.value, data["url"]))
             logger.info("巴比特数据缓存返回:%s" % cache_data)
             if cache_data is None:
-                EightBiteInformation.create(
-                    content=data["content"],
-                    crawler_url=data["url"],
-                    title=data["title"],
-                    author=data["author"],
-                    img=data["match_img"],
-                    source_name=data["source_name"]
-                )
+                try:
+                    EightBiteInformation.create(
+                        content=data["content"],
+                        crawler_url=data["url"],
+                        title=data["title"],
+                        author=data["author"],
+                        img=data["match_img"],
+                        source_name=data["source_name"]
+                    )
+                except Exception as e:
+                    logger.error("巴比特抓取持久化出错:"+e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BA_BI_TE.value, data["url"]),
                                    json_convert_str(data))
             # 去重队列

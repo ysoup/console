@@ -24,15 +24,18 @@ def bit_coin_information(url):
             cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.CRAWLER_BIT_COIN.value, data["content_id"]))
             logger.info("比特币资讯网数据缓存返回:%s" % cache_data)
             if cache_data is None:
-                BitCoinInformation.create(
-                    content_id=data["content_id"],
-                    content=data["content"],
-                    source_name=data["source_name"],
-                    title=data["title"],
-                    author=data["author"],
-                    img=data["match_img"],
-                    crawler_url=data["url"]
-                )
+                try:
+                    BitCoinInformation.create(
+                        content_id=data["content_id"],
+                        content=data["content"],
+                        source_name=data["source_name"],
+                        title=data["title"],
+                        author=data["author"],
+                        img=data["match_img"],
+                        crawler_url=data["url"]
+                    )
+                except Exception as e:
+                    logger.error("巴比特抓取持久化出错:" + e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BIT_COIN.value, data["content_id"]),
                                    json_convert_str(data))
             # 去重队列
