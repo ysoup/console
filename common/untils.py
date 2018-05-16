@@ -57,7 +57,7 @@ def check_news_content_type(str1, data):
 def check_content_type(str1, data):
     filter_content = ["空投", "糖果", "正式上线", "上币", "上币结果", "投票结果"]
     modfiy_ls = ["币世界", "小葱", "金色财经", "币 世 界", "bishijie.com", "bishijie", "《币 世 界》（bishijie.com）",
-                 "《币世界》（bishijie）"]
+                 "《币世界》（bishijie）", "newsbtc", "Bitfinex", "bishijie"]
     category = 0
     if data is not None:
         data = json.loads(data)
@@ -77,8 +77,11 @@ def check_content_type(str1, data):
         if x in str1:
             modify_tag = 1
             break
-    re.sub("币世界|小葱|金色财经|币 世 界|bishijie.com|bishijie|《币 世 界》（bishijie.com）|《币世界》（bishijie）", "爱必投", str1)
-    return category, is_show, modify_tag
+    str1 = re.sub("币世界|小葱|金色财经|币 世 界|《币 世 界》|《币世界》", "爱必投", str1)
+    str1 = re.sub("Bitfinex", "现货", str1)
+    str1 = re.sub("newsbtc", "数资界媒体", str1)
+    str1 = re.sub("bishijie", "aibilink", str1)
+    return category, is_show, modify_tag, str1
 
 
     # category1 = re.search(r"监管|政策|法律|央行|实施|违法|财长|出台", str1)
