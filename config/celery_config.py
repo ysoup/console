@@ -9,11 +9,11 @@ config_file = curr_dir + os.sep + "crawler.json"
 # 读取配置文件
 with open(config_file, "r") as fi:
     load_dict = json.load(fi)
-    if load_dict.__contains__('redis'):
-        for x in load_dict["redis"]:
-            if x["name"] == "spider":
-                host = x["host"][0]
-                port = x["port"]
+if load_dict.__contains__('redis'):
+    x = load_dict["redis"][0]
+    if x["name"] == "spider":
+        host = x["host"][0]
+        port = x["port"]
 
 
 # 某个程序中出现的队列，在broker中不存在，则立刻创建它
