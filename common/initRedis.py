@@ -8,13 +8,12 @@ with open("../config/crawler.json", "r") as fi:
 
 
 def connetcredis():
-    global host
-    global port
+    global r
     if load_dict.__contains__('redis'):
         x = load_dict["redis"][0]
         if x["name"] == "spider":
             host = x["host"][0]
             port = x["port"]
-    pool = redis.ConnectionPool(host=host, port=port, decode_responses=True)
-    r = redis.Redis(connection_pool=pool)
+            pool = redis.ConnectionPool(host=host, port=port, decode_responses=True)
+            r = redis.Redis(connection_pool=pool)
     return r
