@@ -2,18 +2,18 @@
 from datetime import timedelta
 from kombu import Exchange, Queue
 import json
-import os
-
-curr_dir = os.path.dirname(os.path.realpath(__file__))
-config_file = curr_dir + os.sep + "crawler.json"
-# 读取配置文件
-with open(config_file, "r") as fi:
-    load_dict = json.load(fi)
-if load_dict.__contains__('redis'):
-    x = load_dict["redis"][0]
-    if x["name"] == "spider":
-        host = x["host"][0]
-        port = x["port"]
+# import os
+#
+# curr_dir = os.path.dirname(os.path.realpath(__file__))
+# config_file = curr_dir + os.sep + "crawler.json"
+# # 读取配置文件
+# with open(config_file, "r") as fi:
+#     load_dict = json.load(fi)
+# if load_dict.__contains__('redis'):
+#     x = load_dict["redis"][0]
+#     if x["name"] == "spider":
+#         host = x["host"][0]
+#         port = x["port"]
 
 
 # 某个程序中出现的队列，在broker中不存在，则立刻创建它
@@ -24,10 +24,10 @@ CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_rem
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
-BROKER_URL = "redis://%s:%s/0" % (host, port)
+BROKER_URL = 'redis://127.0.0.1:6379/0'
 
 # 后端缓存设置
-CELERY_RESULT_BACKEND = "redis://%s:%s/1" % (host, port)
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
 
 # 后端数据存储设置
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
