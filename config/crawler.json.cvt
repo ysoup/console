@@ -1,5 +1,5 @@
 {"redis":[{
-      "name": "",
+      "name": "spider",
       "host": [
         "192.168.2.87"
       ],

@@ -26,7 +26,7 @@ def send(url):  # 金色财经快讯
         # 判断数据缓存是否存在
         cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SE.value, data["content_id"]))
         logger.info("金色财经数据缓存返回:%s" % cache_data)
-        if not cache_data is None:
+        if cache_data is not None:
             str1 = str_convert_json(cache_data)
             distance = get_str_distance(data["content"], str1["content"])
             logger.info("金色财经抓取与数据缓存相似度:%s" % distance)
