@@ -27,14 +27,15 @@ def coin_world_information(url):  # 币世界快讯
                 str1 = str_convert_json(cache_data)
                 distance = get_str_distance(data["content"], str1["content"])
                 logger.info("币世界抓取与数据缓存相似度:%s" % distance)
+                # 去重队列
+                connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                                     json_convert_str(data))
+
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
                     CoinWorldInformation.update(content=data["content"]).where(CoinWorldInformation.content_id ==
                                                                                data["content_id"])
                     connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["content_id"]),
                                        json_convert_str(data))
-                    # 去重队列
-                    connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
-                                        json_convert_str(data))
 
                     # connetcredis().sadd("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
                     #                     json_convert_str(data))
@@ -64,5 +65,5 @@ def schudule_coin_world_information():
 #     crawler_data = crawler_coin_world_market(url)
 
 
-if __name__ == "__main__":
-    coin_world_information("http://www.bishijie.com/api/news/?size=5")
+# if __name__ == "__main__":
+#     coin_world_information("http://www.bishijie.com/api/news/?size=5")
