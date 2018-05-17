@@ -16,14 +16,18 @@ def crawler_eight_btc_information(url, logger):
     soup = BeautifulSoup(response.text, "lxml")
     li = soup.find_all("li", "itm itm_new")
     ls = []
-    for li in li[0:9]:
+    for li in li[0:5]:
         dic = {}
         url = li.a.get("href")
         content_url = "http://www.8btc.com" + url
         resp = requests.get(content_url)
         content_soup = BeautifulSoup(resp.text, "lxml")
         author_ls = content_soup.find_all("div", "single-crumbs clearfix")
-        dic["author"] = author_ls[0].find_all("span")[1].text.strip()
+        try:
+            dic["author"] = author_ls[0].find_all("span")[1].text.strip()
+        except Exception as e:
+            logger.error("抓取巴比特出错%s" % e)
+            dic["author"] = ""
         dic["title"] = content_soup.find_all("div", "article-title")[0].text.strip()
         a = content_soup.find_all("div", "article-content")[0]
         a.div.extract()
