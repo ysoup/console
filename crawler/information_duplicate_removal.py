@@ -65,7 +65,7 @@ def information_duplicate_removal_work():
             new_time = time.strftime("%Y-%m-%d", init_time)
             if new_time == date:
                 content_ls.append(row)
-        logger.info("数据去重服务查询当天快讯:%s" % content_ls)
+        logger.info("数据去重服务查询当天资讯:%s" % content_ls)
         if len(content_ls) == GetListLength.GET_LIST_LENGTH.value:
             for com_data in data:
                 query_data = NewFlashExclusiveInformation.select().where(NewFlashExclusiveInformation.content_id == com_data["content_id"],

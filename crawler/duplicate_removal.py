@@ -19,11 +19,12 @@ logger = Logger(kind="work_path", name="duplicate_removal")
 @app.task()
 def duplicate_removal_work():
     # 从redis集合中获取获取
-    logger.info("=====开始数据去重服务====")
+    logger.info("=====开始快讯数据去重服务====")
     redis = connetcredis()
     date = get_current_date()
     # 判断队列长度
     data_len = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
+    logger.info("快讯数据去重队列:%s" % data_len)
     category_data = redis.get("catch_infomation_categery_list")
     if data_len < 1:
         return
@@ -34,7 +35,7 @@ def duplicate_removal_work():
         data.append(str_convert_json(data_str))
         i = i + 1
     if len(data) != GetListLength.GET_LIST_LENGTH.value:
-        logger.info("数据去重服务集合数据:%s" % data)
+        logger.info("快讯数据去重服务集合数据:%s" % data)
         i = GetListLength.GET_LIST_LENGTH.value
         while i < len(data):
             for j in range(i + 1, len(data)):
@@ -113,7 +114,7 @@ def duplicate_removal_work():
                                                    )
         # 清空数据集合
         # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
-        logger.info("=====数据去重服务结束====")
+        logger.info("=====快讯数据去重服务结束====")
 
 
 @app.task(ignore_result=True)
