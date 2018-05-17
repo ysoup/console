@@ -8,7 +8,6 @@ with open("../config/crawler.json", "r") as fi:
 
 
 def connetcredis():
-    global r
     if load_dict.__contains__('redis'):
         x = load_dict["redis"][0]
         if x["name"] == "spider":
@@ -16,4 +15,5 @@ def connetcredis():
             port = x["port"]
             pool = redis.ConnectionPool(host=host, port=port, decode_responses=True)
             r = redis.Redis(connection_pool=pool)
-    return r
+
+            return r
