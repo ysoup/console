@@ -8,6 +8,8 @@ with open("../config/crawler.json", "r") as fi:
 
 
 def connetcredis():
+    global host
+    global port
     if load_dict.__contains__('redis'):
         x = load_dict["redis"][0]
         if x["name"] == "spider":
