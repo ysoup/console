@@ -3,7 +3,7 @@ from datetime import timedelta
 from kombu import Exchange, Queue
 import json
 # 读取配置文件
-with open("crawler.json", "r") as fi:
+with open("../crawler.json", "r") as fi:
     load_dict = json.load(fi)
     if load_dict.__contains__('redis'):
         for x in load_dict["redis"]:
