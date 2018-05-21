@@ -78,7 +78,8 @@ def information_duplicate_removal_work():
                     for img_url in start_img_ls:
                         new_img_url = upload_images_hdfs(img_url, com_data["source_name"],
                                                         com_data["content_id"], i)
-                        com_data["content"] = com_data["content"].replace(img_url, new_img_url)
+                        if img_url != '':
+                            com_data["content"] = com_data["content"].replace(img_url, new_img_url)
                         res_img_ls.append(new_img_url)
                         i = i + 1
                     # 内容标签
