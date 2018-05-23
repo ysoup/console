@@ -55,6 +55,7 @@ def duplicate_removal_work():
                 distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
                 if distance <= 19 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
                     print(data[j])
+                    logger.info("快讯数据去重服务重复数据:%s" % data[j])
                     del data[j]
             i = i + 1
         # 去重数据异步入库并且查询当天数据
@@ -67,13 +68,15 @@ def duplicate_removal_work():
             new_time = time.strftime("%Y-%m-%d", init_time)
             if new_time == date:
                 content_ls.append(row)
-        logger.info("数据去重服务查询当天快讯:%s" % content_ls)
+        logger.info("数据去重服务以后快讯:%s" % data)
         if len(content_ls) == GetListLength.GET_LIST_LENGTH.value:
             for com_data in data:
+                logger.info("快讯库没有数据处理:%s" % com_data)
                 query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
                                                                 NewFlashInformation.source_name == com_data["source_name"])
                 if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
                     category, is_show, modify_tag, content = check_content_type(com_data["content"], category_data)
+                    logger.info("快讯入库:%s" % com_data)
                     NewFlashInformation.create(content=content,
                                                content_id=com_data["content_id"],
                                                source_name=com_data["source_name"],
@@ -84,6 +87,7 @@ def duplicate_removal_work():
         else:
             for com_data in data:
                 flag = 1
+                logger.info("快讯库有数据处理:%s" % com_data)
                 for row in content_ls:
                     str1 = com_data["content"]
                     str2 = row.content
@@ -97,15 +101,18 @@ def duplicate_removal_work():
                     distance2 = get_str_distance(str3[0], str4[0])
                     # 内容前30个字符
                     distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
-                    if distance <= 20 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                    if distance <= 15 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                        logger.info("快讯库有数据处理相似度数据:%s" % row.content)
                         flag = 0
                         break
+                logger.info("快讯库有数据处理flag:%s" % flag)
                 if flag == 1:
                     query_data = NewFlashInformation.select().where(
                         NewFlashInformation.content_id == com_data["content_id"],
                         NewFlashInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
                         category, is_show, modify_tag, content = check_content_type(com_data["content"], category_data)
+                        logger.info("快讯入库:%s" % com_data)
                         NewFlashInformation.create(content=content,
                                                    content_id=com_data["content_id"],
                                                    source_name=com_data["source_name"],
