@@ -53,7 +53,8 @@ def duplicate_removal_work():
                 distance2 = get_str_distance(str3[0], str4[0])
                 # 内容前30个字符
                 distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
-                if distance <= 20 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                if distance <= 19 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                    print(data[j])
                     del data[j]
             i = i + 1
         # 去重数据异步入库并且查询当天数据

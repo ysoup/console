@@ -32,7 +32,7 @@ if load_dict.__contains__('redis'):
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
 
 # 并发worker数
-CELERYD_CONCURRENCY = 0
+CELERYD_CONCURRENCY = 1
 
 # 时区设置
 CELERY_TIMEZONE = 'Asia/Shanghai'
@@ -40,10 +40,10 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 # 非常重要,有些情况下可以防止死锁
 CELERYD_FORCE_EXECV = True
 
-CELERYD_PREFETCH_MULTIPLIER = 1
+CELERYD_PREFETCH_MULTIPLIER = 2
 
 # 每个worker最多执行万100个任务就会被销毁，可防止内存泄露
-CELERYD_MAX_TASKS_PER_CHILD = 1
+CELERYD_MAX_TASKS_PER_CHILD = 200
 
 # CELERYD_TASK_TIME_LIMIT = 60    # 单个任务的运行时间不超过此值，否则会被SIGKILL 信号杀死
 
