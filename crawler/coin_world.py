@@ -56,7 +56,7 @@ def coin_world_information(url):  # 币世界快讯
 
 @app.task(ignore_result=True)
 def schudule_coin_world_information():
-    app.send_task('crawler.coin_world.coin_world_information', args=("http://www.bishijie.com/api/news/?size=5",),
+    app.send_task('crawler.coin_world.coin_world_information', args=("http://www.bishijie.com/api/news/?size=10",),
                   queue='coin_wold_task',
                   routing_key='coin_world_info')
 
