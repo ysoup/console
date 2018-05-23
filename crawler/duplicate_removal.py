@@ -101,7 +101,7 @@ def duplicate_removal_work():
                     distance2 = get_str_distance(str3[0], str4[0])
                     # 内容前30个字符
                     distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
-                    if distance <= 15 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                    if distance <= 15 or distance1 <= 15 or distance2 <= 10 or distance3 <= 10:
                         logger.info("快讯库有数据处理相似度数据:%s" % row.content)
                         flag = 0
                         break
