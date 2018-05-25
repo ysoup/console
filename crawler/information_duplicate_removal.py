@@ -40,18 +40,18 @@ def information_duplicate_removal_work():
         logger.info("资讯数据去重服务集合数据:%s" % data)
         i = GetListLength.GET_LIST_LENGTH.value
         while i < len(data):
+            content_1 = data[i]["content"]
+            ext_1 = Extractor(content=content_1, blockSize=15, image=False).getContext()
+            data[i]["category"] = get_content_tag(ext_1, redis)
+
             for j in range(i + 1, len(data)):
                 if j >= len(data):
                     break
-                content_1 = data[i]["content"]
                 content_2 = data[j]["content"]
                 distance, ext_1_text, ext_2_text = get_content_by_reg(content_1, content_2)
                 # 标题
                 distance1 = get_str_distance(data[i]["title"], data[j]["title"])
-
-                data[i]["category"] = get_content_tag(ext_1_text, redis)
                 data[j]["category"] = get_content_tag(ext_2_text, redis)
-
                 if distance <= 20 or distance1 <= 18:
                     del data[j]
             i = i + 1
@@ -141,7 +141,7 @@ def save_news_data(com_data, res_img_ls):
                                             img=res_img_ls[0], title=com_data["title"],
                                             tag=com_data["tag"], author=com_data["author"])
     except Exception as e:
-        logger.error("资讯抓取持久化出错:%s" % e)
+        logger.error("资讯持久化出错:%s" % e)
 
 
 def get_article_tag(com_data):
