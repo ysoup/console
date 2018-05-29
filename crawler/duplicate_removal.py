@@ -26,6 +26,8 @@ def duplicate_removal_work():
     data_len = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE).value, date))
     logger.info("快讯数据去重队列:%s" % data_len)
     category_data = redis.get("catch_infomation_categery_list")
+    # 获取规则缓存
+    rule_data = redis.get("catch_new_flash_rule")
     if data_len < 1:
         return
     i = 0
@@ -75,7 +77,8 @@ def duplicate_removal_work():
                 query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
                                                                 NewFlashInformation.source_name == com_data["source_name"])
                 if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                    category, is_show, modify_tag, content = check_content_type(com_data["content"], category_data)
+                    category, is_show, modify_tag, content = check_content_type(com_data["content"], category_data,
+                                                                                rule_data)
                     logger.info("快讯入库:%s" % com_data)
                     NewFlashInformation.create(content=content,
                                                content_id=com_data["content_id"],
@@ -111,7 +114,8 @@ def duplicate_removal_work():
                         NewFlashInformation.content_id == com_data["content_id"],
                         NewFlashInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                        category, is_show, modify_tag, content = check_content_type(com_data["content"], category_data)
+                        category, is_show, modify_tag, content = check_content_type(com_data["content"], category_data,
+                                                                                    rule_data)
                         logger.info("快讯入库:%s" % com_data)
                         NewFlashInformation.create(content=content,
                                                    content_id=com_data["content_id"],

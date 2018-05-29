@@ -51,14 +51,23 @@ def check_news_content_type(str1, data):
                 if j in str1:
                     category = x["id"]
                     break
-    return category
+
+    filter_content = ["巴比特每日热聊榜"]
+    is_show = 1
+    for x in filter_content:
+        if x in str1:
+            is_show = 0
+            break
+    return category, is_show
 
 
-def check_content_type(str1, data):
-    filter_content = ["空投", "糖果", "正式上线", "上币", "上币结果", "投票结果"]
+def check_content_type(str1, data, rule_data):
+    filter_content = ["空投", "糖果", "正式上线", "上币", "上币结果", "投票结果", "直播", "金色讲堂", "利好", "利空一览表",
+                      "分享会", "公开课", "名家论市", "币市龙虎榜", "币市风云榜", "(推广)"]
     modfiy_ls = ["币世界", "小葱", "金色财经", "币 世 界", "bishijie.com", "bishijie", "《币 世 界》（bishijie.com）",
                  "《币世界》（bishijie）", "newsbtc", "Bitfinex", "bishijie"]
     category = 0
+    # 文本过滤
     if data is not None:
         data = json.loads(data)
         for x in data:
@@ -71,16 +80,20 @@ def check_content_type(str1, data):
         if x in str1:
             is_show = 0
             break
-
+    # 文本替换
+    rule_data = json.loads(rule_data)if rule_data else modfiy_ls
+    replace_ls = [x["origin_name"]for x in rule_data]
     modify_tag = 0
-    for x in modfiy_ls:
+    for x in replace_ls:
         if x in str1:
             modify_tag = 1
             break
-    str1 = re.sub("币世界|小葱|金色财经|币 世 界|《币 世 界》|《币世界》", "爱必投", str1)
-    str1 = re.sub("Bitfinex", "现货", str1)
-    str1 = re.sub("newsbtc", "数资界媒体", str1)
-    str1 = re.sub("bishijie", "aibilink", str1)
+    for x in rule_data:
+        str1 = re.sub(x["origin_name"], x["rule_name"], str1)
+    # str1 = re.sub("币世界|小葱|金色财经|币 世 界|《币 世 界》|《币世界》", "爱必投", str1)
+    # str1 = re.sub("Bitfinex", "现货", str1)
+    # str1 = re.sub("newsbtc", "数资界媒体", str1)
+    # str1 = re.sub("bishijie", "aibilink", str1)
     return category, is_show, modify_tag, str1
 
 

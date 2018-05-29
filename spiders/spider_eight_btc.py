@@ -16,7 +16,7 @@ def crawler_eight_btc_information(url, logger):
     soup = BeautifulSoup(response.text, "lxml")
     li = soup.find_all("li", "itm itm_new")
     ls = []
-    for li in li[7:8]:
+    for li in li[0:5]:
         dic = {}
         url = li.a.get("href")
         content_url = "http://www.8btc.com" + url
@@ -30,8 +30,10 @@ def crawler_eight_btc_information(url, logger):
             dic["author"] = ""
         dic["title"] = content_soup.find_all("div", "article-title")[0].text.strip()
         a = content_soup.find_all("div", "article-content")[0]
-        a.div.extract()
-        a.div.extract()
+        if a.div is not None:
+            a.div.extract()
+        if a.div is not None:
+            a.div.extract()
         if a.div is not None:
             a.div.extract()
         a_ls = a.find_all('a')

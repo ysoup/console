@@ -14,7 +14,7 @@ from common.constants import GetListLength, DuplicateRemovalCache
 from common.initlog import Logger
 from common.get_article_tag import GetBaiduNlp
 from common.get_article_content import Extractor
-from common.hadoop_service import upload_images_hdfs
+from common.hadoop_service import upload_images_hdfs, img_cut_down
 
 logger = Logger(kind="work_path", name="duplicate_removal")
 
@@ -42,7 +42,7 @@ def information_duplicate_removal_work():
         while i < len(data):
             content_1 = data[i]["content"]
             ext_1 = Extractor(content=content_1, blockSize=15, image=False).getContext()
-            data[i]["category"] = get_content_tag(ext_1, redis)
+            data[i]["category"], data[i]["is_show"] = get_content_tag(ext_1, redis)
 
             for j in range(i + 1, len(data)):
                 if j >= len(data):
@@ -51,7 +51,7 @@ def information_duplicate_removal_work():
                 distance, ext_1_text, ext_2_text = get_content_by_reg(content_1, content_2)
                 # 标题
                 distance1 = get_str_distance(data[i]["title"], data[j]["title"])
-                data[j]["category"] = get_content_tag(ext_2_text, redis)
+                data[j]["category"], data[j]["is_show"] = get_content_tag(ext_2_text, redis)
                 if distance <= 20 or distance1 <= 18:
                     del data[j]
             i = i + 1
@@ -84,8 +84,10 @@ def information_duplicate_removal_work():
                         i = i + 1
                     # 内容标签
                     get_article_tag(com_data)
+                    # 图片处理
+                    new_img_url = img_cut_down(start_img_ls[0], com_data["source_name"], com_data["content_id"], 1)
 
-                    save_news_data(com_data, res_img_ls)
+                    save_news_data(com_data, new_img_url)
 
         else:
             for com_data in data:
@@ -118,7 +120,11 @@ def information_duplicate_removal_work():
                             i = i + 1
                         # 内容标签
                         get_article_tag(com_data)
-                        save_news_data(com_data, res_img_ls)
+
+                        # 图片处理
+                        new_img_url = img_cut_down(start_img_ls[0], com_data["source_name"], com_data["content_id"], 1)
+
+                        save_news_data(com_data, new_img_url)
         logger.info("=====资讯数据去重服务结束====")
 
 
@@ -132,14 +138,15 @@ def get_content_by_reg(content_1, content_2):
     return distance, ext_1_text, ext_2_text
 
 
-def save_news_data(com_data, res_img_ls):
+def save_news_data(com_data, new_img_url):
     try:
         NewFlashExclusiveInformation.create(content=com_data["content"],
                                             content_id=com_data["content_id"],
                                             source_name=com_data["source_name"],
                                             category=com_data["category"],
-                                            img=res_img_ls[0], title=com_data["title"],
-                                            tag=com_data["tag"], author=com_data["author"])
+                                            img=new_img_url, title=com_data["title"],
+                                            tag=com_data["tag"], author=com_data["author"],
+                                            is_show=com_data["is_show"])
     except Exception as e:
         logger.error("资讯持久化出错:%s" % e)
 
@@ -160,8 +167,9 @@ def get_article_tag(com_data):
 def get_content_tag(content, redis):
     # 获取资讯类型缓存
     data = redis.get("catch_news_categery_list")
-    tag = check_news_content_type(content, data)
-    return tag
+    tag, is_show = check_news_content_type(content, data)
+
+    return tag, is_show
 
 
 @app.task(ignore_result=True)
