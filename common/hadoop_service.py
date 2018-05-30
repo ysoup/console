@@ -47,7 +47,7 @@ def upload_images_hdfs(img_url, source_name, content_id, i):
             default_y = 360
             img_size = im.size
             crop_val = round((default_y * img_size[1]) / default_x)
-            im2 = im.crop((0, 0, img_size[0], crop_val))
+            im2 = im.crop((0, 0, img_size[0], crop_val-5))
             im2.save("%s/%s/%s" % (path, "images", img_name))
 
         client.upload("/images", "%s/%s/%s" % (path, "images", img_name), overwrite=True)
@@ -81,7 +81,7 @@ def img_cut_down(img_url, source_name, content_id, i):
             default_y = 360
             img_size = im.size
             crop_val = round((default_y * img_size[1]) / default_x)
-            im2 = im.crop((0, 0, img_size[0], crop_val))
+            im2 = im.crop((0, 0, img_size[0], crop_val-5))
             im2.save("%s/%s/%s" % (path, "images", img_name))
 
         im = Image.open("%s/%s/%s" % (path, "images", img_name))
