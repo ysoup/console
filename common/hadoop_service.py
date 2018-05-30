@@ -88,7 +88,8 @@ def img_cut_down(img_url, source_name, content_id, i):
         img_size = im.size
         if img_size[0] > 568 and img_size[1] > 360:
             new_img = im.resize((568, 360), Image.ANTIALIAS)
-            new_img.save("%s/%s/%s" % (path, "images", img_name))
+            rgb_im = new_img.convert('RGB')
+            rgb_im.save("%s/%s/%s" % (path, "images", img_name))
         client.upload("/images", "%s/%s/%s" % (path, "images", img_name), overwrite=True)
         new_img_url = "/aibicloud/images/" + img_name
     return new_img_url
