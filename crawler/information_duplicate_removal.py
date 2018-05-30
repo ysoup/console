@@ -146,7 +146,9 @@ def save_news_data(com_data, new_img_url):
                                             category=com_data["category"],
                                             img=new_img_url, title=com_data["title"],
                                             tag=com_data["tag"], author=com_data["author"],
-                                            is_show=com_data["is_show"])
+                                            is_show=com_data["is_show"],
+                                            source_url=com_data["url"]
+                                            )
     except Exception as e:
         logger.error("资讯持久化出错:%s" % e)
 
@@ -179,8 +181,8 @@ def schudule_information_duplicate_removal_work():
                   routing_key='news_duplicate_removal_info')
 
 
-# if __name__ == "__main__":
-#     information_duplicate_removal_work()
+if __name__ == "__main__":
+    information_duplicate_removal_work()
     # r = connetcredis()
     # r.set('name', 'junxi')
     # print(r['name'])
