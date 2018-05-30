@@ -63,6 +63,7 @@ class NewFlashExclusiveInformation(BaseModel):
     is_hot = IntegerField(default=0)
     remarks = TextField(null=True)
     img = CharField(null=True)
+    source_url = CharField(default="")
     create_time = DateTimeField(default=datetime.datetime.now)
     update_time = DateTimeField(default=datetime.datetime.now)
 
