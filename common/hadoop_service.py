@@ -75,6 +75,14 @@ def img_cut_down(img_url, source_name, content_id, i):
                                 "default_image_3.jpg"]
             i = random.randint(0, 3)
             img_name = default_image_ls[i]
+        if source_name == "bit_coin":
+            im = Image.open("%s/%s/%s" % (path, "images", img_name))
+            default_x = 419
+            default_y = 360
+            img_size = im.size
+            crop_val = round((default_y * img_size[1]) / default_x)
+            im2 = im.crop((0, 0, img_size[0], crop_val))
+            im2.save("%s/%s/%s" % (path, "images", img_name))
 
         im = Image.open("%s/%s/%s" % (path, "images", img_name))
         img_size = im.size
