@@ -16,7 +16,7 @@ def crawler_eight_btc_information(url, logger):
     soup = BeautifulSoup(response.text, "lxml")
     li = soup.find_all("li", "itm itm_new")
     ls = []
-    for li in li[0:5]:
+    for li in li[0:1]:
         dic = {}
         url = li.a.get("href")
         content_url = "http://www.8btc.com" + url
@@ -43,8 +43,12 @@ def crawler_eight_btc_information(url, logger):
                 a = str(a).replace(str(si_tag), "")
                 a = a.replace(str(x), "")
             else:
-                tag_text = x.text
-                a = str(a).replace(str(x), str(tag_text))
+                if x.img is None:
+                    tag_text = x.text
+                    a = str(a).replace(str(x), str(tag_text))
+                else:
+                    a = str(a).replace(str(x), str(x.img))
+
         del_div = re.compile(r'<div[\s\S]*?>|</div>')
         dic["content"] = del_div.sub('', str(a)).strip()
         dic["match_img"] = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(dic["content"])
