@@ -17,6 +17,7 @@ class RedisConstantsKey(Enum):
     CRAWLER_BA_BI_TE = "crawler_ba_bi_te"
     CRAWLER_BIT_COIN = "crawler_bit_coin"
     CRAWLER_BTC_NEW_FLASH = "crawler_btc_new_flash"
+    CRAWLER_WALL_STREET = "crawler_wall_street"  #华尔街快讯
 
 
 @unique
@@ -43,6 +44,8 @@ class SpidersDataModel(Enum):
     MODEL_NEW_FLASH = "new_flash"
     MODEL_DISCUZDB = "discuzdb"
     MODEL_EIGHT_BITE = "eight_bite"
+    MODEL_WALL_STREET = "wall_street"
+
 
 
 @unique
