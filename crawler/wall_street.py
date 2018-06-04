@@ -56,5 +56,5 @@ def schudule_crawler_task():
                   queue='wall_street_task',routing_key='wall_street_info')
 
 
-if __name__ == "__main__":
-    wall_street_information("https://api-prod.wallstreetcn.com/apiv1/content/lives?channel=blockchain-channel&limit=10")
+# if __name__ == "__main__":
+#     wall_street_information("https://api-prod.wallstreetcn.com/apiv1/content/lives?channel=blockchain-channel&limit=10")
