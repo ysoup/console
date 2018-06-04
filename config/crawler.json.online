@@ -71,6 +71,20 @@
       "max_connections": 8,
       "pool_timeout": 5,
       "pool_sleep_time": 0.001
+    },
+    "discuzdb":{
+      "host": "106.2.13.34",
+      "user": "aibitou_select",
+      "port": 3306,
+      "password": "MT9WYpbhAbC35Ie4ru4Phg",
+      "database": "discuzdb",
+      "charset": "utf8",
+      "test": true,
+      "logger": "/data/log/db/db_discuzdb.log",
+      "slaves": [],
+      "max_connections": 8,
+      "pool_timeout": 5,
+      "pool_sleep_time": 0.001
     }
   },
   "log":{

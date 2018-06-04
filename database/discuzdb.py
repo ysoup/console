@@ -45,3 +45,62 @@ class AblinkPortalSummary(BaseModel):
     class Meta:
         table_name = 'ablink_portal_summary'
 
+
+class AblinkPortalArticleContent(BaseModel):
+    cid = IntegerField()
+    aid = IntegerField()
+    id = IntegerField()
+    idtype = CharField()
+    title = CharField()
+    content = CharField()
+    pageorder = IntegerField()
+    dateline = CharField()
+
+    class Meta:
+        table_name = 'ablink_portal_article_content'
+
+
+class AblinkPortalArticleTitle(BaseModel):
+    aid = IntegerField()
+    catid = IntegerField()
+    bid = IntegerField()
+    uid = IntegerField()
+    username = CharField()
+    title = CharField()
+    highlight = CharField()
+    author = CharField()
+    fromurl = CharField()
+    url = CharField()
+    summary = CharField()
+    pic = CharField()
+    thumb = IntegerField()
+    remote = IntegerField()
+    id = IntegerField()
+    idtype = CharField()
+    contents = IntegerField()
+    allowcomment = IntegerField()
+    owncomment = IntegerField()
+    tag = IntegerField()
+    dateline = IntegerField()
+    status = IntegerField()
+    showinnernav = IntegerField()
+    preaid = IntegerField()
+    nextaid = IntegerField()
+    htmlmade = IntegerField()
+    htmlname = CharField()
+    htmldir = CharField()
+    asas = CharField()
+    fdgdfg = IntegerField()
+    abstract = IntegerField()
+    deleted = IntegerField()
+
+    class Meta:
+        table_name = 'ablink_portal_article_title'
+
+
+
+
+
+
+
+
