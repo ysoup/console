@@ -14,7 +14,7 @@ with open(config_file, "r") as fi:
 CELERY_CREATE_MISSING_QUEUES = True
 
 CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.eight_btc",
-                  "crawler.bit_coin", "crawler.information_duplicate_removal")
+                  "crawler.bit_coin", "crawler.information_duplicate_removal", "crawler.btc_new_flash")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
@@ -65,7 +65,8 @@ CELERY_QUEUES = (
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
     Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
     Queue('news_duplicate_removal_task', exchange=Exchange('news_duplicate_removal_task'),
-          routing_key='news_duplicate_removal_info'))
+          routing_key='news_duplicate_removal_info'),
+    Queue('btc_new_flash_task', exchange=Exchange('btc_new_flash_task'), routing_key='btc_new_flash_info'))
 
 # # 路由
 # CELERY_ROUTES = {
@@ -123,6 +124,12 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'news_duplicate_removal_task', 'routing_key': 'news_duplicate_removal_info'}
+    },
+    'crawler_btc_new_flash': {
+        'task': 'crawler.btc_new_flash.schudule_btc_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'btc_new_flash_task', 'routing_key': 'btc_new_flash_info'}
     }
 }
 ################################################

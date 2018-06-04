@@ -16,6 +16,7 @@ class RedisConstantsKey(Enum):
     DATA_SYN_WORK = "data_syn_work"
     CRAWLER_BA_BI_TE = "crawler_ba_bi_te"
     CRAWLER_BIT_COIN = "crawler_bit_coin"
+    CRAWLER_BTC_NEW_FLASH = "crawler_btc_new_flash"
 
 
 @unique
