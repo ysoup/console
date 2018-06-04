@@ -44,6 +44,7 @@ class SpidersDataModel(Enum):
     MODEL_DISCUZDB = "discuzdb"
     MODEL_EIGHT_BITE = "eight_bite"
     MODEL_WALL_STREET = "wall_street"
+    
 
 
 @unique

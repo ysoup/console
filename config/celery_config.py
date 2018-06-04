@@ -131,7 +131,6 @@ CELERYBEAT_SCHEDULE = {
         # 'args': (redis_db),
         'options': {'queue': 'wall_street_task', 'routing_key': 'wall_street_info'}
     },
-
 }
 ################################################
 # 启动worker的命令
