@@ -14,7 +14,7 @@ with open(config_file, "r") as fi:
 CELERY_CREATE_MISSING_QUEUES = True
 
 CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.eight_btc",
-                  "crawler.bit_coin", "crawler.information_duplicate_removal")
+                  "crawler.bit_coin", "crawler.information_duplicate_removal","crawler.wall_street")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
@@ -65,8 +65,9 @@ CELERY_QUEUES = (
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
     Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
     Queue('news_duplicate_removal_task', exchange=Exchange('news_duplicate_removal_task'),
-          routing_key='news_duplicate_removal_info'))
-
+          routing_key='news_duplicate_removal_info'),
+    Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info')
+)
 # # 路由
 # CELERY_ROUTES = {
 #     'crawler.spider.schudule_crawler_task': {'queue': 'task_crawler', 'routing_key': 'task_crawler'},
@@ -123,7 +124,14 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'news_duplicate_removal_task', 'routing_key': 'news_duplicate_removal_info'}
-    }
+    },
+    'wall_street_schedule': {
+        'task': 'crawler.wall_street.schudule_crawler_task',
+        'schedule': timedelta(seconds=70),
+        # 'args': (redis_db),
+        'options': {'queue': 'wall_street_task', 'routing_key': 'wall_street_info'}
+    },
+
 }
 ################################################
 # 启动worker的命令
