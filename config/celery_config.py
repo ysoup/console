@@ -14,8 +14,7 @@ with open(config_file, "r") as fi:
 CELERY_CREATE_MISSING_QUEUES = True
 
 CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.eight_btc",
-                  "crawler.bit_coin", "crawler.information_duplicate_removal", "crawler.wall_street",
-                  "crawler.btc_new_flash", "crawler.bian_new_flash")
+                  "crawler.bit_coin", "crawler.information_duplicate_removal")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
@@ -33,7 +32,7 @@ if load_dict.__contains__('redis'):
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
 
 # 并发worker数
-CELERYD_CONCURRENCY = 1
+CELERYD_CONCURRENCY = 3
 
 # 时区设置
 CELERY_TIMEZONE = 'Asia/Shanghai'
@@ -41,12 +40,12 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 # 非常重要,有些情况下可以防止死锁
 CELERYD_FORCE_EXECV = True
 
-CELERYD_PREFETCH_MULTIPLIER = 2
+CELERYD_PREFETCH_MULTIPLIER = 4
 
 # 每个worker最多执行万100个任务就会被销毁，可防止内存泄露
 CELERYD_MAX_TASKS_PER_CHILD = 200
 
-# CELERYD_TASK_TIME_LIMIT = 60    # 单个任务的运行时间不超过此值，否则会被SIGKILL 信号杀死
+CELERYD_TASK_TIME_LIMIT = 36000    # 单个任务的运行时间不超过此值，否则会被SIGKILL 信号杀死
 
 # BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 90}
 
@@ -66,10 +65,10 @@ CELERY_QUEUES = (
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
     Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
     Queue('news_duplicate_removal_task', exchange=Exchange('news_duplicate_removal_task'),
-          routing_key='news_duplicate_removal_info'),
-    Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info'),
-    Queue('btc_new_flash_task', exchange=Exchange('btc_new_flash_task'), routing_key='btc_new_flash_info'),
-    Queue('bian_new_flash_task', exchange=Exchange('bian_new_flash_task'), routing_key='bian_new_flash_info'))
+          routing_key='news_duplicate_removal_info'))
+    # Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info'),
+    # Queue('btc_new_flash_task', exchange=Exchange('btc_new_flash_task'), routing_key='btc_new_flash_info'),
+    # Queue('bian_new_flash_task', exchange=Exchange('bian_new_flash_task'), routing_key='bian_new_flash_info'))
 
 # # 路由
 # CELERY_ROUTES = {
@@ -94,7 +93,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'crawler_duplicate_schedule': {
         'task': 'crawler.duplicate_removal.schudule_duplicate_removal_work',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=15),
         # 'args': (redis_db),
         'options': {'queue': 'duplicate_removal_task', 'routing_key': 'duplicate_removal_info'}
     },
@@ -118,34 +117,34 @@ CELERYBEAT_SCHEDULE = {
     },
     'crawler_bit_coin': {
         'task': 'crawler.bit_coin.schudule_bit_coin_information',
-        'schedule': timedelta(seconds=70),
+        'schedule': timedelta(seconds=80),
         # 'args': (redis_db),
         'options': {'queue': 'bit_coin_task', 'routing_key': 'bit_coin_info'}
     },
     'information_duplicate_removal': {
         'task': 'crawler.information_duplicate_removal.schudule_information_duplicate_removal_work',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=35),
         # 'args': (redis_db),
         'options': {'queue': 'news_duplicate_removal_task', 'routing_key': 'news_duplicate_removal_info'}
-    },
-    'wall_street_schedule': {
-        'task': 'crawler.wall_street.schudule_crawler_task',
-        'schedule': timedelta(seconds=70),
-        # 'args': (redis_db),
-        'options': {'queue': 'wall_street_task', 'routing_key': 'wall_street_info'}
-    },
-    'crawler_btc_new_flash': {
-        'task': 'crawler.btc_new_flash.schudule_btc_information',
-        'schedule': timedelta(seconds=45),
-        # 'args': (redis_db),
-        'options': {'queue': 'btc_new_flash_task', 'routing_key': 'btc_new_flash_info'}
-    },
-    'crawler_bian_new_flash': {
-        'task': 'crawler.bian_new_flash.schudule_bianews_information',
-        'schedule': timedelta(seconds=45),
-        # 'args': (redis_db),
-        'options': {'queue': 'bian_new_flash_task', 'routing_key': 'bian_new_flash_info'}
     }
+    # 'wall_street_schedule': {
+    #     'task': 'crawler.wall_street.schudule_crawler_task',
+    #     'schedule': timedelta(seconds=70),
+    #     # 'args': (redis_db),
+    #     'options': {'queue': 'wall_street_task', 'routing_key': 'wall_street_info'}
+    # },
+    # 'crawler_btc_new_flash': {
+    #     'task': 'crawler.btc_new_flash.schudule_btc_information',
+    #     'schedule': timedelta(seconds=45),
+    #     # 'args': (redis_db),
+    #     'options': {'queue': 'btc_new_flash_task', 'routing_key': 'btc_new_flash_info'}
+    # },
+    # 'crawler_bian_new_flash': {
+    #     'task': 'crawler.bian_new_flash.schudule_bianews_information',
+    #     'schedule': timedelta(seconds=45),
+    #     # 'args': (redis_db),
+    #     'options': {'queue': 'bian_new_flash_task', 'routing_key': 'bian_new_flash_info'}
+    # }
 }
 ################################################
 # 启动worker的命令
