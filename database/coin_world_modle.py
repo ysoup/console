@@ -49,3 +49,59 @@ class BtcInformation(BaseModel):
     class Meta:
         table_name = 'btc_information'
 
+
+class BtcInformation(BaseModel):
+    author = CharField(null=True)
+    content = CharField(null=True)
+    content_id = CharField()
+    create_time = DateTimeField(default=datetime.datetime.now)
+    id = IntegerField()
+    source_link = CharField(null=True)
+    title = CharField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'bianews_information'
+
+
+class CailianpressInformation(BaseModel):
+    author = CharField(null=True)
+    content = CharField(null=True)
+    content_id = CharField()
+    create_time = DateTimeField(default=datetime.datetime.now)
+    id = IntegerField()
+    source_link = CharField(null=True)
+    title = CharField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'cailianpress_information'
+
+
+class KrInformation(BaseModel):
+    author = CharField(null=True)
+    content = CharField(null=True)
+    content_id = CharField()
+    create_time = DateTimeField(default=datetime.datetime.now)
+    id = IntegerField()
+    source_link = CharField(null=True)
+    title = CharField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'kr_information'
+
+
+class HuoBiInformation(BaseModel):
+    author = CharField(null=True)
+    content = CharField(null=True)
+    content_id = CharField()
+    create_time = DateTimeField(default=datetime.datetime.now)
+    id = IntegerField()
+    source_link = CharField(null=True)
+    title = CharField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'huo_bi_information'
+
