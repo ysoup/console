@@ -21,6 +21,7 @@ class RedisConstantsKey(Enum):
     CRAWLER_BIAN_NEW_FLASH = "crawler_bian_new_flash"
     CRAWLER_CAILIANPRESS = "crawler_cailianpress"
     CRAWLER_KR = "crawler_kr"
+    CRAWLER_HUO_BI = "crawler_huo_bi"
 
 
 @unique
