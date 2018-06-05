@@ -10,12 +10,12 @@ import re
 from common.get_content import Extractor
 from common.untils import *
 
-def crawler_people_cn_information(url):
+def crawler_people_cn_information(url,logger):
     headers = {
         'User-Agent': 'Mozilla/5.0(Windows;U;WindowsNT6.1;en-us)AppleWebKit/534.50(KHTML,likeGecko)Version/5.1Safari/534.50'
     }
     response = requests.get(url,headers=headers)
-    # logger.info("爬取人民网资讯http返回状态码：%s" % response.status_code)
+    logger.info("爬取人民网资讯http返回状态码：%s" % response.status_code)
     response.encoding = "GB2312"
     soup = BeautifulSoup(response.text,"lxml")
     divs = soup.find_all("div",class_=" hdNews clearfix")

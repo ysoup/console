@@ -13,7 +13,7 @@ from common.constants import SpidersDataModel
 
 wall_street = InitDb(SpidersDataModel.MODEL_COIN_WORLD.value)   #连接的coin_world数据库
 wall_street_database = wall_street.connect()
-wall_street.wirte_logger()
+#_street.wirte_logger()
 
 class UnknownField(object):
     def __init__(self, *_, **__): pass

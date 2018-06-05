@@ -22,7 +22,7 @@ class RedisConstantsKey(Enum):
     CRAWLER_CAILIANPRESS = "crawler_cailianpress"
     CRAWLER_KR = "crawler_kr"
     CRAWLER_HUO_BI = "crawler_huo_bi"
-    CRAWLER_WALL_STREET = "crawler_wall_street"  # 华尔街快讯
+    # CRAWLER_WALL_STREET = "crawler_wall_street"  # 华尔街快讯
     CRAWLER_PEOPLE_CN = "crawler_people_cn"  # 人民网资讯
 
 
