@@ -65,10 +65,12 @@ CELERY_QUEUES = (
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
     Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
     Queue('news_duplicate_removal_task', exchange=Exchange('news_duplicate_removal_task'),
-          routing_key='news_duplicate_removal_info'))
-    # Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info'),
-    # Queue('btc_new_flash_task', exchange=Exchange('btc_new_flash_task'), routing_key='btc_new_flash_info'),
-    # Queue('bian_new_flash_task', exchange=Exchange('bian_new_flash_task'), routing_key='bian_new_flash_info'))
+          routing_key='news_duplicate_removal_info'),
+    Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info'),
+    Queue('btc_new_flash_task', exchange=Exchange('btc_new_flash_task'), routing_key='btc_new_flash_info'),
+    Queue('bian_new_flash_task', exchange=Exchange('bian_new_flash_task'), routing_key='bian_new_flash_info'),
+    Queue('cailianpress_new_flash_task', exchange=Exchange('cailianpress_new_flash_task'),
+          routing_key='cailianpress_new_flash_info'))
 
 # # 路由
 # CELERY_ROUTES = {
@@ -126,25 +128,31 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=35),
         # 'args': (redis_db),
         'options': {'queue': 'news_duplicate_removal_task', 'routing_key': 'news_duplicate_removal_info'}
+    },
+    'wall_street_schedule': {
+        'task': 'crawler.wall_street.schudule_crawler_task',
+        'schedule': timedelta(seconds=70),
+        # 'args': (redis_db),
+        'options': {'queue': 'wall_street_task', 'routing_key': 'wall_street_info'}
+    },
+    'crawler_btc_new_flash': {
+        'task': 'crawler.btc_new_flash.schudule_btc_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'btc_new_flash_task', 'routing_key': 'btc_new_flash_info'}
+    },
+    'crawler_bian_new_flash': {
+        'task': 'crawler.bian_new_flash.schudule_bianews_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'bian_new_flash_task', 'routing_key': 'bian_new_flash_info'}
+    },
+    'crawler_cailianpress_new_flash': {
+        'task': 'crawler.cailianpress_new_flash.schudule_cailianpress_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'cailianpress_new_flash_task', 'routing_key': 'cailianpress_new_flash_info'}
     }
-    # 'wall_street_schedule': {
-    #     'task': 'crawler.wall_street.schudule_crawler_task',
-    #     'schedule': timedelta(seconds=70),
-    #     # 'args': (redis_db),
-    #     'options': {'queue': 'wall_street_task', 'routing_key': 'wall_street_info'}
-    # },
-    # 'crawler_btc_new_flash': {
-    #     'task': 'crawler.btc_new_flash.schudule_btc_information',
-    #     'schedule': timedelta(seconds=45),
-    #     # 'args': (redis_db),
-    #     'options': {'queue': 'btc_new_flash_task', 'routing_key': 'btc_new_flash_info'}
-    # },
-    # 'crawler_bian_new_flash': {
-    #     'task': 'crawler.bian_new_flash.schudule_bianews_information',
-    #     'schedule': timedelta(seconds=45),
-    #     # 'args': (redis_db),
-    #     'options': {'queue': 'bian_new_flash_task', 'routing_key': 'bian_new_flash_info'}
-    # }
 }
 ################################################
 # 启动worker的命令
