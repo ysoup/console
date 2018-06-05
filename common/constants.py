@@ -19,6 +19,7 @@ class RedisConstantsKey(Enum):
     CRAWLER_BTC_NEW_FLASH = "crawler_btc_new_flash"
     CRAWLER_WALL_STREET = "crawler_wall_street"  #华尔街快讯
     CRAWLER_BIAN_NEW_FLASH = "crawler_bian_new_flash"
+    CRAWLER_CAILIANPRESS = "crawler_cailianpress"
 
 
 @unique

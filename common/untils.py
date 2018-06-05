@@ -38,6 +38,7 @@ def get_current_time():
 
 
 def get_str_distance(str1, str2):
+
     distance = (Simhash(str1).distance(Simhash(str2)))
     return distance
 
