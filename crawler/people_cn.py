@@ -32,7 +32,7 @@ def people_cn_information(url):
                         source_name=data["source_name"],
                         title=data["title"],
                         img=data["match_img"],
-                        crawler_url="url"
+                        crawler_url=data["url"]
                     )
                 except Exception as e:
                     logger.error("人民网抓取持久化出错：%s" % e)
@@ -50,7 +50,7 @@ def schudule_people_cn_information():
                   queue='people_cn_task',
                   routing_key='people_cn_info')
 
-if __name__ == "__main__":
-    people_cn_information("http://capital.people.com.cn/GB/417685/index.html")
+# if __name__ == "__main__":
+#     people_cn_information("http://capital.people.com.cn/GB/417685/index.html")
 
 
