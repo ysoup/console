@@ -24,6 +24,7 @@ class RedisConstantsKey(Enum):
     CRAWLER_HUO_BI = "crawler_huo_bi"
     CRAWLER_CHAINDD = "crawler_chaindd"
     CRAWLER_WALL_STREETCN = "crawler_wall_streetcn"
+    CRAWLER_TMT_POST = "crawler_tmt_post"
 
 
 

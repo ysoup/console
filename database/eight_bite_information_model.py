@@ -96,3 +96,18 @@ class WallStreetcnInformation(BaseModel):
     class Meta:
         table_name = 'wall_streetcn_information'
 
+
+class TmtPostInformation(BaseModel):
+    content_id = IntegerField()
+    author = CharField(null=True)
+    content = TextField(null=True)
+    source_name = CharField(null=True)
+    title = CharField(null=True)
+    img = CharField(null=True)
+    crawler_url = CharField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
+    create_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'tmt_post_information'
+
