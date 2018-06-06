@@ -15,7 +15,7 @@ CELERY_CREATE_MISSING_QUEUES = True
 
 CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.eight_btc",
                   "crawler.bit_coin", "crawler.information_duplicate_removal", "crawler.wall_street",
-                  "crawler.people.cn")
+                  "crawler.people.cn", "crawler.jin_shi")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
@@ -75,7 +75,9 @@ CELERY_QUEUES = (
     Queue('cailianpress_new_flash_task', exchange=Exchange('cailianpress_new_flash_task'),
           routing_key='cailianpress_new_flash_info'),
     Queue('kr_new_flash_task', exchange=Exchange('kr_new_flash_task'), routing_key='kr_new_flash_info'),
-    Queue('huo_bi_new_flash_task', exchange=Exchange('huo_bi_new_flash_task'), routing_key='huo_bi_new_flash_info')
+    Queue('huo_bi_new_flash_task', exchange=Exchange('huo_bi_new_flash_task'), routing_key='huo_bi_new_flash_info'),
+    Queue('jin_shi_task', exchange=Exchange('jin_shi_task'), routing_key='jin_shi_info')
+
 )
 
 # # 路由
@@ -176,7 +178,13 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'huo_bi_new_flash_task', 'routing_key': 'huo_bi_new_flash_info'}
-    }
+    },
+    'crawler_jin_shi': {
+        'task': 'crawler.jin_shi.schudule_crawler_task',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'jin_shi_task', 'routing_key': 'jin_shi_info'}
+    },
 }
 ################################################
 # 启动worker的命令
