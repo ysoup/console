@@ -72,7 +72,11 @@ CELERY_QUEUES = (
     Queue('cailianpress_new_flash_task', exchange=Exchange('cailianpress_new_flash_task'),
           routing_key='cailianpress_new_flash_info'),
     Queue('kr_new_flash_task', exchange=Exchange('kr_new_flash_task'), routing_key='kr_new_flash_info'),
-    Queue('huo_bi_new_flash_task', exchange=Exchange('huo_bi_new_flash_task'), routing_key='huo_bi_new_flash_info')
+    Queue('huo_bi_new_flash_task', exchange=Exchange('huo_bi_new_flash_task'), routing_key='huo_bi_new_flash_info'),
+    Queue('chaindd_task', exchange=Exchange('chaindd_task'), routing_key='chaindd_info'),
+    Queue('wall_streetcn_task', exchange=Exchange('wall_streetcn_task'), routing_key='wall_streetcn_info'),
+    Queue('tmt_post_task', exchange=Exchange('tmt_post_task'), routing_key='tmt_post_info'),
+    Queue('wang_yi_task', exchange=Exchange('wang_yi_task'), routing_key='wang_yi_info')
 )
 
 # # 路由
@@ -167,6 +171,30 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'huo_bi_new_flash_task', 'routing_key': 'huo_bi_new_flash_info'}
+    },
+    'crawler_chaindd_new_flash': {
+        'task': 'crawler.chaindd_news.schudule_chaindd_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'chaindd_task', 'routing_key': 'chaindd_info'}
+    },
+    'crawler_wall_streetcn_new_flash': {
+        'task': 'crawler.wall_streetcn_news.schudule_wall_streetcn_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'wall_streetcn_task', 'routing_key': 'wall_streetcn_info'}
+    },
+    'crawler_tmt_post_new_flash': {
+        'task': 'crawler.tmt_post.schudule_tmt_post_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'tmt_post_task', 'routing_key': 'tmt_post_info'}
+    },
+    'crawler_wang_yi_new_flash': {
+        'task': 'crawler.wang_yi_information.schudule_wang_yi_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'wang_yi_task', 'routing_key': 'wang_yi_info'}
     }
 }
 ################################################
