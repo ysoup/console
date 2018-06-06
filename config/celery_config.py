@@ -75,7 +75,8 @@ CELERY_QUEUES = (
     Queue('huo_bi_new_flash_task', exchange=Exchange('huo_bi_new_flash_task'), routing_key='huo_bi_new_flash_info'),
     Queue('chaindd_task', exchange=Exchange('chaindd_task'), routing_key='chaindd_info'),
     Queue('wall_streetcn_task', exchange=Exchange('wall_streetcn_task'), routing_key='wall_streetcn_info'),
-    Queue('tmt_post_task', exchange=Exchange('tmt_post_task'), routing_key='tmt_post_info')
+    Queue('tmt_post_task', exchange=Exchange('tmt_post_task'), routing_key='tmt_post_info'),
+    Queue('wang_yi_task', exchange=Exchange('wang_yi_task'), routing_key='wang_yi_info')
 )
 
 # # 路由
@@ -188,6 +189,12 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'tmt_post_task', 'routing_key': 'tmt_post_info'}
+    },
+    'crawler_wang_yi_new_flash': {
+        'task': 'crawler.wang_yi_information.schudule_wang_yi_information',
+        'schedule': timedelta(seconds=45),
+        # 'args': (redis_db),
+        'options': {'queue': 'wang_yi_task', 'routing_key': 'wang_yi_info'}
     }
 }
 ################################################
