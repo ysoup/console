@@ -36,7 +36,7 @@ def okex_information(url):
                         source_name=data["source_name"],
                     )
                 except Exception as e:
-                    logger.error("人民网抓取持久化出错：%s" % e)
+                    logger.error("okex抓取持久化出错：%s" % e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_OKEX.value,data["content_id"]),
                                    json_convert_str(data))
 
