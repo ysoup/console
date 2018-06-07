@@ -14,6 +14,7 @@ from common.initlog import Logger
 
 logger = Logger(kind="work_path", name="coin_world")
 
+
 @app.task(ignore_result=True)
 def jin_shi_information(url):
     logger.info("金十抓取链接:%s" % url)
@@ -52,10 +53,11 @@ def jin_shi_information(url):
                     source_name=data["source_name"]
                 )
 
+
 @app.task(ignore_result=True)
 def schudule_crawler_task():
     app.send_task('crawler.jin_shi.jin_shi_information', args=("https://www.jin10.com/newest_1.js",),
                   queue='jin_shi_task',routing_key='jin_shi_info')
 
-if __name__ == "__main__":
-    jin_shi_information("https://www.jin10.com/newest_1.js")
+# if __name__ == "__main__":
+#     jin_shi_information("https://www.jin10.com/newest_1.js")

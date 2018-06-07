@@ -14,8 +14,8 @@ from common.initlog import Logger
 from database.okex_model import OKExInformation
 
 
-
 logger = Logger(kind="work_path", name="coin_world")
+
 
 @app.task
 def okex_information(url):

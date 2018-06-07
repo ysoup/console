@@ -12,8 +12,6 @@ from common.constants import RedisConstantsKey,GetListLength,DuplicateRemovalCac
 from celerymain.main import app
 from common.initlog import Logger
 from database.wall_street_model import WallStreetInformation
-from spiders.spider_wall_street import crawler_wall_street_information
-
 
 logger = Logger(kind="work_path", name="coin_world")
 

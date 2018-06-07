@@ -14,6 +14,7 @@ from database.wall_street_model import PeopleCnInformation
 
 logger = Logger(kind="work_path",name="coin_world")
 
+
 @app.task(ignore_result=True)
 def people_cn_information(url):
     logger.info("人民网资讯抓取链接:%s" % url)
@@ -43,6 +44,7 @@ def people_cn_information(url):
             connetcredis().lpush(
                 "%s_%s" % (DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value, date),
                 json_convert_str(data))
+
 
 @app.task(ignore_result=True)
 def schudule_people_cn_information():

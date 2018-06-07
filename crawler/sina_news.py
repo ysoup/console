@@ -16,13 +16,13 @@ logger = Logger(kind="work_path", name="coin_world")
 
 @app.task(ignore_result=True)
 def sina_information(url):
-    logger.info("比特币咨询抓取链接:%s" % url)
+    logger.info("新浪抓取链接:%s" % url)
     date = get_current_date()
-    crawler_data = crawler_he_xun_information(url, logger)
+    crawler_data = crawler_sina_information(url, logger)
     if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
         for data in crawler_data:
             cache_data = connetcredis().get("%s_%s" % (RedisConstantsKey.CRAWLER_SINA_NEWS.value, data["content_id"]))
-            logger.info("比特币资讯网数据缓存返回:%s" % cache_data)
+            logger.info("新浪数据缓存返回:%s" % cache_data)
             if cache_data is None:
                 try:
                     SinaInformation.create(
@@ -35,7 +35,7 @@ def sina_information(url):
                         crawler_url=data["url"]
                     )
                 except Exception as e:
-                    logger.error("比特币资讯网抓取持久化出错:%s" % e)
+                    logger.error("新浪抓取持久化出错:%s" % e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_SINA_NEWS.value, data["content_id"]),
                                    json_convert_str(data))
             # 去重队列

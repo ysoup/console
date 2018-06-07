@@ -16,7 +16,7 @@ logger = Logger(kind="work_path", name="coin_world")
 
 @app.task(ignore_result=True)
 def cailianpress_information(url):  # 財联社
-    logger.info("巴比特抓取链接:%s" % url)
+    logger.info("財联社抓取链接:%s" % url)
     date = get_current_date()
     crawler_data = crawler_cailianpress_information(url, logger)
     if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
