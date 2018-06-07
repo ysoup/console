@@ -27,7 +27,11 @@ class RedisConstantsKey(Enum):
     CRAWLER_TMT_POST = "crawler_tmt_post"
     CRAWLER_WANG_YI = "crawler_wang_yi"
     CRAWLER_SINA_NEWS = "crawler_sina_news"
-
+    # CRAWLER_WALL_STREET = "crawler_wall_street"  # 华尔街快讯
+    CRAWLER_PEOPLE_CN = "crawler_people_cn"  # 人民网资讯
+    CRAWLER_JIN_SHI = "crawler_jin_shi"     #金十数据
+    CRAWLER_OKEX = "crawler_okex"  # okex数据
+    CRAWLER_BINANCE_NOTICE = "crawler_binance_notice"  # binance数据
 
 
 @unique
@@ -55,6 +59,7 @@ class SpidersDataModel(Enum):
     MODEL_DISCUZDB = "discuzdb"
     MODEL_EIGHT_BITE = "eight_bite"
     MODEL_WALL_STREET = "wall_street"
+    MODEL_JIN_SHI = "jin_shi"
 
 
 
