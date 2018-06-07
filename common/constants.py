@@ -26,6 +26,7 @@ class RedisConstantsKey(Enum):
     CRAWLER_PEOPLE_CN = "crawler_people_cn"  # 人民网资讯
     CRAWLER_JIN_SHI = "crawler_jin_shi"     #金十数据
     CRAWLER_OKEX = "crawler_okex"  # okex数据
+    CRAWLER_BINANCE_NOTICE = "crawler_binance_notice"  # binance数据
 
 
 @unique

@@ -38,3 +38,17 @@ class OKExInformation(BaseModel):
         table_name = 'okex_information'
 
 
+class BinanceNoticeInformation(BaseModel):
+    id = IntegerField()
+    title = CharField(null=True)
+    source_link = CharField(null=True)
+    content_id = CharField(null=True)
+    content = CharField(null=True)
+    source_name = CharField(null=True)
+    create_time = DateTimeField(default=datetime.datetime.now)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'binance_notice_information'
+
+

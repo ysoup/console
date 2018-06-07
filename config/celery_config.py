@@ -15,7 +15,7 @@ CELERY_CREATE_MISSING_QUEUES = True
 
 CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_removal", "crawler.eight_btc",
                   "crawler.bit_coin", "crawler.information_duplicate_removal", "crawler.wall_street",
-                  "crawler.people.cn", "crawler.jin_shi", "crawler.okex")
+                  "crawler.people.cn", "crawler.jin_shi", "crawler.okex", "crawler.binance_notice")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
@@ -77,7 +77,8 @@ CELERY_QUEUES = (
     Queue('kr_new_flash_task', exchange=Exchange('kr_new_flash_task'), routing_key='kr_new_flash_info'),
     Queue('huo_bi_new_flash_task', exchange=Exchange('huo_bi_new_flash_task'), routing_key='huo_bi_new_flash_info'),
     Queue('jin_shi_task', exchange=Exchange('jin_shi_task'), routing_key='jin_shi_info'),
-    Queue('okex_task', exchange=Exchange('okex_task'), routing_key='okex_info')
+    Queue('okex_task', exchange=Exchange('okex_task'), routing_key='okex_info'),
+    Queue('binance_notice_task', exchange=Exchange('binance_notice_task'), routing_key='binance_notice_info')
 
 )
 
@@ -191,6 +192,12 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=70),
         # 'args': (redis_db),
         'options': {'queue': 'okex_task', 'routing_key': 'okex_info'}
+    },
+    'crawler_binance_notice': {
+        'task': 'crawler.binance_notice.schudule_binance_information',
+        'schedule': timedelta(seconds=70),
+        # 'args': (redis_db),
+        'options': {'queue': 'binance_notice_task', 'routing_key': 'binance_notice_info'}
     }
 }
 ################################################
