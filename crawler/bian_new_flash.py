@@ -7,7 +7,7 @@ from spiders.spider_bian_new_flash import crawler_bian_information
 from common.initRedis import connetcredis
 from common.untils import *
 from common.constants import RedisConstantsKey, GetListLength, DuplicateRemovalCache
-from database.coin_world_modle import BtcInformation
+from database.coin_world_modle import BiaNewsInformation
 from celerymain.main import app
 from common.initlog import Logger
 
@@ -32,7 +32,7 @@ def bianews_information(url):  # 币世界快讯
                                      json_convert_str(data))
 
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
-                    BtcInformation.update(content=data["content"]).where(BtcInformation.content_id == data["content_id"])
+                    BiaNewsInformation.update(content=data["content"]).where(BtcInformation.content_id == data["content_id"])
                     connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BIAN_NEW_FLASH.value, data["content_id"]),
                                        json_convert_str(data))
 
@@ -42,7 +42,7 @@ def bianews_information(url):  # 币世界快讯
                 # 去重队列
                 connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
                                      json_convert_str(data))
-                BtcInformation.create(
+                BiaNewsInformation.create(
                     content=data["content"],
                     content_id=data["content_id"],
                     source_link=data["source_link"],

@@ -12,7 +12,7 @@ def crawler_wall_streetcn_information(url, logger):
     ls = []
     if data["message"] == "OK":
         if data.__contains__('data'):
-            for x in data["data"]["items"]:
+            for x in data["data"]["items"][:5]:
                 dic = {}
                 dic["content_id"] = x["id"]
                 dic["author"] = x["author"]["display_name"]
@@ -27,15 +27,16 @@ def crawler_wall_streetcn_information(url, logger):
                         img_ls.insert(0, x["image_uri"])
                         dic["match_img"] = ",".join(img_ls)
                         dic["url"] = details_url
-                        dic["source_name"] = x["source_name"]
+                        dic["source_name"] = "wall_streetcn"
                         dic["content"] = str(data)
-                    elif "wallstreetcn.com" in details_url:
+                    elif "https://wallstreetcn.com" in details_url:
+                        print(details_url)
                         data = soup.find_all("div", "article__content")[0]
                         img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(data))
                         img_ls.insert(0, x["image_uri"])
                         dic["match_img"] = ",".join(img_ls)
                         dic["url"] = details_url
-                        dic["source_name"] = x["source_name"]
+                        dic["source_name"] = "wall_streetcn"
                         dic["content"] = str(data)
                     else:
                         continue
