@@ -18,7 +18,7 @@ CELERY_IMPORTS = ("crawler.spider", "crawler.coin_world", "crawler.duplicate_rem
                   "crawler.people_cn", "crawler.jin_shi", "crawler.okex", "crawler.binance_notice",
                   "crawler.cailianpress_new_flash", "crawler.chaindd_news", "crawler.bian_new_flash",
                   "crawler.huo_bi_new_flash", "crawler.kr_new_flash", "crawler.sina_news", "crawler.tmt_post",
-                  "crawler.wall_streetcn_news", "crawler.wang_yi_information")
+                  "crawler.wall_streetcn_news", "crawler.wang_yi_information", "crawler.btc_new_flash")
 
 # 使用redis 作为任务队列
 # BROKER_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/' + str(REDIS_DB_NUM)
