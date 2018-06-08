@@ -71,7 +71,6 @@ CELERY_QUEUES = (
     Queue('news_duplicate_removal_task', exchange=Exchange('news_duplicate_removal_task'),
           routing_key='news_duplicate_removal_info'),
     Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info'),
-    Queue('btc_new_flash_task', exchange=Exchange('btc_new_flash_task'), routing_key='btc_new_flash_info'),
     Queue('people_cn_task', exchange=Exchange('people_cn_task'), routing_key='people_cn_info'),
     Queue('btc_new_flash_task', exchange=Exchange('btc_new_flash_task'), routing_key='btc_new_flash_info'),
     Queue('bian_new_flash_task', exchange=Exchange('bian_new_flash_task'), routing_key='bian_new_flash_info'),
