@@ -11,9 +11,9 @@ from common.initDb import InitDb
 from common.constants import SpidersDataModel
 
 
-okex = InitDb(SpidersDataModel.MODEL_COIN_WORLD.value)   #连接的coin_world数据库
-okex_database = okex.connect()
-# okex.wirte_logger()
+he_xun = InitDb(SpidersDataModel.MODEL_EIGHT_BITE.value)   #连接的eight_bite数据库
+he_xun_database = he_xun.connect()
+# he_xun.wirte_logger()
 
 class UnknownField(object):
     def __init__(self, *_, **__): pass
@@ -21,37 +21,35 @@ class UnknownField(object):
 
 class BaseModel(Model):
     class Meta:
-        database = okex_database
+        database = he_xun_database
 
 
-class OKExInformation(BaseModel):
+class HeXunInformation(BaseModel):
     id = IntegerField()
     title = CharField(null=True)
     source_link = CharField(null=True)
-    content_id = CharField(null=True)
+    content_id = IntegerField(null=True)
     content = CharField(null=True)
     source_name = CharField(null=True)
+    img_link = CharField(null=True)
+    crawler_date = CharField(null=True)
     create_time = DateTimeField(default=datetime.datetime.now)
     update_time = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = 'okex_information'
+        table_name = 'he_xun_information'
 
 
-class BinanceNoticeInformation(BaseModel):
-    id = IntegerField()
-    title = CharField(null=True)
-    source_link = CharField(null=True)
-    content_id = CharField(null=True)
-    content = CharField(null=True)
+class PeopleCnInformation(BaseModel):
+    content_id = CharField()
+    author = CharField(null=True)
+    content = TextField(null=True)
     source_name = CharField(null=True)
-    create_time = DateTimeField(default=datetime.datetime.now)
+    title = CharField(null=True)
+    img = CharField(null=True)
+    crawler_url = CharField(null=True)
     update_time = DateTimeField(default=datetime.datetime.now)
+    create_time = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = 'binance_notice_information'
-
-
-
-
-
+        table_name = "people_cn_information"
