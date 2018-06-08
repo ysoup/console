@@ -8,6 +8,7 @@ import requests
 from common.untils import *
 import re
 
+
 def crawler_cailianpress_information(url, logger):
     response = requests.get(url)
     data = str_convert_json(response.text)
