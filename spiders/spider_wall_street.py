@@ -21,6 +21,8 @@ def crawler_wall_street_information(url,logger):
                 title_content = items_ls["content"].strip()
                 dic = {}
                 title_cont = re.findall("<p>(【([\s\S]*)】)?([\s\S]*)</p>", title_content)
+                if not len(title_cont):
+                    continue
                 title = title_cont[0][1]
                 content = title_cont[0][2]
                 dic["title"] = title
