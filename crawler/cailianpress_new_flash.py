@@ -62,4 +62,4 @@ def schudule_cailianpress_information():
 
 # if __name__ == "__main__":
 #     t = time.time()
-#     cailianpress_information("https://www.cailianpress.com/nodeapi/telegraphs?last_time=1528176014&refresh_type=0")
+#     cailianpress_information("https://www.cailianpress.com/nodeapi/telegraphs?last_time=%s&refresh_type=0" % int(t))
