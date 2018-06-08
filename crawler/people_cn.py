@@ -10,7 +10,7 @@ from common.untils import *
 from common.constants import RedisConstantsKey,GetListLength,DuplicateRemovalCache
 from common.initlog import Logger
 from celerymain.main import app
-from database.wall_street_model import PeopleCnInformation
+from database.he_xun_model import PeopleCnInformation
 
 logger = Logger(kind="work_path",name="coin_world")
 
