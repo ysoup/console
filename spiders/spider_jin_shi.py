@@ -18,7 +18,7 @@ def crawler_jin_shi_information(url, logger):
     crawler_ls = []
     reg = re.compile('0#1#([\s\S]*?)#([\s\S]*?)#####0###([\s\S]*?)",')
     cont_ls = reg.findall(data)
-    for cont in cont_ls:
+    for cont in cont_ls[:5]:
         dic = {}
         dic["crawler_time"] = cont[0]
         dic["content"] = cont[1]

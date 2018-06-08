@@ -40,7 +40,7 @@ def binance_notice_info(url):
 
             # 去重队列
             connetcredis().lpush(
-                "%s_%s" % (DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value, date),
+                "%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
                 json_convert_str(data))
 
 @app.task
@@ -49,8 +49,8 @@ def schudule_binance_information():
                   queue='binance_notice_task',
                   routing_key='binance_notice_info')
 
-if __name__ == "__main__":
-    binance_notice_info("https://support.binance.com/hc/zh-cn/categories/115000056351")
+# if __name__ == "__main__":
+#     binance_notice_info("https://support.binance.com/hc/zh-cn/categories/115000056351")
 
 
 

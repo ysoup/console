@@ -20,7 +20,7 @@ def crawler_people_cn_information(url,logger):
     soup = BeautifulSoup(response.text,"lxml")
     divs = soup.find_all("div",class_=" hdNews clearfix")
     ls = []
-    for div in divs:
+    for div in divs[:5]:
         dic = {}
         content_url = div.strong.a.get("href")
         if not re.search("http", content_url):

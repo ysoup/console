@@ -6,6 +6,7 @@ sys.path.append(parentUrl)
 
 import requests
 from bs4 import BeautifulSoup
+import re
 
 def crawler_binance_notice(url, logger):
     headers = {
@@ -16,12 +17,14 @@ def crawler_binance_notice(url, logger):
     soup = BeautifulSoup(response.text, "lxml")
     lis = soup.find_all("li", class_="article-list-item")
     crawler_ls = []
-    for li in lis:
+    for li in lis[:5]:
         dic = {}
         title = li.a.text
-        source_link = "https://support.binance.com" + li.a.get("href")
+        source_link = li.a.get("href")
+        if not re.search("http", source_link):
+            source_link = "https://support.binance.com" + source_link
         content_id = source_link.split("/")[-1].split("-")[0]
-#         继续爬取内容
+        #         继续爬取内容
         resp = requests.get(source_link, headers=headers)
         cont_soup = BeautifulSoup(resp.text, "lxml")
         p_ls = cont_soup.find("div", class_="article-body").find_all("p")
@@ -29,7 +32,7 @@ def crawler_binance_notice(url, logger):
         for p in p_ls:
             content += p.text.strip()
         source_name = "binance_notice"
-        dic["title"] = "title"
+        dic["title"] = title
         dic["source_link"] = source_link
         dic["content_id"] = content_id
         dic["content"] = content
