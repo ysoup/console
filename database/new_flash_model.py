@@ -25,7 +25,7 @@ class BaseModel(Model):
 class NewFlashInformation(BaseModel):
     author = CharField(null=True)
     content = CharField(null=True)
-    content_id = IntegerField(null=True)
+    content_id = CharField(null=True)
     create_time = DateTimeField(default=datetime.datetime.now)
     source_name = CharField(null=True)
     title = CharField(null=True)
@@ -51,7 +51,7 @@ class NewFlashCategory(BaseModel):
 class NewFlashExclusiveInformation(BaseModel):
     author = CharField(null=True)
     content = CharField(null=True)
-    content_id = IntegerField(null=True)
+    content_id = CharField(null=True)
     source_name = CharField(null=True)
     title = CharField(null=True)
     is_show = IntegerField(default=1)

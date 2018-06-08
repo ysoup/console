@@ -50,7 +50,7 @@ class BtcInformation(BaseModel):
         table_name = 'btc_information'
 
 
-class BtcInformation(BaseModel):
+class BiaNewsInformation(BaseModel):
     author = CharField(null=True)
     content = CharField(null=True)
     content_id = CharField()

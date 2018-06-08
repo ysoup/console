@@ -22,7 +22,7 @@ def crawler_btc_information(url, logger):
         dic["content_id"] = str(a_tag.get("href").split("/")[-1])
         dic["source_link"] = ""
         dic["author"] = ""
-        dic["source_name"] = "eight_btc"
+        dic["source_name"] = "btc_news"
         crawler_ls.append(dic)
     logger.info("抓取币世界返回数据:%s" % crawler_ls)
     return crawler_ls
