@@ -11,7 +11,10 @@ import re
 
 
 def crawler_huo_bi_information(url, logger):
-    response = requests.get(url)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36'
+    }
+    response = requests.get(url, headers=headers)
     logger.info("抓取火币 http返回状态码:%s" % response.status_code)
     data = str_convert_json(response.text)
     crawler_ls = []
