@@ -24,8 +24,10 @@ def crawler_wall_streetcn_information(url, logger):
                     if "weixin.qq" in details_url:
                         data = soup.find_all("div", "rich_media_content")[0]
                         data = data.find("section")
-                        data.section.extract()
-                        data.section.extract()
+                        section_ls = data.find_all("section")
+                        if len(section_ls) > 0:
+                            data.section.extract()
+                            data.section.extract()
                         data.h2.extract()
                         img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(data))
                         img_ls.insert(0, x["image_uri"])

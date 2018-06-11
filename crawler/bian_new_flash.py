@@ -53,7 +53,7 @@ def bianews_information(url):  # 币世界快讯
 
 @app.task(ignore_result=True)
 def schudule_bianews_information():
-    app.send_task('crawler.btc_new_flash.bianews_information',
+    app.send_task('crawler.bian_new_flash.bianews_information',
                   args=("https://www.bianews.com/news/news_list?channel=flash&type=1",),
                   queue='bian_new_flash_task',
                   routing_key='bian_new_flash_info')
