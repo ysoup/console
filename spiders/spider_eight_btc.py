@@ -16,9 +16,11 @@ def crawler_eight_btc_information(url, logger):
     soup = BeautifulSoup(response.text, "lxml")
     li = soup.find_all("li", "itm itm_new")
     ls = []
-    for li in li[0:1]:
+    for li in li[0:5]:
         dic = {}
         url = li.a.get("href")
+        if "coinweek-" in url:
+            continue
         content_url = "http://www.8btc.com" + url
         resp = requests.get(content_url)
         content_soup = BeautifulSoup(resp.text, "lxml")
