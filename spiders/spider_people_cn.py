@@ -20,23 +20,35 @@ def crawler_people_cn_information(url,logger):
     soup = BeautifulSoup(response.text,"lxml")
     divs = soup.find_all("div",class_=" hdNews clearfix")
     ls = []
-    for div in divs:
+    for div in divs[:5]:
         dic = {}
-        content_url ="http://capital.people.com.cn" + div.strong.a.get("href")
+        content_url = div.strong.a.get("href")
+        if not re.search("http", content_url):
+            content_url = "http://capital.people.com.cn" + content_url
         content_id = content_url.split("/")[-1].split(".")[0]
-        img_url = "http://capital.people.com.cn" + div.img.get("src")
+        img_url = div.img.get("src")
+        if not re.search("http", img_url):
+            img_url = "http://capital.people.com.cn" + div.img.get("src")
         title = div.strong.a.text
         # 爬取url中的内容
         resp = requests.get(content_url, headers=headers)
         resp.encoding = "GB2312"
-        con_soup = BeautifulSoup(resp.text,"lxml")
-        content_ls = con_soup.find("div", class_="gray box_text").text.strip()
+        con_soup = BeautifulSoup(resp.text, "lxml")
+        content_ls = con_soup.find("div", class_="gray box_text")
+        img_link = content_ls.find_all("img")
+        if len(img_link):
+            for i in img_link:
+                link = i.get("src")
+                if not re.search("http", link):
+                    link = "http://capital.people.com.cn" + link
+                img_url += " , " + link
+        content = content_ls.text.strip()
         # 以下为保存的字段
         dic["url"] = content_url
         dic["content_id"] = content_id
         dic["title"] = title
         dic["match_img"] = img_url
-        dic["content"] = content_ls
+        dic["content"] = content
         dic["author"] = ""
         dic["source_name"] ="people_cn"
         ls.append(dic)
