@@ -60,4 +60,4 @@ def schudule_bianews_information():
 
 
 # if __name__ == "__main__":
-#     bian_information("https://www.bianews.com/news/news_list?channel=flash&type=1")
+#     bianews_information("https://www.bianews.com/news/news_list?channel=flash&type=1")
