@@ -42,7 +42,7 @@ def okex_information(url):
 
             # 去重队列
             connetcredis().lpush(
-                "%s_%s" % (DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value, date),
+                "%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
                 json_convert_str(data))
 
 @app.task

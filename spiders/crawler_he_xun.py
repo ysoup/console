@@ -21,7 +21,7 @@ def crawler_he_xun_information(url, logger):
     reg = re.compile("title:'([\s\S]*?)',titleLink:'([\s\S]*?)',[\s\S]*?imgSrc:'([\s\S]*?)',[\s\S]*?newsInf:'([\s\S]*?)',dateInf:([\s\S]*?)}")
     data_ls = reg.findall(data_ls)
     crawler_ls = []
-    for data in data_ls[:10]:
+    for data in data_ls[:5]:
         dic = {}
         dic["title"] = data[0]
         dic["source_link"] = data[1]

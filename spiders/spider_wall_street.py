@@ -17,7 +17,7 @@ def crawler_wall_street_information(url,logger):
     crawler_ls = []
     if data.__contains__('data'):
         if data["data"].__contains__("items"):
-            for items_ls in data["data"]["items"]:
+            for items_ls in data["data"]["items"][:5]:
                 title_content = items_ls["content"].strip()
                 dic = {}
                 title_cont = re.findall("<p>(【([\s\S]*)】)?([\s\S]*)</p>", title_content)
