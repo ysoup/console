@@ -37,9 +37,14 @@ def crawler_sina_information(url, logger):
         dic["source_name"] = "sina"
         dic["title"] = x.text
         dic["content_id"] = source_url.split("/")[-1].split(".")[0]
-        fliter_tag = data[0].find("p", "article-editor")
-        data = str(data[0])
-        dic["content"] = data.replace(str(fliter_tag), "")
+        if len(data) > 0:
+            fliter_tag = data[0].find("p", "article-editor")
+            data = str(data[0])
+            data = data.replace(str(fliter_tag), "")
+        re_a_1 = re.compile(r'<a[\s\S]*?href=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>')
+        dic["content"] = re_a_1.sub('', str(data))
+        re_a_2 = re.compile(r'</a>|<u>|</u>')
+        dic["content"] = re_a_2.sub('', dic["content"])
         if flite_div_img is not None:
             dic["content"] = dic["content"].replace(str(flite_div_img), "")
         img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(dic["content"])
