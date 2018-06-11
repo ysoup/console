@@ -18,7 +18,7 @@ def crawler_wang_yi_information(url, logger):
         dic["title"] = li.find("h3").text
         content_url = li.find("h3").find("a").get("href")
         dic["content_id"] = content_url.split("/")[-1].split(".")[0]
-        home_img = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(li))[0]
+        home_img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(li))
         resp = requests.get(content_url)
         content_soup = BeautifulSoup(resp.text, "html.parser")
         dic["author"] = content_soup.find("a", id="ne_article_source").text
@@ -29,7 +29,8 @@ def crawler_wang_yi_information(url, logger):
             content.span.extract()
             content.span.extract()
         img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(content))
-        img_ls.insert(0, home_img)
+        if len(home_img_ls) > 0:
+            img_ls.insert(0, home_img_ls[0])
         dic["match_img"] = ",".join(img_ls)
         dic["url"] = content_url
         dic["source_name"] = "wang_yi"
