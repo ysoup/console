@@ -32,7 +32,7 @@ def bianews_information(url):  # 币世界快讯
                                      json_convert_str(data))
 
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
-                    BiaNewsInformation.update(content=data["content"]).where(BtcInformation.content_id == data["content_id"])
+                    BiaNewsInformation.update(content=data["content"]).where(BiaNewsInformation.content_id == data["content_id"])
                     connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BIAN_NEW_FLASH.value, data["content_id"]),
                                        json_convert_str(data))
 
