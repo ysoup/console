@@ -14,7 +14,7 @@ def crawler_people_cn_information(url,logger):
     headers = {
         'User-Agent': 'Mozilla/5.0(Windows;U;WindowsNT6.1;en-us)AppleWebKit/534.50(KHTML,likeGecko)Version/5.1Safari/534.50'
     }
-    response = requests.get(url,headers=headers)
+    response = requests.get(url, headers=headers)
     logger.info("爬取人民网资讯http返回状态码：%s" % response.status_code)
     response.encoding = "GB2312"
     soup = BeautifulSoup(response.text,"lxml")
@@ -42,7 +42,10 @@ def crawler_people_cn_information(url,logger):
                 if not re.search("http", link):
                     link = "http://capital.people.com.cn" + link
                 img_url += " , " + link
-        content = content_ls.text.strip()
+        content_p = content_ls.find_all("p")
+        content = ""
+        for con in content_p:
+            content += con.text.strip()
         # 以下为保存的字段
         dic["url"] = content_url
         dic["content_id"] = content_id

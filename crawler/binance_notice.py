@@ -15,7 +15,7 @@ from database.okex_model import BinanceNoticeInformation
 logger = Logger(kind="work_path", name="coin_world")
 
 
-@app.task
+@app.task(ignore_result=True)
 def binance_notice_info(url):
     logger.info("binance_notice抓取链接：%s" % url)
     date = get_current_date()
@@ -43,7 +43,7 @@ def binance_notice_info(url):
                 "%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
                 json_convert_str(data))
 
-@app.task
+@app.task(ignore_result=True)
 def schudule_binance_information():
     app.send_task("crawler.binance_notice.binance_notice_info", args=("https://support.binance.com/hc/zh-cn/categories/115000056351",),
                   queue='binance_notice_task',

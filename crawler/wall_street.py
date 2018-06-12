@@ -16,7 +16,7 @@ from database.wall_street_model import WallStreetInformation
 logger = Logger(kind="work_path", name="coin_world")
 
 
-@app.task
+@app.task(ignore_result=True)
 def wall_street_information(url):
     logger.info("华尔街快讯抓取链接：%s" % url)
     date = get_current_date()
@@ -48,7 +48,7 @@ def wall_street_information(url):
                 author=data["author"]
             )
 
-@app.task
+@app.task(ignore_result=True)
 def schudule_crawler_task():
     app.send_task('crawler.wall_street.wall_street_information', args=("https://api-prod.wallstreetcn.com/apiv1/content/lives?channel=blockchain-channel&limit=10",),
                   queue='wall_street_task',routing_key='wall_street_info')
