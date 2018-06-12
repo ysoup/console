@@ -35,10 +35,10 @@ def people_cn_information(url):
                         img=data["match_img"],
                         crawler_url=data["url"]
                     )
-                    connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_PEOPLE_CN.value, data["content_id"]),
-                                       json_convert_str(data))
                 except Exception as e:
                     logger.error("人民网抓取持久化出错：%s" % e)
+                connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_PEOPLE_CN.value, data["content_id"]),
+                                   json_convert_str(data))
 
             # 去重队列
             connetcredis().lpush(

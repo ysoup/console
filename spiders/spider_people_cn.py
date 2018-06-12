@@ -42,7 +42,10 @@ def crawler_people_cn_information(url,logger):
                 if not re.search("http", link):
                     link = "http://capital.people.com.cn" + link
                 img_url += " , " + link
-        content = content_ls.text.strip()
+        content_p = content_ls.find_all("p")
+        content = ""
+        for con in content_p:
+            content += con.text.strip()
         # 以下为保存的字段
         dic["url"] = content_url
         dic["content_id"] = content_id
