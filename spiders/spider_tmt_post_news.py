@@ -51,5 +51,9 @@ def crawler_tmt_post_information(url, logger):
             dic["url"] = details_url
             dic["source_name"] = "tmt_post"
             dic["content"] = str(data)
+            re_a_1 = re.compile(r'<a[\s\S]*?href=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>')
+            dic["content"] = re_a_1.sub('', str(data))
+            re_a_2 = re.compile(r'</a>|<u>|</u>')
+            dic["content"] = re_a_2.sub('', dic["content"])
             ls.append(dic)
     return ls
