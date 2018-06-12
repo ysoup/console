@@ -17,7 +17,7 @@ from database.okex_model import OKExInformation
 logger = Logger(kind="work_path", name="coin_world")
 
 
-@app.task
+@app.task(ignore_result=True)
 def okex_information(url):
     logger.info("okex抓取链接：%s" % url)
     date = get_current_date()
@@ -45,7 +45,7 @@ def okex_information(url):
                 "%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
                 json_convert_str(data))
 
-@app.task
+@app.task(ignore_result=True)
 def schudule_okex_information():
     app.send_task("crawler.okex.okex_information", args=("https://support.okex.com/hc/zh-cn/sections/115000447632-%E5%85%AC%E5%91%8A%E4%B8%AD%E5%BF%83",),
                   queue='okex_task',
