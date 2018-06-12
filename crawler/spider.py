@@ -58,5 +58,6 @@ def schudule_crawler_task():
     app.send_task('crawler.spider.send', args=("http://www.jinse.com/ajax/lives/getList?id=0&flag=up",), queue='jin_se_task',
                   routing_key='jin_se_info')
 
+
 # if __name__ == "__main__":
 #     send("http://www.jinse.com/ajax/lives/getList?id=0&flag=up")

@@ -32,7 +32,7 @@ def bianews_information(url):  # 币世界快讯
                                      json_convert_str(data))
 
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
-                    BiaNewsInformation.update(content=data["content"]).where(BtcInformation.content_id == data["content_id"])
+                    BiaNewsInformation.update(content=data["content"]).where(BiaNewsInformation.content_id == data["content_id"])
                     connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BIAN_NEW_FLASH.value, data["content_id"]),
                                        json_convert_str(data))
 
@@ -53,11 +53,11 @@ def bianews_information(url):  # 币世界快讯
 
 @app.task(ignore_result=True)
 def schudule_bianews_information():
-    app.send_task('crawler.btc_new_flash.bianews_information',
+    app.send_task('crawler.bian_new_flash.bianews_information',
                   args=("https://www.bianews.com/news/news_list?channel=flash&type=1",),
                   queue='bian_new_flash_task',
                   routing_key='bian_new_flash_info')
 
 
 # if __name__ == "__main__":
-#     bian_information("https://www.bianews.com/news/news_list?channel=flash&type=1")
+#     bianews_information("https://www.bianews.com/news/news_list?channel=flash&type=1")

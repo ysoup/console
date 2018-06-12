@@ -11,7 +11,10 @@ import json
 
 def crawler_bian_information(url, logger):
     payload = {'page_no': 1, 'page_size': 5, 'search': ""}
-    response = requests.post(url, data=json.dumps(payload))
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36'
+    }
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
     soup = BeautifulSoup(response.text, "lxml")
     logger.info("抓取鞭牛士http返回状态码:%s" % response.status_code)
     crawler_ls = []
