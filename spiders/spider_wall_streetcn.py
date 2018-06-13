@@ -32,7 +32,9 @@ def crawler_wall_streetcn_information(url, logger):
                                 data.section.extract()
                             elif len(section_ls) == 2:
                                 data.section.extract()
-                            data.h2.extract()
+                            h2_ls = data.find_all("h2")
+                            if len(h2_ls) > 0:
+                                data.h2.extract()
                             img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(data))
                             img_ls.insert(0, x["image_uri"])
                             dic["match_img"] = ",".join(img_ls)
