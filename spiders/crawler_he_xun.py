@@ -5,6 +5,7 @@ parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
 
 import requests
+from bs4 import BeautifulSoup
 import re
 from common.untils import *
 
@@ -24,12 +25,25 @@ def crawler_he_xun_information(url, logger):
     for data in data_ls[:5]:
         dic = {}
         dic["title"] = data[0]
-        dic["source_link"] = data[1]
+        dic["url"] = data[1]
         dic["content_id"] = int(data[1].split("/")[-1].split(".")[0])
-        dic["img_link"] = data[2]
-        dic["content"] = data[3]
+        dic["match_img"] = data[2]
         dic["crawler_date"] = data[4]
         dic["source_name"] = "he_xun"
+        dic["author"] = ""
+
+        # 抓取内容
+        resp = requests.get(data[1], headers=headers)
+        resp.encoding = "gb2312"
+        cont_soup = BeautifulSoup(resp.text, "lxml")
+        content_all = cont_soup.find("div", class_="art_contextBox")
+        imgs = content_all.find_all("img")
+        if len(imgs):
+            for i in imgs:
+                dic["match_img"] += " , " + i.get("src")
+
+        filter_div = content_all.find("div", style="text-align:right;font-size:12px")
+        dic["content"] = str(content_all).replace(str(filter_div), "")
         crawler_ls.append(dic)
     return crawler_ls
 
