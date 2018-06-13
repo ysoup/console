@@ -16,7 +16,7 @@ def crawler_wall_streetcn_information(url, logger):
                 dic = {}
                 dic["content_id"] = x["id"]
                 dic["author"] = x["author"]["display_name"]
-                dic["title"] = x["title"]
+                dic["title"] = re.sub("<em>|</em>", "", x["title"])
                 details_url = x["uri"]
                 response_details = requests.get(details_url)
                 if response_details.status_code == 200:
@@ -32,12 +32,18 @@ def crawler_wall_streetcn_information(url, logger):
                                 data.section.extract()
                             elif len(section_ls) == 2:
                                 data.section.extract()
-                            data.h2.extract()
+                            h2_ls = data.find_all("h2")
+                            if len(h2_ls) > 0:
+                                data.h2.extract()
                             img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(data))
                             img_ls.insert(0, x["image_uri"])
                             dic["match_img"] = ",".join(img_ls)
                             dic["url"] = details_url
                             dic["source_name"] = "wall_streetcn"
+                            if len(section_ls) > 50:
+                                new_section_ls = section_ls[-17:]
+                                for x in new_section_ls:
+                                    data = str(data).replace(str(x), "")
                             dic["content"] = str(data)
                     elif "https://wallstreetcn.com" in details_url:
                         print(details_url)

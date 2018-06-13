@@ -20,11 +20,11 @@ CELERY_IMPORTS = (
     "crawler.coin_world",
     "crawler.eight_btc",
     "crawler.bit_coin",
-    # "crawler.wall_street",
-    # "crawler.people_cn",
-    # "crawler.jin_shi",
-    # "crawler.okex",
-    # "crawler.binance_notice",
+    "crawler.wall_street",
+    "crawler.people_cn",
+    "crawler.jin_shi",
+    "crawler.okex",
+    "crawler.binance_notice",
     "crawler.cailianpress_new_flash",
     "crawler.chaindd_news",
     "crawler.bian_new_flash",
@@ -35,7 +35,7 @@ CELERY_IMPORTS = (
     "crawler.wall_streetcn_news",
     "crawler.wang_yi_information",
     "crawler.btc_new_flash",
-    # "crawler.he_xun"
+    "crawler.he_xun"
 )
 
 # 使用redis 作为任务队列
@@ -92,19 +92,19 @@ CELERY_QUEUES = (
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
     Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
 
-    # Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info')
-    # Queue('people_cn_task', exchange=Exchange('people_cn_task'), routing_key='people_cn_info')
+    # Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info'),
+    # Queue('people_cn_task', exchange=Exchange('people_cn_task'), routing_key='people_cn_info'),
     Queue('btc_new_flash_task', exchange=Exchange('btc_new_flash_task'), routing_key='btc_new_flash_info'),
     Queue('bian_new_flash_task', exchange=Exchange('bian_new_flash_task'), routing_key='bian_new_flash_info'),
     Queue('cailianpress_new_flash_task', exchange=Exchange('cailianpress_new_flash_task'),
           routing_key='cailianpress_new_flash_info'),
     Queue('kr_new_flash_task', exchange=Exchange('kr_new_flash_task'), routing_key='kr_new_flash_info'),
-    Queue('huo_bi_new_flash_task', exchange=Exchange('huo_bi_new_flash_task'), routing_key='huo_bi_new_flash_info'),
+    # Queue('huo_bi_new_flash_task', exchange=Exchange('huo_bi_new_flash_task'), routing_key='huo_bi_new_flash_info'),
     Queue('chaindd_task', exchange=Exchange('chaindd_task'), routing_key='chaindd_info'),
     Queue('wall_streetcn_task', exchange=Exchange('wall_streetcn_task'), routing_key='wall_streetcn_info'),
     Queue('tmt_post_task', exchange=Exchange('tmt_post_task'), routing_key='tmt_post_info'),
     Queue('wang_yi_task', exchange=Exchange('wang_yi_task'), routing_key='wang_yi_info'),
-    Queue('sina_news_task', exchange=Exchange('sina_news_task'), routing_key='sina_news_info'),
+    Queue('sina_news_task', exchange=Exchange('sina_news_task'), routing_key='sina_news_info')
     # Queue('jin_shi_task', exchange=Exchange('jin_shi_task'), routing_key='jin_shi_info'),
     # Queue('okex_task', exchange=Exchange('okex_task'), routing_key='okex_info'),
     # Queue('binance_notice_task', exchange=Exchange('binance_notice_task'), routing_key='binance_notice_info'),
@@ -173,7 +173,7 @@ CELERYBEAT_SCHEDULE = {
     #     'schedule': timedelta(seconds=70),
     #     # 'args': (redis_db),
     #     'options': {'queue': 'wall_street_task', 'routing_key': 'wall_street_info'}
-    # }
+    # },
     'crawler_btc_new_flash': {
         'task': 'crawler.btc_new_flash.schudule_btc_information',
         'schedule': timedelta(seconds=45),
@@ -185,7 +185,7 @@ CELERYBEAT_SCHEDULE = {
     #     'schedule': timedelta(seconds=70),
     #     # 'args': (redis_db),
     #     'options': {'queue': 'people_cn_task', 'routing_key': 'people_cn_info'}
-    # }
+    # },
     'crawler_bian_new_flash': {
         'task': 'crawler.bian_new_flash.schudule_bianews_information',
         'schedule': timedelta(seconds=45),
@@ -204,12 +204,12 @@ CELERYBEAT_SCHEDULE = {
         # 'args': (redis_db),
         'options': {'queue': 'kr_new_flash_task', 'routing_key': 'kr_new_flash_info'}
     },
-    'crawler_huo_bi_new_flash': {
-        'task': 'crawler.huo_bi_new_flash.schudule_huo_bi_information',
-        'schedule': timedelta(seconds=45),
-        # 'args': (redis_db),
-        'options': {'queue': 'huo_bi_new_flash_task', 'routing_key': 'huo_bi_new_flash_info'}
-    },
+    # 'crawler_huo_bi_new_flash': {
+    #     'task': 'crawler.huo_bi_new_flash.schudule_huo_bi_information',
+    #     'schedule': timedelta(seconds=45),
+    #     # 'args': (redis_db),
+    #     'options': {'queue': 'huo_bi_new_flash_task', 'routing_key': 'huo_bi_new_flash_info'}
+    # },
     'crawler_chaindd_new_flash': {
         'task': 'crawler.chaindd_news.schudule_chaindd_information',
         'schedule': timedelta(seconds=45),

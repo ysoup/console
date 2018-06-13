@@ -42,17 +42,21 @@ def crawler_tmt_post_information(url, logger):
             data = soup.find_all("article")[0]
             data.div.extract()
             data.h1.extract()
-            img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(data))
-            for i in x["thumb_image"]:
-                home_img = x["thumb_image"][i][0]["url"]
-                break
+            p_ls = data.find_all("p")[-5:]
+            dic["content"] = str(data)
+            for x in p_ls:
+                dic["content"] = dic["content"].replace(str(x), "")
+            img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(dic["content"])
+            home_img = x.find("img").get("src")
+            # for i in x["thumb_image"]:
+            #
+            #     break
             img_ls.insert(0, home_img)
             dic["match_img"] = ",".join(img_ls)
             dic["url"] = details_url
             dic["source_name"] = "tmt_post"
-            dic["content"] = str(data)
             re_a_1 = re.compile(r'<a[\s\S]*?href=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>')
-            dic["content"] = re_a_1.sub('', str(data))
+            dic["content"] = re_a_1.sub('', dic["content"])
             re_a_2 = re.compile(r'</a>|<u>|</u>')
             dic["content"] = re_a_2.sub('', dic["content"])
             ls.append(dic)
