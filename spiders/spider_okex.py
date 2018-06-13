@@ -32,8 +32,10 @@ def crawler_okex_information(url, logger):
 #         继续抓取内容
         resp = requests.get(source_link, headers=headers)
         cont_soup = BeautifulSoup(resp.text, "lxml")
-        p_ls = cont_soup.find("div", class_="article-body")
-        content = str(p_ls)
+        p_ls = cont_soup.find("div", class_="article-body").find_all("p")
+        content = ""
+        for p in p_ls:
+            content += p.text.strip()
         source_name = "OKEx"
         dic["title"] = title
         dic["source_link"] = source_link
