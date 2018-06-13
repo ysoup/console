@@ -10,11 +10,20 @@ import re
 
 
 def crawler_cailianpress_information(url, logger):
+    lis = ["比特币", "区块链", "数字货币", "虚拟货币", "加密货币", "ICO"]
     response = requests.get(url)
     data = str_convert_json(response.text)
     logger.info("抓取財联社http返回状态码:%s" % response.status_code)
     crawler_ls = []
-    data = data["data"]["roll_data"]
+    datas = data["data"]["roll_data"]
+
+    data = []
+    for d in datas:
+        for i in lis:
+            if i in d["content"]:
+                data.append(d)
+                break
+
     if len(data) >= 5:
         crawler_ls = [{"content_id": x["id"], "content": fliter_content(x["content"]), "title": x["title"],
                        "source_name": "cailianpress", "author":"", "source_link": ""} for x in data[0:5]]
