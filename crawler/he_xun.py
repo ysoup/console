@@ -31,8 +31,9 @@ def he_xun_information(url):
                         source_name=data["source_name"],
                         title=data["title"],
                         crawler_date=data["crawler_date"],
-                        img_link=data["img_link"],
-                        source_link=data["source_link"]
+                        match_img=data["match_img"],
+                        source_link=data["url"],
+                        author = data["author"]
                     )
                 except Exception as e:
                     logger.error("和讯网抓取持久化出错:%s" % e)

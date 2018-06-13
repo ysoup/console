@@ -57,7 +57,7 @@ def jin_shi_information(url):
 @app.task(ignore_result=True)
 def schudule_crawler_task():
     app.send_task('crawler.jin_shi.jin_shi_information', args=("https://www.jin10.com/newest_1.js",),
-                  queue='jin_shi_task',routing_key='jin_shi_info')
+                  queue='jin_shi_task', routing_key='jin_shi_info')
 
 # if __name__ == "__main__":
 #     jin_shi_information("https://www.jin10.com/newest_1.js")

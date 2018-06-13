@@ -35,7 +35,7 @@ def crawler_okex_information(url, logger):
         p_ls = cont_soup.find("div", class_="article-body").find_all("p")
         content = ""
         for p in p_ls:
-            content = content + p.text
+            content += p.text.strip()
         source_name = "OKEx"
         dic["title"] = title
         dic["source_link"] = source_link

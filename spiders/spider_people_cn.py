@@ -42,16 +42,16 @@ def crawler_people_cn_information(url,logger):
                 if not re.search("http", link):
                     link = "http://capital.people.com.cn" + link
                 img_url += " , " + link
-        content_p = content_ls.find_all("p")
-        content = ""
-        for con in content_p:
-            content += con.text.strip()
-        # 以下为保存的字段
+        filter_em = content_ls.find("em")
+        filter_div = content_ls.find("div", class_="box_pic")
+        content_p = str(content_ls).replace(str(filter_em), "")
+        content_p = content_p.replace(str(filter_div), "")
+        content_p = re.sub(r"\(责任编辑[\s\S]*?\)", "", content_p)
         dic["url"] = content_url
         dic["content_id"] = content_id
         dic["title"] = title
         dic["match_img"] = img_url
-        dic["content"] = content
+        dic["content"] = content_p.strip()
         dic["author"] = ""
         dic["source_name"] ="people_cn"
         ls.append(dic)
