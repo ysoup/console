@@ -9,6 +9,7 @@ import requests
 import re
 
 def crawler_jin_shi_information(url, logger):
+    lis = ["比特币", "区块链", "数字货币", "虚拟货币", "加密货币", "ICO"]
     headers = {
         'User-Agent': 'Mozilla/5.0(Windows;U;WindowsNT6.1;en-us)AppleWebKit/534.50(KHTML,likeGecko)Version/5.1Safari/534.50'
     }
@@ -20,13 +21,16 @@ def crawler_jin_shi_information(url, logger):
     cont_ls = reg.findall(data)
     for cont in cont_ls[:5]:
         dic = {}
-        dic["crawler_time"] = cont[0]
-        dic["content"] = cont[1]
-        dic["content_id"] = cont[2]
-        dic["title"] = ""
-        dic["author"] = ""
-        dic["source_name"] = "jin_shi"
-        crawler_ls.append(dic)
+        for i in lis:
+            if i in cont[1]:
+                dic["crawler_time"] = cont[0]
+                dic["content"] = cont[1]
+                dic["content_id"] = cont[2]
+                dic["title"] = ""
+                dic["author"] = ""
+                dic["source_name"] = "jin_shi"
+                crawler_ls.append(dic)
+                break
     logger.info("抓取金十返回数据:%s" % crawler_ls)
     return crawler_ls
 
