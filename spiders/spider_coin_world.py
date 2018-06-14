@@ -25,7 +25,7 @@ def crawler_coin_world_information(url, logger):
                     if "】" in coin_world_data["content"] and "【" in coin_world_data["content"]:
                         split_ls = coin_world_data["content"].split("【")[1].split("】")
                         dic["title"] = split_ls[0]
-                        dic["content"] = split_ls[0]
+                        dic["content"] = split_ls[1]
                     else:
                         dic["content"] = coin_world_data["content"]
                         dic["title"] = ""

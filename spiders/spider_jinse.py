@@ -26,7 +26,7 @@ def crawler_jinse(url, logger):
                     if "】" in ls["content"] and "【" in ls["content"]:
                         split_ls = ls["content"].split("【")[1].split("】")
                         dic["title"] = split_ls[0]
-                        dic["content"] = split_ls[0]
+                        dic["content"] = split_ls[1]
                     else:
                         dic["content"] = ls["content"]
                         dic["title"] = ""
