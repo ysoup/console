@@ -19,7 +19,7 @@ CELERY_IMPORTS = (
     "crawler.spider",
     "crawler.coin_world",
     "crawler.eight_btc",
-    "crawler.bit_coin",
+    # "crawler.bit_coin",
     "crawler.wall_street",
     "crawler.people_cn",
     "crawler.jin_shi",
@@ -90,7 +90,7 @@ CELERY_QUEUES = (
     Queue('coin_wold_task', exchange=Exchange('coin_world_task'), routing_key='coin_world_info'),
     # Queue('data_syn_task', exchange=Exchange('data_syn_task'), routing_key='data_syn_info'),
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
-    Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
+    # Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
 
     Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info'),
     Queue('people_cn_task', exchange=Exchange('people_cn_task'), routing_key='people_cn_info'),
@@ -156,12 +156,12 @@ CELERYBEAT_SCHEDULE = {
         # 'args': (redis_db),
         'options': {'queue': 'eight_btc_task', 'routing_key': 'eight_btc_info'}
     },
-    'crawler_bit_coin': {
-        'task': 'crawler.bit_coin.schudule_bit_coin_information',
-        'schedule': timedelta(seconds=80),
-        # 'args': (redis_db),
-        'options': {'queue': 'bit_coin_task', 'routing_key': 'bit_coin_info'}
-    },
+    # 'crawler_bit_coin': {
+    #     'task': 'crawler.bit_coin.schudule_bit_coin_information',
+    #     'schedule': timedelta(seconds=80),
+    #     # 'args': (redis_db),
+    #     'options': {'queue': 'bit_coin_task', 'routing_key': 'bit_coin_info'}
+    # },
     'information_duplicate_removal': {
         'task': 'crawler.information_duplicate_removal.schudule_information_duplicate_removal_work',
         'schedule': timedelta(seconds=35),
