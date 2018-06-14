@@ -30,7 +30,7 @@ def crawler_tmt_post_information(url, logger):
     response = requests.get(url, headers=headers)
     data = json.loads(response.text)
     ls = []
-    for x in data["data"][8:9]:
+    for x in data["data"][0:5]:
         dic = {}
         dic["content_id"] = x["post_guid"]
         dic["author"] = x["authors"][0]["username"]
