@@ -30,7 +30,7 @@ def crawler_tmt_post_information(url, logger):
     response = requests.get(url, headers=headers)
     data = json.loads(response.text)
     ls = []
-    for x in data["data"][0:10]:
+    for x in data["data"][8:9]:
         dic = {}
         dic["content_id"] = x["post_guid"]
         dic["author"] = x["authors"][0]["username"]
@@ -44,14 +44,14 @@ def crawler_tmt_post_information(url, logger):
             data.h1.extract()
             p_ls = data.find_all("p")[-5:]
             dic["content"] = str(data)
-            for x in p_ls:
-                dic["content"] = dic["content"].replace(str(x), "")
+            for y in p_ls:
+                dic["content"] = dic["content"].replace(str(y), "")
             img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(dic["content"])
-            home_img = x.find("img").get("src")
-            # for i in x["thumb_image"]:
-            #
-            #     break
-            img_ls.insert(0, home_img)
+            # home_img = x.find("img").get("src")
+            # # for i in x["thumb_image"]:
+            # #
+            # #     break
+            # img_ls.insert(0, home_img)
             dic["match_img"] = ",".join(img_ls)
             dic["url"] = details_url
             dic["source_name"] = "tmt_post"
