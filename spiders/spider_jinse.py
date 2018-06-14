@@ -23,14 +23,19 @@ def crawler_jinse(url, logger):
             for date_key in data["data"].keys():
                 for ls in data["data"]["%s" % date_key]:
                     dic = {}
-                    dic["content"] = ls["content"]
+                    if "】" in ls["content"] and "【" in ls["content"]:
+                        split_ls = ls["content"].split("【")[1].split("】")
+                        dic["title"] = split_ls[0]
+                        dic["content"] = split_ls[0]
+                    else:
+                        dic["content"] = ls["content"]
+                        dic["title"] = ""
                     num = re.search("微信", dic["content"])
                     if num is not None:
                         continue
                     dic["source_link"] = ""
                     dic["content_id"] = ls["id"]
                     dic["source_name"] = "jin_se"
-                    dic["title"] = ""
                     dic["author"] = ""
                     crawler_ls.append(dic)
     logger.info("抓取金色财经返回数据:%s" % crawler_ls)

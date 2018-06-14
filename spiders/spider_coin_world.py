@@ -22,13 +22,19 @@ def crawler_coin_world_information(url, logger):
             if coin_world_ls.__contains__('buttom'):
                 for coin_world_data in coin_world_ls["buttom"]:
                     dic = {}
-                    dic["content"] = coin_world_data["content"]
+                    if "】" in coin_world_data["content"] and "【" in coin_world_data["content"]:
+                        split_ls = coin_world_data["content"].split("【")[1].split("】")
+                        dic["title"] = split_ls[0]
+                        dic["content"] = split_ls[0]
+                    else:
+                        dic["content"] = coin_world_data["content"]
+                        dic["title"] = ""
+
                     num = re.search("微信", dic["content"])
                     if num is not None:
                         continue
                     dic["content_id"] = coin_world_data["newsflash_id"]
                     dic["source_link"] = ""
-                    dic["title"] = ""
                     dic["author"] = ""
                     dic["source_name"] = "coin_world"
                     crawler_ls.append(dic)
