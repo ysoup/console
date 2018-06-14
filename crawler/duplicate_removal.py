@@ -77,7 +77,8 @@ def duplicate_removal_work():
                 query_data = NewFlashInformation.select().where(NewFlashInformation.content_id == com_data["content_id"],
                                                                 NewFlashInformation.source_name == com_data["source_name"])
                 if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                    category, is_show, modify_tag, content = check_content_type(com_data["content"], category_data,
+                    category, is_show, modify_tag, content = check_content_type(com_data["title"]+com_data["content"],
+                                                                                category_data,
                                                                                 rule_data)
                     logger.info("快讯入库:%s" % com_data)
                     NewFlashInformation.create(content=content,
@@ -115,7 +116,8 @@ def duplicate_removal_work():
                         NewFlashInformation.content_id == com_data["content_id"],
                         NewFlashInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
-                        category, is_show, modify_tag, content = check_content_type(com_data["content"], category_data,
+                        category, is_show, modify_tag, content = check_content_type(com_data["title"]+com_data["content"],
+                                                                                    category_data,
                                                                                     rule_data)
                         logger.info("快讯入库:%s" % com_data)
                         NewFlashInformation.create(content=content,
