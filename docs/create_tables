@@ -1,0 +1,285 @@
+爬虫上线
+
+==========================快讯coin_world================================
+CREATE TABLE `bianews_information` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content_id` varchar(11) NOT NULL COMMENT '内容编号',
+  `content` varchar(1000) DEFAULT NULL COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_link` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`,`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `btc_information` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content_id` varchar(225) NOT NULL DEFAULT ' ' COMMENT '内容编号',
+  `content` varchar(500) DEFAULT NULL COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_link` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `cailianpress_information` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content_id` varchar(11) NOT NULL COMMENT '内容编号',
+  `content` varchar(500) DEFAULT NULL COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_link` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`,`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `huo_bi_information` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content_id` varchar(11) NOT NULL COMMENT '内容编号',
+  `content` varchar(500) DEFAULT NULL COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_link` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`,`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `kr_information` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content_id` varchar(11) NOT NULL COMMENT '内容编号',
+  `content` varchar(500) DEFAULT NULL COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_link` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`,`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `binance_notice_information` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`title` VARCHAR(100) NOT NULL DEFAULT '"' COMMENT '标题',
+	`source_link` VARCHAR(200) NOT NULL DEFAULT '"' COMMENT '来源链接',
+	`content_id` VARCHAR(100) NOT NULL DEFAULT '"' COMMENT '内容id',
+	`content` TEXT NOT NULL COMMENT '内容',
+	`source_name` VARCHAR(20) NOT NULL DEFAULT '"' COMMENT '资源来源名称',
+	`create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	`update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+	PRIMARY KEY (`id`)
+)
+COMMENT='binance公告中心数据表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+
+CREATE TABLE `jin_shi_info` (
+	`id` INT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`crawler_time` VARCHAR(50) NOT NULL DEFAULT '"' COMMENT '网页上的时间',
+	`content` VARCHAR(500) NOT NULL DEFAULT '"' COMMENT '内容',
+	`content_id` VARCHAR(20) NOT NULL DEFAULT '"' COMMENT '内容id',
+	`title` VARCHAR(10) NOT NULL DEFAULT '"' COMMENT '标题',
+	`author` VARCHAR(10) NOT NULL DEFAULT '"' COMMENT '作者',
+	`source_name` VARCHAR(30) NOT NULL DEFAULT '"' COMMENT '抓取来源名称',
+	`create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	`update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+	PRIMARY KEY (`id`)
+)
+COMMENT='金十数据表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+
+CREATE TABLE `okex_information` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`title` VARCHAR(50) NOT NULL DEFAULT '"' COMMENT '标题',
+	`source_link` VARCHAR(200) NOT NULL DEFAULT '"' COMMENT '内容链接',
+	`content_id` VARCHAR(50) NOT NULL DEFAULT '“' COMMENT '内容id',
+	`content` VARCHAR(1000) NOT NULL DEFAULT '"' COMMENT '内容',
+	`source_name` VARCHAR(10) NOT NULL DEFAULT '"' COMMENT '资源来源名称',
+	`create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	`update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+	PRIMARY KEY (`id`)
+)
+COMMENT='okex数据表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+CREATE TABLE `wall_street_information` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`content_id` INT(11) NOT NULL COMMENT '内容编号',
+	`title` VARCHAR(500) NOT NULL DEFAULT '“' COMMENT '标题',
+	`content` TEXT NULL COMMENT '内容',
+	`author` VARCHAR(128) NULL DEFAULT '”' COMMENT '作者',
+	`create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	`update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+	`source_link` VARCHAR(500) NOT NULL DEFAULT '  ' COMMENT '数据源链接',
+	PRIMARY KEY (`id`)
+)
+COMMENT='华尔街快讯表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+
+
+
+======================================资讯eight_bite==============================
+CREATE TABLE `chaindd_information` (
+  `content_id` int(11) NOT NULL,
+  `content` text COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_name` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `img` varchar(2000) DEFAULT NULL COMMENT '图片',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `crawler_url` varchar(225) DEFAULT NULL COMMENT '抓取链接',
+  PRIMARY KEY (`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `sina_information` (
+  `content_id` varchar(128) NOT NULL,
+  `content` text COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_name` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `img` varchar(500) DEFAULT NULL COMMENT '图片',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `crawler_url` varchar(225) DEFAULT NULL COMMENT '抓取链接',
+  PRIMARY KEY (`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `tmt_post_information` (
+  `content_id` int(11) NOT NULL,
+  `content` text COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_name` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `img` varchar(1500) DEFAULT NULL COMMENT '图片',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `crawler_url` varchar(225) DEFAULT NULL COMMENT '抓取链接',
+  PRIMARY KEY (`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `wall_streetcn_information` (
+  `content_id` int(11) NOT NULL,
+  `content` text COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_name` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `img` varchar(500) DEFAULT NULL COMMENT '图片',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `crawler_url` varchar(225) DEFAULT NULL COMMENT '抓取链接',
+  PRIMARY KEY (`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `wang_yi_information` (
+  `content_id` varchar(128) NOT NULL,
+  `content` text COMMENT '内容',
+  `title` varchar(500) DEFAULT NULL COMMENT '标题',
+  `author` varchar(128) DEFAULT NULL COMMENT '作者',
+  `source_name` varchar(500) DEFAULT NULL COMMENT '数据源链接',
+  `img` varchar(500) DEFAULT NULL COMMENT '图片',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `crawler_url` varchar(225) DEFAULT NULL COMMENT '抓取链接',
+  PRIMARY KEY (`content_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `he_xun_information` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`title` VARCHAR(100) NOT NULL DEFAULT '"' COMMENT '标题',
+	`source_link` VARCHAR(200) NOT NULL DEFAULT '"' COMMENT '资源链接',
+	`content_id` BIGINT(20) NOT NULL COMMENT '内容id',
+	`content` TEXT NOT NULL COMMENT '内容',
+	`source_name` VARCHAR(10) NOT NULL DEFAULT '"' COMMENT '内容来源名称',
+	`match_img` VARCHAR(1000) NOT NULL DEFAULT '"' COMMENT '图片链接',
+	`author` VARCHAR(10) NOT NULL DEFAULT '"' COMMENT '作者',
+	`crawler_date` VARCHAR(20) NOT NULL DEFAULT '"' COMMENT '网页上的时间',
+	`create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	`update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+	PRIMARY KEY (`id`)
+)
+COMMENT='和讯网数据表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+
+CREATE TABLE `people_cn_information` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`content_id` VARCHAR(50) NOT NULL DEFAULT '\'\'' COMMENT '内容id',
+	`source_name` VARCHAR(50) NOT NULL DEFAULT '\'\'' COMMENT '资源名称',
+	`author` VARCHAR(50) NOT NULL DEFAULT '\'\'' COMMENT '作者',
+	`title` VARCHAR(100) NOT NULL DEFAULT '\'\'' COMMENT '标题',
+	`content` TEXT NOT NULL COMMENT '内容',
+	`crawler_url` VARCHAR(200) NOT NULL DEFAULT '\'\'' COMMENT '资讯链接',
+	`img` VARCHAR(1000) NOT NULL DEFAULT '\'\'' COMMENT '图片url',
+	`update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+	`create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+	PRIMARY KEY (`id`)
+)
+COMMENT='人民网资讯数据表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+
+
+===========================new_flash====================================
+ALTER TABLE `new_flash`.`new_flash_information`
+CHANGE COLUMN `content_id` `content_id` VARCHAR(128) NOT NULL DEFAULT ' ' COMMENT '内容编号' ;
+
+ALTER TABLE `new_flash`.`new_flash_exclusive_information`
+CHANGE COLUMN `content_id` `content_id` VARCHAR(128) NOT NULL DEFAULT ' ' COMMENT '内容编号' ;
+
+ALTER TABLE `new_flash`.`new_flash_exclusive_information`
+CHANGE COLUMN `tag` `tag` VARCHAR(128) NULL DEFAULT ' ' COMMENT '标签' ;
+ALTER TABLE `new_flash`.`new_flash_information`
+CHANGE COLUMN `news_url` `news_url` VARCHAR(500) NULL DEFAULT ' ' COMMENT '资讯生成快讯链接' ;
+
+
+ALTER TABLE `new_flash`.`new_flash_information`
+ADD COLUMN `tag` VARCHAR(128) NULL DEFAULT ' ' COMMENT '标签' AFTER `highlight_color`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
