@@ -88,7 +88,7 @@ def duplicate_removal_work():
                                                category=category,
                                                is_show=is_show,
                                                re_tag=modify_tag,
-                                               title=com_data["title"]
+                                               title=title
                                                )
         else:
             for com_data in data:
@@ -128,7 +128,7 @@ def duplicate_removal_work():
                                                    category=category,
                                                    is_show=is_show,
                                                    re_tag=modify_tag,
-                                                   title=com_data["title"]
+                                                   title=title
                                                    )
         # 清空数据集合
         # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
