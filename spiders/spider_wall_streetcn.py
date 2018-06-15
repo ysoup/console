@@ -24,6 +24,10 @@ def crawler_wall_streetcn_information(url, logger):
                     if "weixin.qq" in details_url:
                         data = soup.find_all("div", "rich_media_content")[0]
                         data = data.find("section")
+
+                        del_section = data.find("section", style="max-width: 100%;border-width: 0px;border-style: initial;border-color: initial;height: 2.5em;border-radius: 2em;background-color: rgb(0, 187, 236);box-sizing: border-box !important;word-wrap: break-word !important;")
+                        del_section2 = data.find("section", style="max-width: 100%;border-width: 0px;border-style: initial;border-color: initial;line-height: 24px;vertical-align: top;box-sizing: border-box !important;word-wrap: break-word !important;")
+                        del_em = data.find("em", style="max-width: 100%;font-size: 14px;box-sizing: border-box !important;word-wrap: break-word !important;")
                         if data is None:
                             continue
                         else:
@@ -44,7 +48,9 @@ def crawler_wall_streetcn_information(url, logger):
                                 new_section_ls = section_ls[-17:]
                                 for x in new_section_ls:
                                     data = str(data).replace(str(x), "")
-                            dic["content"] = str(data)
+                            datas = str(data).replace(str(del_section), "").strip()
+                            datas = datas.replace(str(del_em), "").strip()
+                            dic["content"] = datas.replace(str(del_section2), "").strip()
                     elif "https://wallstreetcn.com" in details_url:
                         print(details_url)
                         data = soup.find_all("div", "article__content")[0]
@@ -53,7 +59,9 @@ def crawler_wall_streetcn_information(url, logger):
                         dic["match_img"] = ",".join(img_ls)
                         dic["url"] = details_url
                         dic["source_name"] = "wall_streetcn"
-                        dic["content"] = str(data)
+                        datas = str(data).replace(str(del_section), "").strip()
+                        datas = datas.replace(str(del_em), "").strip()
+                        dic["content"] = datas.replace(str(del_section2), "").strip()
                     else:
                         continue
                     ls.append(dic)
