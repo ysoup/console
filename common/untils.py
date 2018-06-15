@@ -86,16 +86,18 @@ def check_content_type(title, str1, data, rule_data):
     replace_ls = [x["origin_name"]for x in rule_data]
     modify_tag = 0
     for x in replace_ls:
-        if x in str1:
+        if x in str1 or x in title:
             modify_tag = 1
             break
     for x in rule_data:
         str1 = re.sub(x["origin_name"], x["rule_name"], str1)
+        title = re.sub(x["origin_name"], x["rule_name"], title)
+
     # str1 = re.sub("币世界|小葱|金色财经|币 世 界|《币 世 界》|《币世界》", "爱必投", str1)
     # str1 = re.sub("Bitfinex", "现货", str1)
     # str1 = re.sub("newsbtc", "数资界媒体", str1)
     # str1 = re.sub("bishijie", "aibilink", str1)
-    return category, is_show, modify_tag, str1
+    return category, is_show, modify_tag, str1, title
 
 
     # category1 = re.search(r"监管|政策|法律|央行|实施|违法|财长|出台", str1)
