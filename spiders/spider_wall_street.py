@@ -26,7 +26,13 @@ def crawler_wall_street_information(url,logger):
                 title = title_cont[0][1]
                 content = title_cont[0][2]
                 dic["title"] = title
+
+                re_a_1 = re.compile(r'<a[\s\S]*?href=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>')
+                re_a_2 = re.compile(r'</a>|<u>|</u>')
+                content = re_a_1.sub('', content)
+                content = re_a_2.sub('', content)
                 dic["content"] = content
+
                 dic["content_id"] = items_ls["id"]
                 dic["source_link"] = items_ls["global_more_uri"].replace("wscn","https",1)
                 dic["author"] = ""
