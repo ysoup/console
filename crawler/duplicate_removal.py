@@ -90,11 +90,11 @@ def duplicate_removal_work():
                 flag = 1
                 logger.info("快讯库有数据处理:%s" % com_data)
                 for row in content_ls:
-                    content_str1 = com_data["content"]
-                    content_str2 = row["content"]
+                    content_str1 = com_data["content"] if com_data["content"] else ""
+                    content_str2 = row["content"] if row["content"] else ""
 
-                    title_str1 = com_data["title"]
-                    title_str2 = row["title"]
+                    title_str1 = com_data["title"] if com_data["title"] else ""
+                    title_str2 = row["title"] if row["title"] else ""
 
                     # 内容
                     distance1 = get_str_distance(content_str1, content_str2)
