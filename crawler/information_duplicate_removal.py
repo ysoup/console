@@ -15,6 +15,7 @@ from common.initlog import Logger
 from common.get_article_tag import GetBaiduNlp
 from common.get_article_content import Extractor
 from common.hadoop_service import upload_images_hdfs, img_cut_down
+from common.db_utils import *
 
 logger = Logger(kind="work_path", name="duplicate_removal")
 
@@ -58,13 +59,9 @@ def information_duplicate_removal_work():
         # 去重数据异步入库并且查询当天数据
         # 链接服务器操作数据库
         # todo 异步查询
-        rows = NewFlashExclusiveInformation.select().order_by(NewFlashExclusiveInformation.create_time.desc()).limit(1000)
-        content_ls = []
-        for row in rows:
-            init_time = time.strptime(str(row.create_time), "%Y-%m-%d %H:%M:%S")
-            new_time = time.strftime("%Y-%m-%d", init_time)
-            if new_time == date:
-                content_ls.append(row)
+        sql = "SELECT * FROM new_flash_exclusive_information where TIMESTAMPDIFF(day, create_time, now()) <= 3"
+        rows = excute_sql(NewFlashExclusiveInformation, sql)
+        content_ls = model_to_dicts(rows)
         logger.info("数据去重服务查询当天资讯:%s" % content_ls)
         if len(content_ls) == GetListLength.GET_LIST_LENGTH.value:
             for com_data in data:

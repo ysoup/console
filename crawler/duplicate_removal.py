@@ -9,9 +9,9 @@ from celerymain.main import app
 from common.initRedis import connetcredis
 from common.untils import *
 from database.new_flash_model import NewFlashInformation, NewFlashCategory
-import time
 from common.constants import GetListLength, DuplicateRemovalCache
 from common.initlog import Logger
+from common.db_utils import *
 
 logger = Logger(kind="work_path", name="duplicate_removal")
 
@@ -43,33 +43,28 @@ def duplicate_removal_work():
             for j in range(i + 1, len(data)):
                 if j >= len(data):
                     break
-                str1 = data[i]["content"]
-                str2 = data[j]["content"]
-                # 全部
-                distance = get_str_distance(str1, str2)
-                str3 = str1.split("】")
-                str4 = str2.split("】")
+                content_str1 = data[i]["content"]
+                content_str2 = data[j]["content"]
+
+                title_str1 = data[i]["title"]
+                title_str2 = data[j]["title"]
+
                 # 内容
-                distance1 = get_str_distance(str3[-1], str4[-1])
+                distance1 = get_str_distance(content_str1, content_str2)
                 # 标题
-                distance2 = get_str_distance(str3[0], str4[0])
+                distance2 = get_str_distance(title_str1, title_str2)
                 # 内容前30个字符
-                distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
-                if distance <= 19 or distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
-                    print(data[j])
+                distance3 = get_str_distance(content_str1[0:25], content_str2[0:25])
+                if distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
                     logger.info("快讯数据去重服务重复数据:%s" % data[j])
                     del data[j]
             i = i + 1
         # 去重数据异步入库并且查询当天数据
         # 链接服务器操作数据库
         # todo 异步查询
-        rows = NewFlashInformation.select().order_by(NewFlashInformation.create_time.desc()).limit(1000)
-        content_ls = []
-        for row in rows:
-            init_time = time.strptime(str(row.create_time), "%Y-%m-%d %H:%M:%S")
-            new_time = time.strftime("%Y-%m-%d", init_time)
-            if new_time == date:
-                content_ls.append(row)
+        sql = "SELECT * FROM new_flash_information where TIMESTAMPDIFF(day, create_time, now()) <= 1"
+        rows = excute_sql(NewFlashInformation, sql)
+        content_ls = model_to_dicts(rows)
         logger.info("数据去重服务以后快讯:%s" % data)
         if len(content_ls) == GetListLength.GET_LIST_LENGTH.value:
             for com_data in data:
@@ -95,19 +90,19 @@ def duplicate_removal_work():
                 flag = 1
                 logger.info("快讯库有数据处理:%s" % com_data)
                 for row in content_ls:
-                    str1 = com_data["content"]
-                    str2 = row.content
-                    # 全部
-                    distance = get_str_distance(str1, str2)
-                    str3 = str1.split("】")
-                    str4 = str2.split("】")
+                    content_str1 = com_data["content"]
+                    content_str2 = row.content
+
+                    title_str1 = com_data["title"]
+                    title_str2 = row.title
+
                     # 内容
-                    distance1 = get_str_distance(str3[-1], str4[-1])
+                    distance1 = get_str_distance(content_str1, content_str2)
                     # 标题
-                    distance2 = get_str_distance(str3[0], str4[0])
+                    distance2 = get_str_distance(title_str1, title_str2)
                     # 内容前30个字符
-                    distance3 = get_str_distance((str3[-1])[0:25], (str4[-1])[0:25])
-                    if distance <= 15 or distance1 <= 15 or distance2 <= 10 or distance3 <= 10:
+                    distance3 = get_str_distance(content_str1[0:25], content_str2[0:25])
+                    if distance1 <= 15 or distance2 <= 10 or distance3 <= 10:
                         logger.info("快讯库有数据处理相似度数据:%s" % row.content)
                         flag = 0
                         break
