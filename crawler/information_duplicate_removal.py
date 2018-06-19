@@ -9,7 +9,6 @@ from celerymain.main import app
 from common.initRedis import connetcredis
 from common.untils import *
 from database.new_flash_model import NewFlashExclusiveInformation
-import time
 from common.constants import GetListLength, DuplicateRemovalCache
 from common.initlog import Logger
 from common.get_article_tag import GetBaiduNlp
@@ -91,10 +90,10 @@ def information_duplicate_removal_work():
                 flag = 1
                 for row in content_ls:
                     content_1 = com_data["content"]
-                    content_2 = row.content
+                    content_2 = row["content"]
                     distance, ext_1_text, ext_2_text = get_content_by_reg(content_1, content_2)
                     # 标题
-                    distance1 = get_str_distance(com_data["title"], row.title)
+                    distance1 = get_str_distance(com_data["title"], row["title"])
 
                     if distance <= 20 or distance1 <= 18:
                         flag = 0

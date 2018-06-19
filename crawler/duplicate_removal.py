@@ -91,10 +91,10 @@ def duplicate_removal_work():
                 logger.info("快讯库有数据处理:%s" % com_data)
                 for row in content_ls:
                     content_str1 = com_data["content"]
-                    content_str2 = row.content
+                    content_str2 = row["content"]
 
                     title_str1 = com_data["title"]
-                    title_str2 = row.title
+                    title_str2 = row["title"]
 
                     # 内容
                     distance1 = get_str_distance(content_str1, content_str2)
@@ -103,7 +103,7 @@ def duplicate_removal_work():
                     # 内容前30个字符
                     distance3 = get_str_distance(content_str1[0:25], content_str2[0:25])
                     if distance1 <= 15 or distance2 <= 10 or distance3 <= 10:
-                        logger.info("快讯库有数据处理相似度数据:%s" % row.content)
+                        logger.info("快讯库有数据处理相似度数据:%s" % row["content"])
                         flag = 0
                         break
                 logger.info("快讯库有数据处理flag:%s" % flag)
