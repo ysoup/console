@@ -90,7 +90,7 @@ CELERY_QUEUES = (
     Queue('coin_wold_task', exchange=Exchange('coin_world_task'), routing_key='coin_world_info'),
     # Queue('data_syn_task', exchange=Exchange('data_syn_task'), routing_key='data_syn_info'),
     Queue('eight_btc_task', exchange=Exchange('eight_btc_task'), routing_key='eight_btc_info'),
-    Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
+    # Queue('bit_coin_task', exchange=Exchange('bit_coin_task'), routing_key='bit_coin_info'),
 
     Queue('wall_street_task', exchange=Exchange('wall_street_task'), routing_key='wall_street_info'),
     Queue('people_cn_task', exchange=Exchange('people_cn_task'), routing_key='people_cn_info'),
