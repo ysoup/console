@@ -54,7 +54,7 @@ if load_dict.__contains__('redis'):
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
 
 # 并发worker数
-CELERYD_CONCURRENCY = 4
+CELERYD_CONCURRENCY = 3
 
 # 时区设置
 CELERY_TIMEZONE = 'Asia/Shanghai'
@@ -128,7 +128,7 @@ CELERY_QUEUES = (
 CELERYBEAT_SCHEDULE = {
     'jinse_crawler_schedule': {
         'task': 'crawler.spider.schudule_crawler_task',
-        'schedule': timedelta(seconds=70),
+        'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'jin_se_task', 'routing_key': 'jin_se_info'}
     },
@@ -140,7 +140,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'crawler_coin_world': {
         'task': 'crawler.coin_world.schudule_coin_world_information',
-        'schedule': timedelta(seconds=70),
+        'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'coin_wold_task', 'routing_key': 'coin_wold_info'}
     },
@@ -170,7 +170,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'wall_street_schedule': {
         'task': 'crawler.wall_street.schudule_crawler_task',
-        'schedule': timedelta(seconds=70),
+        'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'wall_street_task', 'routing_key': 'wall_street_info'}
     },
