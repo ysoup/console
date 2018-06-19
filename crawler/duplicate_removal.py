@@ -43,11 +43,11 @@ def duplicate_removal_work():
             for j in range(i + 1, len(data)):
                 if j >= len(data):
                     break
-                content_str1 = data[i]["content"]
-                content_str2 = data[j]["content"]
+                content_str1 = data[i]["content"] if data[i]["content"] else ""
+                content_str2 = data[j]["content"] if data[j]["content"] else ""
 
-                title_str1 = data[i]["title"]
-                title_str2 = data[j]["title"]
+                title_str1 = data[i]["title"] if data[i]["title"] else ""
+                title_str2 = data[j]["title"] if data[j]["title"] else ""
 
                 # 内容
                 distance1 = get_str_distance(content_str1, content_str2)
