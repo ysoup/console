@@ -54,7 +54,7 @@ if load_dict.__contains__('redis'):
 # CELERY_RESULT_BACKEND = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT) + '/10'
 
 # 并发worker数
-CELERYD_CONCURRENCY = 2
+CELERYD_CONCURRENCY = 3
 
 # 时区设置
 CELERY_TIMEZONE = 'Asia/Shanghai'
