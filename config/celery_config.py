@@ -62,7 +62,7 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 # 非常重要,有些情况下可以防止死锁
 CELERYD_FORCE_EXECV = True
 
-CELERYD_PREFETCH_MULTIPLIER = 6
+CELERYD_PREFETCH_MULTIPLIER = 2
 
 # 每个worker最多执行万100个任务就会被销毁，可防止内存泄露
 CELERYD_MAX_TASKS_PER_CHILD = 200
@@ -134,7 +134,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'crawler_duplicate_schedule': {
         'task': 'crawler.duplicate_removal.schudule_duplicate_removal_work',
-        'schedule': timedelta(seconds=15),
+        'schedule': timedelta(seconds=25),
         # 'args': (redis_db),
         'options': {'queue': 'duplicate_removal_task', 'routing_key': 'duplicate_removal_info'}
     },
