@@ -18,11 +18,14 @@ def crawler_btc_information(url, logger):
         dic = {}
         a_tag = x.find("a")
         dic["title"] = a_tag.text
-        dic["content"] = x.find("div", "fast_news_content").text
         dic["content_id"] = str(a_tag.get("href").split("/")[-1])
         dic["source_link"] = ""
         dic["author"] = ""
         dic["source_name"] = "btc_news"
+        detail_url = a_tag.get("href")
+        response = requests.get(detail_url)
+        detail = BeautifulSoup(response.text, "lxml")
+        dic["content"] = detail.find_all("p")[1].text
         crawler_ls.append(dic)
     logger.info("抓取币世界返回数据:%s" % crawler_ls)
     return crawler_ls
