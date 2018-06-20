@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 def crawler_btc_information(url, logger):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "lxml")
-    logger.info("抓取币世界http返回状态码:%s" % response.status_code)
+    logger.info("抓取巴比特快讯http返回状态码:%s" % response.status_code)
     ls = soup.find_all("div", "article-title article-title_news")
     crawler_ls = []
     for x in ls[0:5]:
@@ -27,5 +27,5 @@ def crawler_btc_information(url, logger):
         detail = BeautifulSoup(response.text, "lxml")
         dic["content"] = detail.find_all("p")[1].text
         crawler_ls.append(dic)
-    logger.info("抓取币世界返回数据:%s" % crawler_ls)
+    logger.info("抓取巴比特快讯返回数据:%s" % crawler_ls)
     return crawler_ls
