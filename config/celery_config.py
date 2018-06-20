@@ -134,7 +134,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'crawler_duplicate_schedule': {
         'task': 'crawler.duplicate_removal.schudule_duplicate_removal_work',
-        'schedule': timedelta(seconds=25),
+        'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'duplicate_removal_task', 'routing_key': 'duplicate_removal_info'}
     },
