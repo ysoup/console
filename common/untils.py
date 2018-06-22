@@ -115,7 +115,7 @@ def check_content_type(title, str1, data, rule_data):
     # return category
 
 
-def public_compare_content(content_ls, com_data):
+def public_compare_content(content_ls, com_data, logger):
     flag = 1
     for row in content_ls:
         content_str1 = com_data["content"] if com_data["content"] else ""

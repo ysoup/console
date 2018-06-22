@@ -128,19 +128,19 @@ CELERY_QUEUES = (
 CELERYBEAT_SCHEDULE = {
     'jinse_crawler_schedule': {
         'task': 'crawler.spider.schudule_crawler_task',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=40),
         # 'args': (redis_db),
         'options': {'queue': 'jin_se_task', 'routing_key': 'jin_se_info'}
     },
     'crawler_duplicate_schedule': {
         'task': 'crawler.duplicate_removal.schudule_duplicate_removal_work',
-        'schedule': timedelta(seconds=35),
+        'schedule': timedelta(seconds=45),
         # 'args': (redis_db),
         'options': {'queue': 'duplicate_removal_task', 'routing_key': 'duplicate_removal_info'}
     },
     'crawler_coin_world': {
         'task': 'crawler.coin_world.schudule_coin_world_information',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=40),
         # 'args': (redis_db),
         'options': {'queue': 'coin_wold_task', 'routing_key': 'coin_wold_info'}
     },
@@ -164,7 +164,7 @@ CELERYBEAT_SCHEDULE = {
     # },
     'information_duplicate_removal': {
         'task': 'crawler.information_duplicate_removal.schudule_information_duplicate_removal_work',
-        'schedule': timedelta(seconds=35),
+        'schedule': timedelta(seconds=60),
         # 'args': (redis_db),
         'options': {'queue': 'news_duplicate_removal_task', 'routing_key': 'news_duplicate_removal_info'}
     },
@@ -182,7 +182,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'people_cn_schedule': {
         'task': 'crawler.people_cn.schudule_people_cn_information',
-        'schedule': timedelta(seconds=70),
+        'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
         'options': {'queue': 'people_cn_task', 'routing_key': 'people_cn_info'}
     },
@@ -194,7 +194,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'crawler_cailianpress_new_flash': {
         'task': 'crawler.cailianpress_new_flash.schudule_cailianpress_information',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=50),
         # 'args': (redis_db),
         'options': {'queue': 'cailianpress_new_flash_task', 'routing_key': 'cailianpress_new_flash_info'}
     },
@@ -212,37 +212,37 @@ CELERYBEAT_SCHEDULE = {
     # },
     'crawler_chaindd_new_flash': {
         'task': 'crawler.chaindd_news.schudule_chaindd_information',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
         'options': {'queue': 'chaindd_task', 'routing_key': 'chaindd_info'}
     },
     'crawler_wall_streetcn_new_flash': {
         'task': 'crawler.wall_streetcn_news.schudule_wall_streetcn_information',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
         'options': {'queue': 'wall_streetcn_task', 'routing_key': 'wall_streetcn_info'}
     },
     'crawler_tmt_post_new_flash': {
         'task': 'crawler.tmt_post.schudule_tmt_post_information',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
         'options': {'queue': 'tmt_post_task', 'routing_key': 'tmt_post_info'}
     },
     'crawler_wang_yi_new_flash': {
         'task': 'crawler.wang_yi_information.schudule_wang_yi_information',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
         'options': {'queue': 'wang_yi_task', 'routing_key': 'wang_yi_info'}
     },
     'crawler_sina_new_flash': {
         'task': 'crawler.sina_news.schudule_sina_information',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
         'options': {'queue': 'sina_news_task', 'routing_key': 'sina_news_info'}
     },
     'crawler_jin_shi': {
         'task': 'crawler.jin_shi.schudule_crawler_task',
-        'schedule': timedelta(seconds=45),
+        'schedule': timedelta(seconds=50),
         # 'args': (redis_db),
         'options': {'queue': 'jin_shi_task', 'routing_key': 'jin_shi_info'}
     },
@@ -260,7 +260,7 @@ CELERYBEAT_SCHEDULE = {
     # },
     'crawler_he_xun': {
         'task': 'crawler.he_xun.schudule_he_xun_information',
-        'schedule': timedelta(seconds=70),
+        'schedule': timedelta(seconds=90),
         # 'args': (redis_db),
         'options': {'queue': 'he_xun_task', 'routing_key': 'he_xun_info'}
     }

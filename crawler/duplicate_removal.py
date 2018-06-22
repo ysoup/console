@@ -88,7 +88,7 @@ def duplicate_removal_work():
         else:
             for com_data in data:
                 logger.info("快讯库有数据处理:%s" % com_data)
-                flag = public_compare_content(content_ls, com_data)
+                flag = public_compare_content(content_ls, com_data, logger)
                 logger.info("快讯库有数据处理flag:%s" % flag)
                 if flag == 1:
                     query_data = NewFlashInformation.select().where(
@@ -104,7 +104,7 @@ def duplicate_removal_work():
                               "TIMESTAMPDIFF(MINUTE ,create_time,now()) <= 5 and is_show=1 order by create_time desc"
                         second_data = excute_sql(NewFlashInformation, sql)
                         second_content_ls = model_to_dicts(second_data)
-                        second_flag = public_compare_content(second_content_ls, com_data)
+                        second_flag = public_compare_content(second_content_ls, com_data, logger)
                         if second_flag == 1:
                             NewFlashInformation.create(content=content,
                                                        content_id=com_data["content_id"],
