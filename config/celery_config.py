@@ -58,7 +58,7 @@ CELERYD_CONCURRENCY = 3
 
 # 时区设置
 CELERY_TIMEZONE = 'Asia/Shanghai'
-
+CELERY_ENABLE_UTC = True
 # 非常重要,有些情况下可以防止死锁
 CELERYD_FORCE_EXECV = True
 
@@ -70,12 +70,12 @@ CELERYD_MAX_TASKS_PER_CHILD = 200
 CELERYD_TASK_TIME_LIMIT = 36000    # 单个任务的运行时间不超过此值，否则会被SIGKILL 信号杀死
 
 # BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 90}
-
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 43200}
 # 任务发出后，经过一段时间还未收到acknowledge , 就将任务重新交给其他worker执行
 CELERY_DISABLE_RATE_LIMITS = True
 
 
-CELERY_TASK_SERIALIZER='json'
+CELERY_TASK_SERIALIZER = 'json'
 
 # 定义任务队列
 # 路由健 以"task."开头的信息都进入default
