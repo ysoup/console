@@ -113,3 +113,25 @@ def check_content_type(title, str1, data, rule_data):
     # elif category4 is not None:
     #     category = 3
     # return category
+
+
+def public_compare_content(content_ls, com_data):
+    flag = 1
+    for row in content_ls:
+        content_str1 = com_data["content"] if com_data["content"] else ""
+        content_str2 = row["content"] if row["content"] else ""
+
+        title_str1 = com_data["title"] if com_data["title"] else ""
+        title_str2 = row["title"] if row["title"] else ""
+
+        # 内容
+        distance1 = get_str_distance(content_str1, content_str2)
+        # 标题
+        distance2 = get_str_distance(title_str1, title_str2)
+        # 内容前30个字符
+        distance3 = get_str_distance(content_str1[0:25], content_str2[0:25])
+        if distance1 <= 15 or distance2 <= 10 or distance3 <= 10:
+            logger.info("快讯库有数据处理相似度数据:%s" % row["content"])
+            flag = 0
+            break
+    return flag

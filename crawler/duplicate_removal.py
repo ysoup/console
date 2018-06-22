@@ -87,25 +87,8 @@ def duplicate_removal_work():
                                                )
         else:
             for com_data in data:
-                flag = 1
                 logger.info("快讯库有数据处理:%s" % com_data)
-                for row in content_ls:
-                    content_str1 = com_data["content"] if com_data["content"] else ""
-                    content_str2 = row["content"] if row["content"] else ""
-
-                    title_str1 = com_data["title"] if com_data["title"] else ""
-                    title_str2 = row["title"] if row["title"] else ""
-
-                    # 内容
-                    distance1 = get_str_distance(content_str1, content_str2)
-                    # 标题
-                    distance2 = get_str_distance(title_str1, title_str2)
-                    # 内容前30个字符
-                    distance3 = get_str_distance(content_str1[0:25], content_str2[0:25])
-                    if distance1 <= 15 or distance2 <= 10 or distance3 <= 10:
-                        logger.info("快讯库有数据处理相似度数据:%s" % row["content"])
-                        flag = 0
-                        break
+                flag = public_compare_content(content_ls, com_data)
                 logger.info("快讯库有数据处理flag:%s" % flag)
                 if flag == 1:
                     query_data = NewFlashInformation.select().where(
@@ -117,14 +100,20 @@ def duplicate_removal_work():
                                                                                            category_data,
                                                                                            rule_data)
                         logger.info("快讯入库:%s" % com_data)
-                        NewFlashInformation.create(content=content,
-                                                   content_id=com_data["content_id"],
-                                                   source_name=com_data["source_name"],
-                                                   category=category,
-                                                   is_show=is_show,
-                                                   re_tag=modify_tag,
-                                                   title=title
-                                                   )
+                        sql = "SELECT * FROM new_flash_information where " \
+                              "TIMESTAMPDIFF(MINUTE ,create_time,now()) <= 5 and is_show=1 order by create_time desc"
+                        second_data = excute_sql(NewFlashInformation, sql)
+                        second_content_ls = model_to_dicts(second_data)
+                        second_flag = public_compare_content(second_content_ls, com_data)
+                        if second_flag == 1:
+                            NewFlashInformation.create(content=content,
+                                                       content_id=com_data["content_id"],
+                                                       source_name=com_data["source_name"],
+                                                       category=category,
+                                                       is_show=is_show,
+                                                       re_tag=modify_tag,
+                                                       title=title
+                                                       )
         # 清空数据集合
         # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
         logger.info("=====快讯数据去重服务结束====")
