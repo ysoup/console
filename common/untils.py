@@ -64,7 +64,7 @@ def check_news_content_type(str1, data):
 
 def check_content_type(title, str1, data, rule_data):
     filter_content = ["空投", "糖果", "正式上线", "上币", "上币结果", "投票结果", "直播", "金色讲堂", "利好", "利空一览表",
-                      "分享会", "公开课", "名家论市", "币市龙虎榜", "币市风云榜", "(推广)", "板块风云榜", "（推广）"]
+                      "分享会", "公开课", "名家论市", "币市龙虎榜", "币市风云榜", "(推广)", "板块风云榜", "（推广）", "小葱早餐"]
     modfiy_ls = ["币世界", "小葱", "金色财经", "币 世 界", "bishijie.com", "bishijie", "《币 世 界》（bishijie.com）",
                  "《币世界》（bishijie）", "newsbtc", "Bitfinex", "bishijie"]
     category = 0
