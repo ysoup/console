@@ -85,6 +85,20 @@
       "max_connections": 8,
       "pool_timeout": 5,
       "pool_sleep_time": 0.001
+    },
+    "spiders_visualization": {
+      "host": "192.168.2.86",
+      "user": "root",
+      "port": 3306,
+      "password": "Percona5.7.17",
+      "database": "spiders_visualization",
+      "charset": "utf8",
+      "test": true,
+      "logger": "/data/log/db/db_spiders_visualization.log",
+      "slaves": [],
+      "max_connections": 8,
+      "pool_timeout": 5,
+      "pool_sleep_time": 0.001
     }
   },
   "log":{
