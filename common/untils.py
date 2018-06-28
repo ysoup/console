@@ -4,6 +4,7 @@ import json
 import time
 from simhash import Simhash
 import re
+import requests
 
 
 def compare_string(str1, str2):
@@ -135,3 +136,11 @@ def public_compare_content(content_ls, com_data, logger):
             flag = 0
             break
     return flag
+
+
+def public_requests_method(req_type, target_url, req_headers):
+    if req_type == 0:
+        response = "requests.get('%s')" % target_url if req_headers else "requests.get('%s', headers=req_headers)" % target_url
+    else:
+        response = "requests.post('%s')" % target_url if req_headers else "requests.post('%s', headers=req_headers)" % target_url
+    return response
