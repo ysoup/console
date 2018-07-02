@@ -14,16 +14,16 @@ logger = Logger(kind="work_path", name="duplicate_removal")
 
 spider_template = '''# coding:utf-8
 
+from bs4 import BeautifulSoup
 import requests
+from common.untils import *
 
 
-def crawler_template_name_information(logger):
+def crawler_template_name_information():
     # 数据获取
-    data = get_template_name_data()
+    resp_data = get_template_name_data()
     # 解析数据
-    data = analysis_template_name_data()
-    # 数据预处理
-    data = handle_template_name_data()
+    data = analysis_template_name_data(resp_data)
     return data
 '''
 
@@ -34,15 +34,16 @@ def get_template_name_data():
 '''
 
 analysis_data = '''
-def analysis_template_name_data():
 
+def analysis_template_name_data(resp_data):
+    crawler_ls = []
+    for x in resp_data:
+    return crawler_ls
 '''
-
 
 
 # 动态生成爬虫模板
 def spiders_template():
-    print("aaa")
     rule_ls = spider_rule_data()
     # 生成爬虫模板
     get_spiders_template(rule_ls)
@@ -53,56 +54,112 @@ def spiders_template():
 def get_spiders_template(rule_ls):
     if isinstance(rule_ls, list):
         for x in rule_ls:
-            resopn = public_requests_method(x["req_method"], x["target_url"], x["req_headers"])
             # 生成数据获取方法模板
+            req_headers = str_convert_json(x["req_headers"]) if x["req_headers"] else x["req_headers"]
+            resopn = public_requests_method(x["req_method"], x["target_url"], req_headers)
+
             new_spider_template = spider_template.replace("template_name", x["spider_en_name"].strip())
             new_get_spider_template = get_spider_template.replace("template_name", x["spider_en_name"].strip())
             new_get_spider_template = new_get_spider_template.replace("requests.post(target_url)", resopn)
+
             # 获取列表
+            # dom
             if x["ls_rule_type"] == 0:
-                print("ffff")
+                ls_rule = x["html_ls_tag"].split("=>")
+                ls_rule_len = len(ls_rule)
+                if ls_rule_len == 1:
+                    if "." in x["html_ls_tag"]:
+                        html_tag = x["html_ls_tag"].split(".")
+                        extarct_html_tag = html_tag[1].split("=")
+                        if extarct_html_tag[0] == "class":
+                            tmp = 'soup = BeautifulSoup(resp_data, html.parser)\n    data = soup.find_all("%s", "%s")\n    for x in data[:%s]:\n        dic = {}' % \
+                                  (html_tag[0], extarct_html_tag[1], x["get_num"])
+                            for y in x["crawler_column"]:
+                                if y["get_data_way"] == 0:
+                                    if y["column_rule_type"] == 0:
+                                        if "=>" not in y["get_column_rule"]:
+                                            if "." in y["get_column_rule"]:
+                                                column_tag_ls = y["get_column_rule"].split(".")
+                                                colunm = 'dic["%s"] = x.find("%s").%s' % (y["en_name"], column_tag_ls[0], column_tag_ls[1])
+                                        else:
+                                            colunm = 'dic["%s"] = x["%s"]' % (y["en_name"], y["get_column_rule"])
+                                    elif y["column_rule_type"] == 1:
+                                        if "=>" not in y["get_column_rule"]:
+
+                                tmp = tmp + "\n        " + colunm
+                        elif html_tag[0] == "id":
+                            print("aaaa")
+                    else:
+                        tmp = 'soup = BeautifulSoup(resp_data, html.parser)\n data = soup.find_all("%s", "%s")' % \
+                              (html_tag[0], extarct_html_tag[1])
+            # json
             elif x["ls_rule_type"] == 1:
                 ls_rule = x["html_ls_tag"].split("=>")
                 ls_rule_len = len(ls_rule)
-                if ls_rule_len ==2:
+                if ls_rule_len == 2:
                     if ("{}" or "[]") not in ls_rule[0]:
                         a = 'data["%s"]' % ls_rule[0]
                     if "{}" in ls_rule[1]:
                          if "|" in ls_rule[1]:
                             ls_rule_dict = ls_rule[1].split("|")[1]
-                            ls_rule_template = '''                            
-                            if data.__contains__("%s"):
-                                for x in data["%s"]["%s"]:
-                            ''' % (ls_rule[0], ls_rule[0], ls_rule_dict)
-                            if data.__contains__(ls_rule[0]):
-                                b = data[ls_rule[0]][ls_rule_dict]
-                                for x in data[ls_rule[0]][ls_rule_dict]:
-                            # 抓取字段
+                            # 获取内容
+                            tmp = '''resp_data = str_convert_json(resp_data)\n    if resp_data.__contains__("%s"):\n        for x in resp_data["%s"]["%s"]:\n            dic = {}''' % (ls_rule[0], ls_rule[0], ls_rule_dict)
+                            for y in x["crawler_column"]:
+                                if y["get_data_way"] == 0:
+                                    if y["column_rule_type"] == 0:
+                                        print("cccc")
+                                    elif y["column_rule_type"] == 1:
+                                        colunm = 'dic["%s"] = x["%s"]' % (y["en_name"], y["get_column_rule"])
+                                        tmp = tmp + "\n            "+colunm
+                            tmp = tmp + "\n            crawler_ls.append(dic)"
                          else:
-                             print("dddd")
-                if ls_rule_len ==3:
-                    print("cccc")
-            # 获取字段内容
-            for c in b:
-
-            for column in x["crawler_column"]:
-                if column["column_rule_type"] == 0:
+                            tmp = 'resp_data = str_convert_json(resp_data)\n    for date_key in resp_data["%s"].keys():\n        ls = resp_data["%s"]' % (
+                                ls_rule[0], ls_rule[0]) + '["%s" % date_key]'
+                            tmp = tmp + "\n        " + 'for x in ls:\n            dic = {}'
+                            for y in x["crawler_column"]:
+                                if y["get_data_way"] == 0:
+                                    if y["column_rule_type"] == 0:
+                                        print("cccc")
+                                    elif y["column_rule_type"] == 1:
+                                        colunm = 'dic["%s"] = x["%s"]' % (y["en_name"], y["get_column_rule"])
+                                        tmp = tmp + "\n            " + colunm
+                            tmp = tmp + "\n            crawler_ls.append(dic)"
+                if ls_rule_len == 3:
+                    if "{}" in ls_rule[1]:
+                        if "|" not in ls_rule[1]:
+                            tmp = 'resp_data = str_convert_json(resp_data)\n    for date_key in resp_data["%s"].keys():\n        ls = resp_data["%s"]' % (
+                                ls_rule[0], ls_rule[0]) + '["%s" % date_key]'
+                    if "{}" in ls_rule[2]:
+                        if "|" in ls_rule[2]:
+                            ls_rule_dict = ls_rule[2].split("|")[1]
+                            tmp = tmp + "\n        " + 'for x in ls["%s"]:\n            dic = {}' % (ls_rule_dict)
+                            for y in x["crawler_column"]:
+                                if y["get_data_way"] == 0:
+                                    if y["column_rule_type"] == 0:
+                                        print("cccc")
+                                    elif y["column_rule_type"] == 1:
+                                        colunm = 'dic["%s"] = x["%s"]' % (y["en_name"], y["get_column_rule"])
+                                        tmp = tmp + "\n            "+colunm
+                            tmp = tmp + "\n            crawler_ls.append(dic)"
+            analysis_data_template = analysis_data.replace("template_name", x["spider_en_name"].strip())
+            analysis_data_template = analysis_data_template.replace("for x in resp_data:", tmp)
 
             # 创建爬虫文件
             file_object = open("%s.py" % x["spider_en_name"].strip(), 'w')
             file_object.write(new_spider_template)
             file_object.write("\n")
             file_object.write(new_get_spider_template)
+            # file_object.write("\n")
+            file_object.write(analysis_data_template)
             file_object.close()
 
-            print(new_spider_template)
-            print(new_get_spider_template)
-            print(x)
+            # print(new_spider_template)
+            # print(new_get_spider_template)
+            # print(x)
 
 
 # 获取爬虫规则
 def spider_rule_data():
-    print("aaa")
     base_sql = SpidersVisualizationBase.select().where(SpidersVisualizationBase.is_userful == 1)
     base_ls = model_to_dicts(base_sql)
     for x in base_ls:
@@ -112,19 +169,8 @@ def spider_rule_data():
             data_handle_sql = SpidersVisualizationDataHandle.select().where(SpidersVisualizationDataHandle.rule == y["id"])
             data_handle_ls = model_to_dicts(data_handle_sql)
             y["data_handle"] = data_handle_ls
-        x["crawler_column"] = y
+        x["crawler_column"] = rule_ls
     return base_ls
-
-
-def crawler_spider_template_information():
-    # 数据获取
-    data = get_spider_template_data()
-    # 解析数据
-    data = analysis_spider_template_data()
-    # 数据预处理
-    data = handle_spider_template_data()
-
-    return data
 
 
 if __name__ == "__main__":
