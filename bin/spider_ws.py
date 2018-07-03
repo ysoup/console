@@ -9,7 +9,6 @@ from database.spiders_visualization_modle import *
 from common.initlog import Logger
 from common.db_utils import *
 from common.untils import *
-import requests
 logger = Logger(kind="work_path", name="duplicate_removal")
 
 spider_template = '''# coding:utf-8
@@ -72,8 +71,8 @@ def get_spiders_template(rule_ls):
                         html_tag = x["html_ls_tag"].split(".")
                         extarct_html_tag = html_tag[1].split("=")
                         if extarct_html_tag[0] == "class":
-                            tmp = 'soup = BeautifulSoup(resp_data, html.parser)\n    data = soup.find_all("%s", "%s")\n    for x in data[:%s]:\n        dic = {}' % \
-                                  (html_tag[0], extarct_html_tag[1], x["get_num"])
+                            tmp = 'soup = BeautifulSoup(resp_data, html.parser)\n    data = soup.find_all("%s", "%s")\n    for x in data[:%s]:\n        dic = {}\n        dic["source_name"] = "%s"' % \
+                                  (html_tag[0], extarct_html_tag[1], x["get_num"], x["spider_en_name"].strip())
                             for y in x["crawler_column"]:
                                 if y["get_data_way"] == 0:
                                     if y["column_rule_type"] == 0:
@@ -85,7 +84,7 @@ def get_spiders_template(rule_ls):
                                             colunm = 'dic["%s"] = x["%s"]' % (y["en_name"], y["get_column_rule"])
                                     elif y["column_rule_type"] == 1:
                                         if "=>" not in y["get_column_rule"]:
-
+                                            print("hhhhh")
                                 tmp = tmp + "\n        " + colunm
                         elif html_tag[0] == "id":
                             print("aaaa")
