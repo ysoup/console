@@ -138,7 +138,7 @@ def public_compare_content(content_ls, com_data, logger):
     return flag
 
 
-def public_requests_method(req_type, target_url, req_headers, req_params):
+def public_requests_method(req_type, target_url, req_headers, req_params, req_code):
     if req_type == 0:
         response = "requests.get('%s'" % target_url
         if req_params:
@@ -152,4 +152,6 @@ def public_requests_method(req_type, target_url, req_headers, req_params):
         if req_headers:
             response = response + ", headers=%s" % req_headers
     response = response + ")"
+    if req_code:
+        response = response + "\n    " + "respon.encoding = '%s'" % req_code
     return response
