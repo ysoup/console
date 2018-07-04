@@ -154,12 +154,10 @@ def get_spiders_template(rule_ls):
                             tmp = tmp + "\n        " + colunm
                         tmp = tmp + "\n        crawler_ls.append(dic)"
                 elif ls_rule_len == 2:
-                    # ul@list_009=>li
                     if "@" in ls_rule[0]:
                         column_tag_ls = ls_rule[0].split("@")
                         tmp = 'soup = BeautifulSoup(resp_data, "html.parser")\n    content_soup = soup.find("%s", "%s")\n    data=content_soup.find_all("%s")\n    for x in data[:%s]:\n        dic = {}\n        dic["source_name"] = "%s"' % \
                               (column_tag_ls[0], column_tag_ls[1], ls_rule[1], x["get_num"], x["spider_en_name"].strip())
-
             elif x["ls_rule_type"] == 1:
                 ls_rule = x["html_ls_tag"].split("=>")
                 ls_rule_len = len(ls_rule)
