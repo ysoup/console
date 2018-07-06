@@ -70,7 +70,7 @@ class Extractor(object):
     def getContext(self):
         code, self.rawPage = self.getRawPage()
         self.body = re.findall(reBODY, self.rawPage)[0]
-
+        print(self.body)
         if DBUG: print(code, self.rawPage)
 
         if self.saveImage:
@@ -80,6 +80,6 @@ class Extractor(object):
         # print(len(self.body.strip("\n")))
 
 
-# if __name__ == '__main__':
-#     ext = Extractor(url="https://blog.csdn.net/hqc888688/article/details/73558824", blockSize=5, image=False)
-#     print(ext.getContext())
+if __name__ == '__main__':
+    ext = Extractor(url="http://finance.sina.com.cn/blockchain/coin/2018-07-05/doc-ihexfcvi7986120.shtml", blockSize=5, image=False)
+    print(ext.getContext())
