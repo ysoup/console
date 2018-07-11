@@ -112,7 +112,8 @@ def duplicate_removal_work():
                                                        category=category,
                                                        is_show=is_show,
                                                        re_tag=modify_tag,
-                                                       title=title
+                                                       title=title,
+                                                       possible_similarity=0
                                                        )
                         elif second_flag == 2:
                             NewFlashInformation.create(content=content,

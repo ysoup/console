@@ -182,7 +182,8 @@ def save_news_data(com_data, new_img_url):
                                             img=new_img_url, title=com_data["title"],
                                             tag=com_data["tag"], author=com_data["author"],
                                             is_show=com_data["is_show"],
-                                            source_url=com_data["url"]
+                                            source_url=com_data["url"],
+                                            possible_similarity=0
                                             )
     except Exception as e:
         logger.error("资讯持久化出错:%s" % e)
