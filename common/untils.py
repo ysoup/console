@@ -44,7 +44,7 @@ def get_str_distance(str1, str2):
     return distance
 
 
-def check_news_content_type(str1, data):
+def check_news_content_type(str1, title, data):
     category = 0
     if data is not None:
         data = json.loads(data)
@@ -54,10 +54,10 @@ def check_news_content_type(str1, data):
                     category = x["id"]
                     break
 
-    filter_content = ["巴比特每日热聊榜"]
+    filter_content = ["巴比特每日热聊榜", "巴比特长铗"]
     is_show = 1
     for x in filter_content:
-        if x in str1:
+        if x in str1 or x in title:
             is_show = 0
             break
     return category, is_show

@@ -42,7 +42,7 @@ def information_duplicate_removal_work():
         while i < len(data):
             content_1 = data[i]["content"]
             ext_1 = Extractor(content=content_1, blockSize=15, image=False).getContext()
-            data[i]["category"], data[i]["is_show"] = get_content_tag(ext_1, redis)
+            data[i]["category"], data[i]["is_show"] = get_content_tag(ext_1, data[i]["title"], redis)
 
             for j in range(i + 1, len(data)):
                 if j >= len(data):
@@ -202,10 +202,10 @@ def get_article_tag(com_data):
         com_data["tag"] = ""
 
 
-def get_content_tag(content, redis):
+def get_content_tag(content, title, redis):
     # 获取资讯类型缓存
     data = redis.get("catch_news_categery_list")
-    tag, is_show = check_news_content_type(content, data)
+    tag, is_show = check_news_content_type(content, title, data)
 
     return tag, is_show
 
