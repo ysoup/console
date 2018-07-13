@@ -58,7 +58,7 @@ def information_duplicate_removal_work():
         # 去重数据异步入库并且查询当天数据
         # 链接服务器操作数据库
         # todo 异步查询
-        sql = "SELECT * FROM new_flash_exclusive_information where TIMESTAMPDIFF(day, create_time, now()) <= 5"
+        sql = "SELECT * FROM new_flash_exclusive_information where TIMESTAMPDIFF(day, create_time, now()) <= 3"
         rows = excute_sql(NewFlashExclusiveInformation, sql)
         content_ls = model_to_dicts(rows)
         logger.info("数据去重服务查询当天资讯:%s" % content_ls)
