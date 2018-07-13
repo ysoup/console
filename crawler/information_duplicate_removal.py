@@ -51,7 +51,7 @@ def information_duplicate_removal_work():
                 distance, ext_1_text, ext_2_text = get_content_by_reg(content_1, content_2)
                 # 标题
                 distance1 = get_str_distance(data[i]["title"], data[j]["title"])
-                data[j]["category"], data[j]["is_show"] = get_content_tag(ext_2_text, redis)
+                data[j]["category"], data[j]["is_show"] = get_content_tag(ext_2_text, data[j]["title"], redis)
                 if distance <= 20 or distance1 <= 18:
                     del data[j]
             i = i + 1

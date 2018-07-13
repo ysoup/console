@@ -9,7 +9,9 @@ from database.spiders_visualization_modle import *
 from common.initlog import Logger
 from common.db_utils import *
 from common.untils import *
+import os
 logger = Logger(kind="work_path", name="duplicate_removal")
+
 
 spider_template = '''# coding:utf-8
 
@@ -223,17 +225,19 @@ def get_spiders_template(rule_ls):
             analysis_data_template = analysis_data_template.replace("for x in resp_data:", tmp)
 
             # 创建爬虫文件
-            file_object = open("../spiders/%s.py" % x["spider_en_name"].strip(), 'w')
-            file_object.write(new_spider_template)
-            file_object.write("\n")
-            file_object.write(new_get_spider_template)
-            # file_object.write("\n")
-            file_object.write(analysis_data_template)
-            file_object.close()
+            file_path = "../spiders/%s.py" % x["spider_en_name"].strip()
+            if not os.path.exists(file_path):
+                file_object = open(file_path, 'w')
+                file_object.write(new_spider_template)
+                file_object.write("\n")
+                file_object.write(new_get_spider_template)
+                # file_object.write("\n")
+                file_object.write(analysis_data_template)
+                file_object.close()
 
-            # print(new_spider_template)
-            # print(new_get_spider_template)
-            # print(x)
+                # print(new_spider_template)
+                # print(new_get_spider_template)
+                # print(x)
 
 
 # 获取爬虫规则
