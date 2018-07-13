@@ -35,7 +35,7 @@ class SpidersVisualizationBase(BaseModel):
     spider_ch_name = CharField(null=True)
     spider_en_name = CharField(null=True)
     target_url = CharField()
-    time_interval = IntegerField(column_name='time interval', null=True)
+    time_interval = IntegerField(null=True)
 
     class Meta:
         table_name = 'spiders_visualization_base'

@@ -165,8 +165,7 @@ def get_spiders_template(rule_ls):
                                         ls_rule = y["get_column_rule"].split("=>")
                                         ls_rule_len = len(ls_rule)
                                         if ls_rule_len == 2:
-
-                                        print("mmmm")
+                                            print("mmmm")
                                     else:
                                         print("nnn")
 
@@ -224,7 +223,7 @@ def get_spiders_template(rule_ls):
             analysis_data_template = analysis_data_template.replace("for x in resp_data:", tmp)
 
             # 创建爬虫文件
-            file_object = open("%s.py" % x["spider_en_name"].strip(), 'w')
+            file_object = open("../spiders/%s.py" % x["spider_en_name"].strip(), 'w')
             file_object.write(new_spider_template)
             file_object.write("\n")
             file_object.write(new_get_spider_template)
