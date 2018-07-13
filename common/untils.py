@@ -133,11 +133,7 @@ def public_compare_content(content_ls, com_data, logger):
         distance3 = get_str_distance(content_str1[0:25], content_str2[0:25])
         if distance1 <= 15 or distance2 <= 10 or distance3 <= 10:
             logger.info("快讯库有数据处理相似度数据:%s" % row["content"])
-            break
-        elif (distance1 <= 20 and distance1 > 15) or \
-                (distance2 <= 15 and distance2 >10) or \
-                (distance3 <= 15 and distance3 >10):
-            flag = 2
+            flag = 0
             break
     return flag
 
