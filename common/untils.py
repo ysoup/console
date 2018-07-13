@@ -4,6 +4,7 @@ import json
 import time
 from simhash import Simhash
 import re
+import requests
 
 
 def compare_string(str1, str2):
@@ -43,7 +44,7 @@ def get_str_distance(str1, str2):
     return distance
 
 
-def check_news_content_type(str1, data):
+def check_news_content_type(str1, title, data):
     category = 0
     if data is not None:
         data = json.loads(data)
@@ -53,10 +54,10 @@ def check_news_content_type(str1, data):
                     category = x["id"]
                     break
 
-    filter_content = ["巴比特每日热聊榜"]
+    filter_content = ["巴比特每日热聊榜", "巴比特长铗"]
     is_show = 1
     for x in filter_content:
-        if x in str1:
+        if x in str1 or x in title:
             is_show = 0
             break
     return category, is_show
@@ -135,3 +136,22 @@ def public_compare_content(content_ls, com_data, logger):
             flag = 0
             break
     return flag
+
+
+def public_requests_method(req_type, target_url, req_headers, req_params, req_code):
+    if req_type == 0:
+        response = "requests.get('%s'" % target_url
+        if req_params:
+            response = response + ", data=%s" % req_params
+        if req_headers:
+            response = response + ", headers=%s" % req_headers
+    else:
+        response = "requests.post('%s'" % target_url
+        if req_params:
+            response = response + ", data=%s" % req_params
+        if req_headers:
+            response = response + ", headers=%s" % req_headers
+    response = response + ")"
+    if req_code:
+        response = response + "\n    " + "respon.encoding = '%s'" % req_code
+    return response

@@ -112,8 +112,39 @@ def duplicate_removal_work():
                                                        category=category,
                                                        is_show=is_show,
                                                        re_tag=modify_tag,
-                                                       title=title
+                                                       title=title,
+                                                       possible_similarity=0
                                                        )
+                        elif second_flag == 2:
+                            NewFlashInformation.create(content=content,
+                                                       content_id=com_data["content_id"],
+                                                       source_name=com_data["source_name"],
+                                                       category=category,
+                                                       is_show=0,
+                                                       re_tag=modify_tag,
+                                                       title=title,
+                                                       possible_similarity=1
+                                                       )
+
+                elif flag == 2:
+                    query_data = NewFlashInformation.select().where(
+                        NewFlashInformation.content_id == com_data["content_id"],
+                        NewFlashInformation.source_name == com_data["source_name"])
+                    if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                        category, is_show, modify_tag, content, title = check_content_type(com_data["title"],
+                                                                                           com_data["content"],
+                                                                                           category_data,
+                                                                                           rule_data)
+                        NewFlashInformation.create(content=content,
+                                                   content_id=com_data["content_id"],
+                                                   source_name=com_data["source_name"],
+                                                   category=category,
+                                                   is_show=0,
+                                                   re_tag=modify_tag,
+                                                   title=title,
+                                                   possible_similarity=1
+                                                   )
+
         # 清空数据集合
         # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
         logger.info("=====快讯数据去重服务结束====")

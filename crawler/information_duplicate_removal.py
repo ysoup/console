@@ -42,7 +42,7 @@ def information_duplicate_removal_work():
         while i < len(data):
             content_1 = data[i]["content"]
             ext_1 = Extractor(content=content_1, blockSize=15, image=False).getContext()
-            data[i]["category"], data[i]["is_show"] = get_content_tag(ext_1, redis)
+            data[i]["category"], data[i]["is_show"] = get_content_tag(ext_1, data[i]["title"], redis)
 
             for j in range(i + 1, len(data)):
                 if j >= len(data):
@@ -98,6 +98,9 @@ def information_duplicate_removal_work():
                     if distance <= 20 or distance1 <= 18:
                         flag = 0
                         break
+                    elif (distance<=25 and distance >20) or (distance<=23 and distance >18):
+                        flag = 2
+                        break
                 if flag == 1:
                     query_data = NewFlashExclusiveInformation.select().where(
                         NewFlashExclusiveInformation.content_id == com_data["content_id"],
@@ -121,6 +124,42 @@ def information_duplicate_removal_work():
                         new_img_url = img_cut_down(start_img_ls[0], com_data["source_name"], com_data["content_id"], 1)
 
                         save_news_data(com_data, new_img_url)
+                elif flag == 2:
+                    query_data = NewFlashExclusiveInformation.select().where(
+                        NewFlashExclusiveInformation.content_id == com_data["content_id"],
+                        NewFlashExclusiveInformation.source_name == com_data["source_name"])
+                    if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
+                        # 图片处理
+                        start_img_ls = com_data["match_img"].split(",")
+                        i = 1
+                        res_img_ls = []
+                        for img_url in start_img_ls:
+                            new_img_url = upload_images_hdfs(img_url, com_data["source_name"],
+                                                             com_data["content_id"], i)
+                            if img_url != '':
+                                com_data["content"] = com_data["content"].replace(img_url, new_img_url)
+                            res_img_ls.append(new_img_url)
+                            i = i + 1
+                        # 内容标签
+                        get_article_tag(com_data)
+
+                        # 图片处理
+                        new_img_url = img_cut_down(start_img_ls[0], com_data["source_name"], com_data["content_id"], 1)
+
+                        try:
+                            NewFlashExclusiveInformation.create(content=com_data["content"],
+                                                                content_id=com_data["content_id"],
+                                                                source_name=com_data["source_name"],
+                                                                category=com_data["category"],
+                                                                img=new_img_url, title=com_data["title"],
+                                                                tag=com_data["tag"], author=com_data["author"],
+                                                                is_show=0,
+                                                                source_url=com_data["url"],
+                                                                possible_similarity=1
+                                                                )
+                        except Exception as e:
+                            logger.error("资讯持久化出错:%s" % e)
+
         logger.info("=====资讯数据去重服务结束====")
 
 
@@ -143,7 +182,8 @@ def save_news_data(com_data, new_img_url):
                                             img=new_img_url, title=com_data["title"],
                                             tag=com_data["tag"], author=com_data["author"],
                                             is_show=com_data["is_show"],
-                                            source_url=com_data["url"]
+                                            source_url=com_data["url"],
+                                            possible_similarity=0
                                             )
     except Exception as e:
         logger.error("资讯持久化出错:%s" % e)
@@ -162,10 +202,10 @@ def get_article_tag(com_data):
         com_data["tag"] = ""
 
 
-def get_content_tag(content, redis):
+def get_content_tag(content, title, redis):
     # 获取资讯类型缓存
     data = redis.get("catch_news_categery_list")
-    tag, is_show = check_news_content_type(content, data)
+    tag, is_show = check_news_content_type(content, title, data)
 
     return tag, is_show
 
