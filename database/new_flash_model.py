@@ -67,7 +67,7 @@ class NewFlashExclusiveInformation(BaseModel):
     source_url = CharField(default="")
     create_time = DateTimeField(default=datetime.datetime.now)
     update_time = DateTimeField(default=datetime.datetime.now)
-    possible_similarity = IntegerField(default=0)
+    # possible_similarity = IntegerField(default=0)
 
     class Meta:
         table_name = 'new_flash_exclusive_information'
