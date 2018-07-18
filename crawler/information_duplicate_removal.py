@@ -216,8 +216,8 @@ def schudule_information_duplicate_removal_work():
                   routing_key='news_duplicate_removal_info')
 
 
-if __name__ == "__main__":
-    information_duplicate_removal_work()
+# if __name__ == "__main__":
+#     information_duplicate_removal_work()
     # r = connetcredis()
     # r.set('name', 'junxi')
     # print(r['name'])
