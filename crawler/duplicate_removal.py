@@ -55,7 +55,7 @@ def duplicate_removal_work():
                 distance2 = get_str_distance(title_str1, title_str2)
                 # 内容前30个字符
                 distance3 = get_str_distance(content_str1[0:25], content_str2[0:25])
-                if distance1 <= 18 or distance2 <= 10 or distance3 <= 10:
+                if distance1 <= 18 or distance2 <= 16 or distance3 <= 10:
                     logger.info("快讯数据去重服务重复数据:%s" % data[j])
                     del data[j]
             i = i + 1
