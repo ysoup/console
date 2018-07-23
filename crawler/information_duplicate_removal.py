@@ -105,7 +105,7 @@ def information_duplicate_removal_work():
                     #     break
                 if flag == 1:
                     query_data = NewFlashExclusiveInformation.select().where(
-                        NewFlashExclusiveInformation.content_id == com_data["content_id"],
+                        NewFlashExclusiveInformation.source_url == com_data["url"],
                         NewFlashExclusiveInformation.source_name == com_data["source_name"])
                     if len(query_data) == GetListLength.GET_LIST_LENGTH.value:
                         # 图片处理
