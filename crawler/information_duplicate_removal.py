@@ -93,6 +93,8 @@ def information_duplicate_removal_work():
                     content_2 = row["content"]
                     distance, ext_1_text, ext_2_text = get_content_by_reg(content_1, content_2)
                     # 标题
+                    if "【" in row["title"] and "】" in row["title"]:
+                        row["title"] = row["title"].split("】")[1]
                     distance1 = get_str_distance(com_data["title"], row["title"])
 
                     if distance <= 20 or distance1 <= 18:
