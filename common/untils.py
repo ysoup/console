@@ -119,6 +119,12 @@ def check_content_type(title, str1, data, rule_data):
 def public_compare_content(content_ls, com_data, logger):
     flag = 1
     for row in content_ls:
+        if com_data["source_name"] == "jin_se":
+            if "|" in com_data["title"]:
+                com_data["title"] = com_data["title"].split("|")[1]
+        if row["source_name"] == "jin_se":
+            if "|" in row["title"]:
+                row["title"] = row["title"].split("|")[1]
         content_str1 = com_data["content"] if com_data["content"] else ""
         content_str2 = row["content"] if row["content"] else ""
 
