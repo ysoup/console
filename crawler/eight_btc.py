@@ -42,7 +42,7 @@ def eight_information(url):
             for row in rows:
                 data["content_id"] = row.id
                 connetcredis().lpush(
-                    "%s_%s" % (DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value, date),
+                    DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value,
                     json_convert_str(data))
 
 

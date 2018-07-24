@@ -146,7 +146,7 @@ def duplicate_removal_work():
                                                    )
 
         # 清空数据集合
-        # red.delete("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date))
+        # red.delete(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value)
         logger.info("=====快讯数据去重服务结束====")
 
 

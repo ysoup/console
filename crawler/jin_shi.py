@@ -29,7 +29,7 @@ def jin_shi_information(url):
                 distance = get_str_distance(data["content"], str1["content"])
                 logger.info("金十抓取数据与数据缓存相似度:%s" % distance)
                 # 去重队列
-                connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                                      json_convert_str(data))
 
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
@@ -42,7 +42,7 @@ def jin_shi_information(url):
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SHI.value, data["content_id"]),
                                    json_convert_str(data))
                 # 去重队列
-                connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                                      json_convert_str(data))
                 JinShiInformation.create(
                     crawler_time=data["crawler_time"],

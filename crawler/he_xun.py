@@ -41,7 +41,7 @@ def he_xun_information(url):
                                    json_convert_str(data))
             # 去重队列
             connetcredis().lpush(
-                "%s_%s" % (DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value, date),
+                DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value,
                 json_convert_str(data))
 
 @app.task(ignore_result=True)

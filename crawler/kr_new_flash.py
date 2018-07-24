@@ -28,7 +28,7 @@ def kr_information(url):  # 币世界快讯
                 distance = get_str_distance(data["content"], str1["content"])
                 logger.info("36kr抓取与数据缓存相似度:%s" % distance)
                 # 去重队列
-                connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                                      json_convert_str(data))
 
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
@@ -40,7 +40,7 @@ def kr_information(url):  # 币世界快讯
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BIAN_NEW_FLASH.value, data["content_id"]),
                                    json_convert_str(data))
                 # 去重队列
-                connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                                      json_convert_str(data))
                 KrInformation.create(
                     content=data["content"],

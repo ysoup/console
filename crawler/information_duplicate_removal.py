@@ -26,14 +26,14 @@ def information_duplicate_removal_work():
     redis = connetcredis()
     date = get_current_date()
     # 判断队列长度
-    data_len = redis.llen("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date))
+    data_len = redis.llen((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value)
     logger.info("资讯数据去重队列:%s" % data_len)
     if data_len < 1:
         return
     i = 0
     data = []
     while i < data_len:
-        data_str = redis.lpop("%s_%s" % ((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value, date))
+        data_str = redis.lpop((DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE).value)
         data.append(str_convert_json(data_str))
         i = i+1
     if len(data) != GetListLength.GET_LIST_LENGTH.value:

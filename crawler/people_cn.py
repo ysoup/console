@@ -42,7 +42,7 @@ def people_cn_information(url):
 
             # 去重队列
             connetcredis().lpush(
-                "%s_%s" % (DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value, date),
+                DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value,
                 json_convert_str(data))
 
 

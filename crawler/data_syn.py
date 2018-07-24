@@ -143,7 +143,7 @@ def get_content_by_reg(content_1, content_2):
     #                     dic["author"] = ""
     #                     dic["source_name"] = "yun_cai"
     #                     redis.set("%s_%s" % (RedisConstantsKey.DATA_SYN_WORK.value, row.id), json_convert_str(dic))
-    #                     redis.lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+    #                     redis.lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
     #                                 json_convert_str(dic))
     logger.info("=====数据同步服务结束====")
 

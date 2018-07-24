@@ -31,7 +31,7 @@ def send(url):  # 金色财经快讯
             distance = get_str_distance(data["content"], str1["content"])
             logger.info("金色财经抓取与数据缓存相似度:%s" % distance)
             # 去重队列
-            connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+            connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                                  json_convert_str(data))
             if distance > GetListLength.GET_NOMBAL_NUM.value:
                 JinseInformation.update(content=data["content"]).where(JinseInformation.content_id ==
@@ -42,7 +42,7 @@ def send(url):  # 金色财经快讯
             connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SE.value, data["content_id"]),
                                json_convert_str(data))
             # 去重队列
-            connetcredis().lpush("%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+            connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                                  json_convert_str(data))
             JinseInformation.create(
                 content=data["content"],

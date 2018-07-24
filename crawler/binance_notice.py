@@ -40,7 +40,7 @@ def binance_notice_info(url):
 
             # 去重队列
             connetcredis().lpush(
-                "%s_%s" % (DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, date),
+                DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                 json_convert_str(data))
 
 @app.task(ignore_result=True)
