@@ -11,6 +11,7 @@ from common.untils import *
 from common.constants import RedisConstantsKey, DuplicateRemovalCache, GetListLength
 from common.initlog import Logger
 from database.jin_se_modle import JinseInformation
+from database.new_flash_model import NewFlashInformation
 from celerymain.main import app
 
 logger = Logger(kind="work_path", name="jin_se")
@@ -42,8 +43,9 @@ def send(url):  # 金色财经快讯
             connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SE.value, data["content_id"]),
                                json_convert_str(data))
             # 去重队列
-            connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
-                                 json_convert_str(data))
+            query_data = public_is_exist_data(data["content_id"], data["source_name"])
+            if query_data:
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value, json_convert_str(data))
             JinseInformation.create(
                 content=data["content"],
                 content_id=data["content_id"],
@@ -51,6 +53,13 @@ def send(url):  # 金色财经快讯
                 title=data["title"],
                 author=data["author"]
             )
+
+
+def public_is_exist_data(content_id, source_name):
+    query_data = NewFlashInformation.select().where(
+        NewFlashInformation.content_id == content_id,
+        NewFlashInformation.source_name == source_name)
+    return query_data
 
 
 @app.task

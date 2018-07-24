@@ -8,6 +8,7 @@ from common.initRedis import connetcredis
 from common.untils import *
 from common.constants import RedisConstantsKey, GetListLength, DuplicateRemovalCache
 from database.coin_world_modle import CailianpressInformation
+from database.new_flash_model import NewFlashInformation
 from celerymain.main import app
 from common.initlog import Logger
 import time
@@ -40,8 +41,10 @@ def cailianpress_information(url):  # 財联社
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_CAILIANPRESS.value, data["content_id"]),
                                    json_convert_str(data))
                 # 去重队列
-                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
-                                     json_convert_str(data))
+                query_data = public_is_exist_data(data["content_id"], data["source_name"])
+                if query_data:
+                    connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                         json_convert_str(data))
                 CailianpressInformation.create(
                     content=data["content"],
                     content_id=data["content_id"],
@@ -49,6 +52,13 @@ def cailianpress_information(url):  # 財联社
                     title=data["title"],
                     author=data["author"]
                 )
+
+
+def public_is_exist_data(content_id, source_name):
+    query_data = NewFlashInformation.select().where(
+        NewFlashInformation.content_id == content_id,
+        NewFlashInformation.source_name == source_name)
+    return query_data
 
 
 @app.task(ignore_result=True)

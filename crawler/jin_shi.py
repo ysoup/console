@@ -9,6 +9,7 @@ from common.initRedis import connetcredis
 from common.untils import *
 from common.constants import RedisConstantsKey, GetListLength, DuplicateRemovalCache
 from database.jin_shi_model import JinShiInformation
+from database.new_flash_model import NewFlashInformation
 from celerymain.main import app
 from common.initlog import Logger
 
@@ -42,8 +43,10 @@ def jin_shi_information(url):
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SHI.value, data["content_id"]),
                                    json_convert_str(data))
                 # 去重队列
-                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
-                                     json_convert_str(data))
+                query_data = public_is_exist_data(data["content_id"], data["source_name"])
+                if query_data:
+                    connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                         json_convert_str(data))
                 JinShiInformation.create(
                     crawler_time=data["crawler_time"],
                     content=data["content"],
@@ -52,6 +55,13 @@ def jin_shi_information(url):
                     author=data["author"],
                     source_name=data["source_name"]
                 )
+
+
+def public_is_exist_data(content_id, source_name):
+    query_data = NewFlashInformation.select().where(
+        NewFlashInformation.content_id == content_id,
+        NewFlashInformation.source_name == source_name)
+    return query_data
 
 
 @app.task(ignore_result=True)
