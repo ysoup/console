@@ -29,8 +29,10 @@ def bic_information(url):  # 币世界快讯
                 distance = get_str_distance(data["content"], str1["content"])
                 logger.info("巴比特抓取与数据缓存相似度:%s" % distance)
                 # 去重队列
-                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
-                                     json_convert_str(data))
+                query_data = public_is_exist_data(data["content_id"], data["source_name"])
+                if query_data:
+                    connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                         json_convert_str(data))
 
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
                     BtcInformation.update(content=data["content"]).where(BtcInformation.content_id == data["content_id"])
@@ -41,10 +43,8 @@ def bic_information(url):  # 币世界快讯
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BTC_NEW_FLASH.value, data["content_id"]),
                                    json_convert_str(data))
                 # 去重队列
-                query_data = public_is_exist_data(data["content_id"], data["source_name"])
-                if query_data:
-                    connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
-                                         json_convert_str(data))
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                     json_convert_str(data))
                 BtcInformation.create(
                     content=data["content"],
                     content_id=data["content_id"],

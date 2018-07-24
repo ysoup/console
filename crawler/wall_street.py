@@ -29,8 +29,10 @@ def wall_street_information(url):
             distance = get_str_distance(data["content"], str1["content"])
             logger.info("华尔街快讯抓取与数据缓存相似度:%s" % distance)
             # 去重队列
-            connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
-                                 json_convert_str(data))
+            query_data = public_is_exist_data(data["content_id"], data["source_name"])
+            if query_data:
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                     json_convert_str(data))
             if distance > GetListLength.GET_NOMBAL_NUM.value:
                 WallStreetInformation.update(content=data["content"]).where(WallStreetInformation.content_id == data["content_id"])
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_WALL_STREET.value, data["content_id"]), json_convert_str(data))
@@ -47,6 +49,14 @@ def wall_street_information(url):
                 title=data["title"],
                 author=data["author"]
             )
+
+
+def public_is_exist_data(content_id, source_name):
+    query_data = NewFlashInformation.select().where(
+        NewFlashInformation.content_id == content_id,
+        NewFlashInformation.source_name == source_name)
+    return query_data
+
 
 @app.task(ignore_result=True)
 def schudule_crawler_task():

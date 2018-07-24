@@ -29,8 +29,10 @@ def cailianpress_information(url):  # 財联社
                 distance = get_str_distance(data["content"], str1["content"])
                 logger.info("財联社抓取与数据缓存相似度:%s" % distance)
                 # 去重队列
-                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
-                                     json_convert_str(data))
+                query_data = public_is_exist_data(data["content_id"], data["source_name"])
+                if query_data:
+                    connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                         json_convert_str(data))
 
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
                     CailianpressInformation.update(content=data["content"]).where(CailianpressInformation.content_id == data["content_id"])
@@ -41,10 +43,8 @@ def cailianpress_information(url):  # 財联社
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_CAILIANPRESS.value, data["content_id"]),
                                    json_convert_str(data))
                 # 去重队列
-                query_data = public_is_exist_data(data["content_id"], data["source_name"])
-                if query_data:
-                    connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
-                                         json_convert_str(data))
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                     json_convert_str(data))
                 CailianpressInformation.create(
                     content=data["content"],
                     content_id=data["content_id"],
