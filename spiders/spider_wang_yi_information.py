@@ -23,7 +23,8 @@ def crawler_wang_yi_information(url, logger):
         content_soup = BeautifulSoup(resp.text, "html.parser")
         dic["author"] = content_soup.find("a", id="ne_article_source").text
         content = content_soup.find_all("div", "post_text")[0]
-        content.div.extract()
+        if content.div is not None:
+            content.div.extract()
         span_ls = content.find_all("span")
         if len(span_ls) != 0:
             content.span.extract()
