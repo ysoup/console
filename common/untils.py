@@ -119,17 +119,19 @@ def check_content_type(title, str1, data, rule_data):
 def public_compare_content(content_ls, com_data, logger):
     flag = 1
     for row in content_ls:
+        com_data_title = com_data["title"]
         if com_data["source_name"] == "jin_se":
-            if "|" in com_data["title"]:
-                com_data["title"] = com_data["title"].split("|")[1]
+            if "|" in com_data_title:
+                com_data_title = com_data_title.split("|")[1]
+        row_title = row["title"]
         if row["source_name"] == "jin_se":
-            if "|" in row["title"]:
-                row["title"] = row["title"].split("|")[1]
+            if "|" in row_title:
+                row_title = row_title.split("|")[1]
         content_str1 = com_data["content"] if com_data["content"] else ""
         content_str2 = row["content"] if row["content"] else ""
 
-        title_str1 = com_data["title"] if com_data["title"] else ""
-        title_str2 = row["title"] if row["title"] else ""
+        title_str1 = com_data_title if com_data_title else ""
+        title_str2 = row_title if row_title else ""
 
         # 内容
         distance1 = get_str_distance(content_str1, content_str2)
