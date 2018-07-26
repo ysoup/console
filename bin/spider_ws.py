@@ -10,6 +10,7 @@ from common.initlog import Logger
 from common.db_utils import *
 from common.untils import *
 import os
+import configparser
 logger = Logger(kind="work_path", name="duplicate_removal")
 
 
@@ -65,96 +66,37 @@ def get_spiders_template(rule_ls):
 
             # 获取列表
             # dom
-
             if x["ls_rule_type"] == 0:
                 ls_rule = x["html_ls_tag"].split("=>")
                 ls_rule_len = len(ls_rule)
                 if ls_rule_len == 1:
-                    if "." in x["html_ls_tag"]:
-                        html_tag = x["html_ls_tag"].split(".")
-                        extarct_html_tag = html_tag[1].split("=")
-                        if extarct_html_tag[0] == "class":
-                            tmp = 'soup = BeautifulSoup(resp_data, "html.parser")\n    data = soup.find_all("%s", "%s")\n    for x in data[:%s]:\n        dic = {}\n        dic["source_name"] = "%s"' % \
-                                  (html_tag[0], extarct_html_tag[1], x["get_num"], x["spider_en_name"].strip())
-                            for y in x["crawler_column"]:
-                                if y["get_data_way"] == 0:
-                                    if y["column_rule_type"] == 0:
-                                        if "=>" not in y["get_column_rule"]:
-                                            if "." in y["get_column_rule"]:
-                                                column_tag_ls = y["get_column_rule"].split(".")
-                                                if "=" not in column_tag_ls[1]:
-                                                    if column_tag_ls[1] == "text":
-                                                        if ("[" and "]") in column_tag_ls[0]:
-                                                            get_html_tag = column_tag_ls[0].split(" ")
-                                                        else:
-                                                            colunm = 'dic["%s"] = x.find("%s").%s' % (y["en_name"], column_tag_ls[0], column_tag_ls[1])
-                                                    elif column_tag_ls[1] == "href":
-                                                        if ("[" and "]") in column_tag_ls[0]:
-                                                            get_html_tag = column_tag_ls[0].split(" ")
-                                                        else:
-                                                            colunm = 'dic["%s"] = x.find("%s").get("%s")' % (y["en_name"], column_tag_ls[0], column_tag_ls[1])
-                                        else:
-                                            colunm = 'dic["%s"] = x["%s"]' % (y["en_name"], y["get_column_rule"])
-                                elif y["get_data_way"] == 1:
-                                    colunm = 'response = requests.get(dic["detail_url"])\n        detail = BeautifulSoup(response.text, "lxml")'
-                                    if y["column_rule_type"] == 0:
-                                        if "=>" not in y["get_column_rule"]:
-                                            if "." in y["get_column_rule"]:
-                                                column_tag_ls = y["get_column_rule"].split(".")
-                                                if "=" not in column_tag_ls[1]:
-                                                    if column_tag_ls[1] == "text":
-                                                        if ("[" and "]") in column_tag_ls[0]:
-                                                            get_html_tag = column_tag_ls[0].split(" ")
-                                                            colunm = colunm + '\n        ' + 'dic["%s"] = detail.find_all("%s")%s.text' % (y["en_name"], get_html_tag[0], get_html_tag[1])
-                                        else:
-                                            print("jjj")
-                                tmp = tmp + "\n        " + colunm
-                            tmp = tmp + "\n        crawler_ls.append(dic)"
-                        elif html_tag[0] == "id":
-                            print("aaaa")
-                    else:
-                        tmp = 'soup = BeautifulSoup(resp_data, "html.parser")\n    data = soup.find_all("%s")\n    for x in data[:%s]:\n        dic = {}\n        dic["source_name"] = "%s"' % (x["html_ls_tag"], x["get_num"], x["spider_en_name"].strip())
-                        for y in x["crawler_column"]:
-                            if y["get_data_way"] == 0:
-                                if y["column_rule_type"] == 0:
-                                    if "=>" not in y["get_column_rule"]:
-                                        if "." in y["get_column_rule"]:
-                                            column_tag_ls = y["get_column_rule"].split(".")
-                                            if "=" not in column_tag_ls[1]:
-                                                if column_tag_ls[1] == "text":
-                                                    if ("[" and "]") in column_tag_ls[0]:
-                                                        get_html_tag = column_tag_ls[0].split(" ")
-                                                    else:
-                                                        colunm = 'dic["%s"] = x.find("%s").%s' % (
-                                                        y["en_name"], column_tag_ls[0], column_tag_ls[1])
-                                                elif column_tag_ls[1] == "href":
-                                                    if ("[" and "]") in column_tag_ls[0]:
-                                                        get_html_tag = column_tag_ls[0].split(" ")
-                                                    else:
-                                                        colunm = 'dic["%s"] = x.find("%s").get("%s")' % (
-                                                        y["en_name"], column_tag_ls[0], column_tag_ls[1])
-                                            else:
-                                                extarct_html_tag = column_tag_ls[1].split("=")
-                                                if extarct_html_tag[0] == "class":
-                                                    colunm = 'dic["%s"] = x.find("%s", "%s").text' % (y["en_name"], column_tag_ls[0], extarct_html_tag[1])
-                                    else:
-                                        colunm = 'dic["%s"] = x["%s"]' % (y["en_name"], y["get_column_rule"])
-                            elif y["get_data_way"] == 1:
-                                colunm = 'response = requests.get(dic["detail_url"])\n        detail = BeautifulSoup(response.text, "lxml")'
-                                if y["column_rule_type"] == 0:
-                                    if "=>" not in y["get_column_rule"]:
-                                        if "." in y["get_column_rule"]:
-                                            column_tag_ls = y["get_column_rule"].split(".")
-                                            if "=" not in column_tag_ls[1]:
-                                                if column_tag_ls[1] == "text":
-                                                    if ("[" and "]") in column_tag_ls[0]:
-                                                        get_html_tag = column_tag_ls[0].split(" ")
-                                                        colunm = colunm + '\n        ' + 'dic["%s"] = detail.find_all("%s")%s.text' % (
-                                                        y["en_name"], get_html_tag[0], get_html_tag[1])
-                                    else:
-                                        print("jjj")
-                            tmp = tmp + "\n        " + colunm
-                        tmp = tmp + "\n        crawler_ls.append(dic)"
+                    tmp = 'soup = BeautifulSoup(resp_data, "html.parser")\n    data = soup.%s\n    for x in data[:%s]:\n        dic = {}\n        dic["source_name"] = "%s"' % (ls_rule[0], x["get_num"], x["spider_en_name"].strip())
+                    colunm = ""
+                    for y in x["crawler_column"]:
+                        if y["get_data_way"] == 0:
+                            column_tag_ls = y["get_column_rule"].split("=>")
+                            if len(column_tag_ls) == 1:
+                                colunm_rule = 'dic["%s"] = x.%s' % (y["en_name"], column_tag_ls[0])
+                        elif y["get_data_way"] == 1:
+                            column_rule_ls = y["get_column_rule"].split("=>")
+                            if len(column_rule_ls) == 1:
+                                colunm_rule = 'response = requests.get(dic["detail_url"])\n        detail = BeautifulSoup(response.text, "lxml")\n        dic["%s"] = detail.%s' % (y["en_name"], column_rule_ls[0])
+                        colunm = colunm + colunm_rule + "\n        "
+                    tmp = tmp + "\n        " + colunm + "crawler_ls.append(dic)"
+                elif ls_rule_len == 2:
+                    tmp = 'soup = BeautifulSoup(resp_data, "html.parser")\n    data = soup.%s\n    data = data.%s\n    for x in data[:%s]:\n        dic = {}\n        dic["source_name"] = "%s"' % (ls_rule[0], ls_rule[1], x["get_num"], x["spider_en_name"].strip())
+                    colunm = ""
+                    for y in x["crawler_column"]:
+                        if y["get_data_way"] == 0:
+                            column_tag_ls = y["get_column_rule"].split("=>")
+                            if len(column_tag_ls) == 1:
+                                colunm_rule = 'dic["%s"] = x.%s' % (y["en_name"], column_tag_ls[0])
+                        elif y["get_data_way"] == 1:
+                            column_rule_ls = y["get_column_rule"].split("=>")
+                            if len(column_rule_ls) == 1:
+                                colunm_rule = 'response = requests.get(dic["detail_url"])\n        detail = BeautifulSoup(response.text, "lxml")\n        dic["%s"] = detail.%s' % (y["en_name"], column_rule_ls[0])
+                        colunm = colunm + colunm_rule + "\n        "
+                    tmp = tmp + "\n        " + colunm + "crawler_ls.append(dic)"
                 elif ls_rule_len == 2:
                     if "@" in ls_rule[0]:
                         column_tag_ls = ls_rule[0].split("@")
@@ -225,19 +167,23 @@ def get_spiders_template(rule_ls):
             analysis_data_template = analysis_data_template.replace("for x in resp_data:", tmp)
 
             # 创建爬虫文件
-            file_path = "../spiders/%s.py" % x["spider_en_name"].strip()
-            if not os.path.exists(file_path):
-                file_object = open(file_path, 'w')
-                file_object.write(new_spider_template)
-                file_object.write("\n")
-                file_object.write(new_get_spider_template)
-                # file_object.write("\n")
-                file_object.write(analysis_data_template)
-                file_object.close()
+            file_path = "../test_case/%s.py" % x["spider_en_name"].strip()
+            # if not os.path.exists(file_path):
+            file_object = open(file_path, 'w')
+            file_object.write(new_spider_template)
+            file_object.write("\n")
+            file_object.write(new_get_spider_template)
+            file_object.write(analysis_data_template)
+            file_object.close()
 
-                # print(new_spider_template)
-                # print(new_get_spider_template)
-                # print(x)
+            # 创建数据库文件
+
+            # 修改配置文件
+            # 读取配置
+            config = configparser.ConfigParser()
+            config.read("../config/crawler.json", encoding="utf-8")
+
+
 
 
 # 获取爬虫规则

@@ -119,6 +119,52 @@
   },
   "hadoop":{
     "host":"http://hadoop.aibilink.com",
-    "port":"50070"}
+    "port":"50070"
+  },
+  "celery":{
+    "celery_imports":["crawler.duplicate_removal", "crawler.information_duplicate_removal", "crawler.spider",
+      "crawler.coin_world", "crawler.eight_btc", "crawler.wall_street", "crawler.people_cn", "crawler.jin_shi",
+      "crawler.cailianpress_new_flash", "crawler.chaindd_news", "crawler.bian_new_flash", "crawler.sina_news",
+      "crawler.tmt_post", "crawler.wall_streetcn_news", "crawler.wang_yi_information", "crawler.btc_new_flash",
+      "crawler.he_xun"],
+    "celery_queues":[
+      {"queue":"default","exchange":"default","routing_key":"default"},
+      {"queue":"duplicate_removal_task","exchange":"duplicate_removal_task","routing_key":"duplicate_removal_info"},
+      {"queue":"news_duplicate_removal_task","exchange":"news_duplicate_removal_task","routing_key":"news_duplicate_removal_info"},
+      {"queue":"jin_se_task","exchange":"jin_se_task","routing_key":"jin_se_info"},
+      {"queue":"coin_wold_task","exchange":"coin_wold_task","routing_key":"coin_world_info"},
+      {"queue":"eight_btc_task","exchange":"eight_btc_task","routing_key":"eight_btc_info"},
+      {"queue":"wall_street_task","exchange":"wall_street_task","routing_key":"wall_street_info"},
+      {"queue":"people_cn_task","exchange":"people_cn_task","routing_key":"people_cn_info"},
+      {"queue":"btc_new_flash_task","exchange":"btc_new_flash_task","routing_key":"btc_new_flash_info"},
+      {"queue":"bian_new_flash_task","exchange":"bian_new_flash_task","routing_key":"bian_new_flash_info"},
+      {"queue":"cailianpress_new_flash_task","exchange":"cailianpress_new_flash_task","routing_key":"cailianpress_new_flash_info"},
+      {"queue":"chaindd_task","exchange":"chaindd_task","routing_key":"chaindd_info"},
+      {"queue":"wall_streetcn_task","exchange":"wall_streetcn_task","routing_key":"wall_streetcn_info"},
+      {"queue":"tmt_post_task","exchange":"tmt_post_task","routing_key":"tmt_post_info"},
+      {"queue":"wang_yi_task","exchange":"wang_yi_task","routing_key":"wang_yi_info"},
+      {"queue":"sina_news_task","exchange":"sina_news_task","routing_key":"sina_news_info"},
+      {"queue":"jin_shi_task","exchange":"jin_shi_task","routing_key":"jin_shi_info"},
+      {"queue":"he_xun_task","exchange":"he_xun_task","routing_key":"he_xun_info"}
+    ],
+    "celerybeat_schedule":[
+      {"schedule_name":"jinse_crawler_schedule","task":"crawler.spider.schudule_crawler_task","schedule":40,"queue":"jin_se_task","routing_key":"jin_se_info"},
+      {"schedule_name":"crawler_duplicate_schedule","task":"crawler.duplicate_removal.schudule_duplicate_removal_work","schedule":45,"queue":"duplicate_removal_task","routing_key":"duplicate_removal_info"},
+      {"schedule_name":"crawler_coin_world","task":"crawler.coin_world.schudule_coin_world_information","schedule":40,"queue":"coin_wold_task","routing_key":"coin_wold_info"},
+      {"schedule_name":"crawler_eight_btc","task":"crawler.eight_btc.schudule_eight_information","schedule":70,"queue":"eight_btc_task","routing_key":"eight_btc_info"},
+      {"schedule_name":"information_duplicate_removal","task":"crawler.information_duplicate_removal.schudule_information_duplicate_removal_work","schedule":60,"queue":"news_duplicate_removal_task","routing_key":"news_duplicate_removal_info"},
+      {"schedule_name":"wall_street_schedule","task":"crawler.wall_street.schudule_crawler_task","schedule":45,"queue":"wall_street_task","routing_key":"wall_street_info"},
+      {"schedule_name":"crawler_btc_new_flash","task":"crawler.btc_new_flash.schudule_btc_information","schedule":45,"queue":"btc_new_flash_task","routing_key":"btc_new_flash_info"},
+      {"schedule_name":"people_cn_schedule","task":"crawler.people_cn.schudule_people_cn_information","schedule":90,"queue":"people_cn_task","routing_key":"people_cn_info"},
+      {"schedule_name":"crawler_bian_new_flash","task":"crawler.bian_new_flash.schudule_bianews_information","schedule":45,"queue":"cailianpress_new_flash_task","routing_key":"cailianpress_new_flash_info"},
+      {"schedule_name":"crawler_chaindd_new_flash","task":"crawler.chaindd_news.schudule_chaindd_information","schedule":90,"queue":"chaindd_task","routing_key":"chaindd_info"},
+      {"schedule_name":"crawler_wall_streetcn_new_flash","task":"crawler.wall_streetcn_news.schudule_wall_streetcn_information","schedule":90,"queue":"wall_streetcn_task","routing_key":"wall_streetcn_info"},
+      {"schedule_name":"crawler_tmt_post_new_flash","task":"crawler.tmt_post.schudule_tmt_post_information","schedule":90,"queue":"tmt_post_task","routing_key":"tmt_post_info"},
+      {"schedule_name":"crawler_wang_yi_new_flash","task":"crawler.wang_yi_information.schudule_wang_yi_information","schedule":90,"queue":"wang_yi_task","routing_key":"wang_yi_info"},
+      {"schedule_name":"crawler_sina_new_flash","task":"crawler.sina_news.schudule_sina_information","schedule":90,"queue":"sina_news_task","routing_key":"sina_news_info"},
+      {"schedule_name":"crawler_jin_shi","task":"crawler.jin_shi.schudule_crawler_task","schedule":50,"queue":"jin_shi_task","routing_key":"jin_shi_info"},
+      {"schedule_name":"crawler_he_xun","task":"crawler.he_xun.schudule_he_xun_information","schedule":90,"queue":"he_xun_task","routing_key":"he_xun_info"}
+    ]
+  }
 }
 
