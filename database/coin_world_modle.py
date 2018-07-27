@@ -115,6 +115,7 @@ class PublicInformation(BaseModel):
     source_link = CharField(null=True)
     title = CharField(null=True)
     update_time = DateTimeField(default=datetime.datetime.now)
+    source_name = CharField(null=True)
 
     class Meta:
         table_name = 'public_information'

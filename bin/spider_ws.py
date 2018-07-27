@@ -19,7 +19,7 @@ import requests
 from common.untils import *
 
 
-def crawler_template_name_information():
+def crawler_template_name_information(url):
     # 数据获取
     resp_data = get_template_name_data()
     # 解析数据
@@ -62,8 +62,7 @@ logger = Logger(kind="work_path", name="coin_world")
 
 @app.task(ignore_result=True)
 def template_name_information(url):
-    date = get_current_date()
-    crawler_data = crawler_template_name_information(url, logger)
+    crawler_data = crawler_template_name_information(url)
     if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
         for data in crawler_data:
             cache_data = connetcredis().get("%s_%s_%s" % (RedisConstantsKey.CRAWLER_PUBLIC_INFORMATION.value, data["source_name"], data["content_id"]))
@@ -81,7 +80,7 @@ def template_name_information(url):
                     connetcredis().set("%s_%s_%s" % (RedisConstantsKey.CRAWLER_PUBLIC_INFORMATION.value, data["source_name"], data["content_id"]),
                                        json_convert_str(data))
             else:
-                connetcredis().set("%s_%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["source_name"], data["content_id"]),
+                connetcredis().set("%s_%s_%s" % (RedisConstantsKey.CRAWLER_PUBLIC_INFORMATION.value, data["source_name"], data["content_id"]),
                                    json_convert_str(data))
                 # 去重队列
                 connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
@@ -89,9 +88,8 @@ def template_name_information(url):
                 PublicInformation.create(
                     content=data["content"],
                     content_id=data["content_id"],
-                    source_link=data["source_link"],
                     title=data["title"],
-                    author=data["author"]
+                    source_name=data["source_name"]
                 )
 
 
@@ -129,8 +127,7 @@ logger = Logger(kind="work_path", name="coin_world")
 
 @app.task(ignore_result=True)
 def template_name_information(url):
-    date = get_current_date()
-    crawler_data = crawler_template_name_information(url, logger)
+    crawler_data = crawler_template_name_information(url)
     if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
         for data in crawler_data:
             cache_data = connetcredis().get("%s_%s_%s" % (RedisConstantsKey.CRAWLER_PUBLIC_NEWS.value, data["source_name"], data["content_id"]))
@@ -291,7 +288,7 @@ def get_spiders_template(rule_ls):
             analysis_data_template = analysis_data_template.replace("for x in resp_data:", tmp)
 
             # 创建爬虫文件
-            file_path = "../test_case/spider_%s.py" % x["spider_en_name"].strip()
+            file_path = "../spiders/spider_%s.py" % x["spider_en_name"].strip()
             # if not os.path.exists(file_path):
             file_object = open(file_path, 'w')
             file_object.write(new_spider_template)
@@ -312,7 +309,7 @@ def save_spiders_template(rule_ls):
                 information_template = news_database_file_template.replace("template_name", x["spider_en_name"])
                 information_template = information_template.replace("template_url", x["target_url"])
 
-            file_path = "../test_case/test_%s.py" % x["spider_en_name"].strip()
+            file_path = "../crawler/%s.py" % x["spider_en_name"].strip()
             file_object = open(file_path, 'w')
             file_object.write(information_template)
             file_object.close()
@@ -341,6 +338,7 @@ def modify_spiders_template(rule_ls):
             with open(config_file, "w") as fw:
                 json.dump(load_dict, fw, indent=1)
                 fw.close()
+
 
 # 获取爬虫规则
 def spider_rule_data():
