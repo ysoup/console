@@ -105,3 +105,17 @@ class HuoBiInformation(BaseModel):
     class Meta:
         table_name = 'huo_bi_information'
 
+
+class PublicInformation(BaseModel):
+    author = CharField(null=True)
+    content = CharField(null=True)
+    content_id = AutoField()
+    create_time = DateTimeField(default=datetime.datetime.now)
+    id = IntegerField()
+    source_link = CharField(null=True)
+    title = CharField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'public_information'
+

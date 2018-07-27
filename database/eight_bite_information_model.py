@@ -141,3 +141,18 @@ class SinaInformation(BaseModel):
     class Meta:
         table_name = 'sina_information'
 
+
+class PublicNews(BaseModel):
+    content_id = CharField()
+    author = CharField(null=True)
+    content = TextField(null=True)
+    source_name = CharField(null=True)
+    title = CharField(null=True)
+    img = CharField(null=True)
+    crawler_url = CharField(null=True)
+    update_time = DateTimeField(default=datetime.datetime.now)
+    create_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'public_news'
+

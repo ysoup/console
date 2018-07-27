@@ -9,8 +9,6 @@ from database.spiders_visualization_modle import *
 from common.initlog import Logger
 from common.db_utils import *
 from common.untils import *
-import os
-import configparser
 logger = Logger(kind="work_path", name="duplicate_removal")
 
 
@@ -44,12 +42,138 @@ def analysis_template_name_data(resp_data):
 '''
 
 
+information_database_file_template = '''
+import sys
+import os
+currentUrl = os.path.dirname(__file__)
+parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
+sys.path.append(parentUrl)
+from spiders.spider_template_name import *
+from common.initRedis import connetcredis
+from common.untils import *
+from common.constants import RedisConstantsKey, GetListLength, DuplicateRemovalCache
+from database.coin_world_modle import PublicInformation
+from database.new_flash_model import NewFlashInformation
+from celerymain.main import app
+from common.initlog import Logger
+
+logger = Logger(kind="work_path", name="coin_world")
+
+
+@app.task(ignore_result=True)
+def template_name_information(url):
+    date = get_current_date()
+    crawler_data = crawler_template_name_information(url, logger)
+    if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
+        for data in crawler_data:
+            cache_data = connetcredis().get("%s_%s_%s" % (RedisConstantsKey.CRAWLER_PUBLIC_INFORMATION.value, data["source_name"], data["content_id"]))
+            if cache_data is not None:
+                str1 = str_convert_json(cache_data)
+                distance = get_str_distance(data["content"], str1["content"])
+                # 去重队列
+                query_data = public_is_exist_data(data["content_id"], data["source_name"])
+                if query_data:
+                    connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                         json_convert_str(data))
+                if distance > GetListLength.GET_NOMBAL_NUM.value:
+                    PublicInformation.update(content=data["content"]).where(PublicInformation.content_id ==
+                                                                               data["content_id"])
+                    connetcredis().set("%s_%s_%s" % (RedisConstantsKey.CRAWLER_PUBLIC_INFORMATION.value, data["source_name"], data["content_id"]),
+                                       json_convert_str(data))
+            else:
+                connetcredis().set("%s_%s_%s" % (RedisConstantsKey.CRAWLER_COIN_WORLD.value, data["source_name"], data["content_id"]),
+                                   json_convert_str(data))
+                # 去重队列
+                connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
+                                     json_convert_str(data))
+                PublicInformation.create(
+                    content=data["content"],
+                    content_id=data["content_id"],
+                    source_link=data["source_link"],
+                    title=data["title"],
+                    author=data["author"]
+                )
+
+
+def public_is_exist_data(content_id, source_name):
+    query_data = NewFlashInformation.select().where(
+        NewFlashInformation.content_id == content_id,
+        NewFlashInformation.source_name == source_name)
+    return query_data
+
+
+@app.task(ignore_result=True)
+def schudule_template_name_information():
+    app.send_task('crawler.template_name.template_name_information', args=("template_url",),
+                  queue='template_name_task',
+                  routing_key='template_name_info')
+                  
+'''
+
+news_database_file_template = '''
+import sys
+import os
+currentUrl = os.path.dirname(__file__)
+parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
+sys.path.append(parentUrl)
+from spiders.spider_template_name import *
+from common.initRedis import connetcredis
+from common.untils import *
+from common.constants import RedisConstantsKey, GetListLength, DuplicateRemovalCache
+from celerymain.main import app
+from common.initlog import Logger
+from database.eight_bite_information_model import PublicNews
+
+logger = Logger(kind="work_path", name="coin_world")
+
+
+@app.task(ignore_result=True)
+def template_name_information(url):
+    date = get_current_date()
+    crawler_data = crawler_template_name_information(url, logger)
+    if len(crawler_data) != GetListLength.GET_LIST_LENGTH.value:
+        for data in crawler_data:
+            cache_data = connetcredis().get("%s_%s_%s" % (RedisConstantsKey.CRAWLER_PUBLIC_NEWS.value, data["source_name"], data["content_id"]))
+            if cache_data is None:
+                try:
+                    PublicNews.create(
+                        content_id=data["content_id"],
+                        content=data["content"],
+                        source_name=data["source_name"],
+                        title=data["title"],
+                        author=data["author"],
+                        img=data["match_img"],
+                        crawler_url=data["url"]
+                    )
+                except Exception as e:
+                    logger.error("比特币资讯网抓取持久化出错:%s" % e)
+                connetcredis().set("%s_%s_%s" % (RedisConstantsKey.CRAWLER_PUBLIC_NEWS.value, data["source_name"], data["content_id"]),
+                                   json_convert_str(data))
+            # 去重队列
+            connetcredis().lpush(
+                DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value,
+                json_convert_str(data))
+
+
+@app.task(ignore_result=True)
+def schudule_template_name_information():
+    app.send_task('crawler.template_name.template_name_information', args=("template_url",),
+                  queue='template_name_task',
+                  routing_key='template_name_info')
+'''
+
+
 # 动态生成爬虫模板
 def spiders_template():
     rule_ls = spider_rule_data()
+
     # 生成爬虫模板
     get_spiders_template(rule_ls)
+
+    # 生成数据库文件
+    save_spiders_template(rule_ls)
     # 修改爬虫配置
+    modify_spiders_template(rule_ls)
 
 
 # 生成爬虫模板
@@ -167,7 +291,7 @@ def get_spiders_template(rule_ls):
             analysis_data_template = analysis_data_template.replace("for x in resp_data:", tmp)
 
             # 创建爬虫文件
-            file_path = "../test_case/%s.py" % x["spider_en_name"].strip()
+            file_path = "../test_case/spider_%s.py" % x["spider_en_name"].strip()
             # if not os.path.exists(file_path):
             file_object = open(file_path, 'w')
             file_object.write(new_spider_template)
@@ -176,15 +300,47 @@ def get_spiders_template(rule_ls):
             file_object.write(analysis_data_template)
             file_object.close()
 
+
+def save_spiders_template(rule_ls):
+    if isinstance(rule_ls, list):
+        for x in rule_ls:
             # 创建数据库文件
+            if x["is_news"] == 0:
+                information_template = information_database_file_template.replace("template_name", x["spider_en_name"])
+                information_template = information_template.replace("template_url", x["target_url"])
+            elif x["is_news"] == 1:
+                information_template = news_database_file_template.replace("template_name", x["spider_en_name"])
+                information_template = information_template.replace("template_url", x["target_url"])
 
+            file_path = "../test_case/test_%s.py" % x["spider_en_name"].strip()
+            file_object = open(file_path, 'w')
+            file_object.write(information_template)
+            file_object.close()
+
+
+# 修改爬虫配置
+def modify_spiders_template(rule_ls):
+    if isinstance(rule_ls, list):
+        for x in rule_ls:
+            # 读取配置文件
+            config_file = "../config/crawler.json"
+            with open(config_file, "r") as fi:
+                load_dict = json.load(fi)
+                if load_dict.__contains__('celery'):
+                    load_dict["celery"]["celery_imports"].append("crawler.%s" % x["spider_en_name"].strip())
+                    load_dict["celery"]["celery_queues"].append({"exchange": "%s_task" % x["spider_en_name"],
+                                                                 "routing_key": "%s_info" % x["spider_en_name"],
+                                                                 "queue": "%s_task" % x["spider_en_name"]})
+                    load_dict["celery"]["celerybeat_schedule"].append(
+                        {"schedule_name": "crawler_%s" % x["spider_en_name"],
+                         "task": "crawler.%s.schudule_%s" % (x["spider_en_name"], x["spider_en_name"]),
+                         "schedule": x["time_interval"],
+                         "routing_key": "%s_info" % x["spider_en_name"],
+                         "queue": "%s_task" % x["spider_en_name"]})
             # 修改配置文件
-            # 读取配置
-            config = configparser.ConfigParser()
-            config.read("../config/crawler.json", encoding="utf-8")
-
-
-
+            with open(config_file, "w") as fw:
+                json.dump(load_dict, fw, indent=1)
+                fw.close()
 
 # 获取爬虫规则
 def spider_rule_data():

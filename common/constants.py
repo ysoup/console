@@ -34,6 +34,10 @@ class RedisConstantsKey(Enum):
     CRAWLER_BINANCE_NOTICE = "crawler_binance_notice"  # binance数据
     CRAWLER_HE_XUN = "crawler_he_xun"  # 和讯网
 
+    # 资讯,快讯public redis
+    CRAWLER_PUBLIC_INFORMATION = "crawler_public_information"  # 快讯
+    CRAWLER_PUBLIC_NEWS = "crawler_public_news"  # 资讯
+
 
 @unique
 class DuplicateRemovalCache(Enum):
