@@ -105,7 +105,6 @@ def schudule_template_name_information():
     app.send_task('crawler.template_name.template_name_information', args=("template_url",),
                   queue='template_name_task',
                   routing_key='template_name_info')
-                  
 '''
 
 news_database_file_template = '''
@@ -201,7 +200,10 @@ def get_spiders_template(rule_ls):
                         elif y["get_data_way"] == 1:
                             column_rule_ls = y["get_column_rule"].split("=>")
                             if len(column_rule_ls) == 1:
-                                colunm_rule = 'response = requests.get(dic["detail_url"])\n        detail = BeautifulSoup(response.text, "lxml")\n        dic["%s"] = detail.%s' % (y["en_name"], column_rule_ls[0])
+                                if y["en_name"] == "content_id":
+                                    colunm_rule = 'dic["content_id"] = dic["details_url"].%s' % column_rule_ls[0]
+                                else:
+                                    colunm_rule = 'response = requests.get(dic["details_url"])\n        detail = BeautifulSoup(response.text, "lxml")\n        dic["%s"] = detail.%s' % (y["en_name"], column_rule_ls[0])
                         colunm = colunm + colunm_rule + "\n        "
                     tmp = tmp + "\n        " + colunm + "crawler_ls.append(dic)"
                 elif ls_rule_len == 2:
@@ -215,7 +217,10 @@ def get_spiders_template(rule_ls):
                         elif y["get_data_way"] == 1:
                             column_rule_ls = y["get_column_rule"].split("=>")
                             if len(column_rule_ls) == 1:
-                                colunm_rule = 'response = requests.get(dic["detail_url"])\n        detail = BeautifulSoup(response.text, "lxml")\n        dic["%s"] = detail.%s' % (y["en_name"], column_rule_ls[0])
+                                if y["en_name"] == "content_id":
+                                    colunm_rule = 'dic["content_id"] = dic["details_url"].%s' % column_rule_ls[0]
+                                else:
+                                    colunm_rule = 'response = requests.get(dic["details_url"])\n        detail = BeautifulSoup(response.text, "lxml")\n        dic["%s"] = detail.%s' % (y["en_name"], column_rule_ls[0])
                         colunm = colunm + colunm_rule + "\n        "
                     tmp = tmp + "\n        " + colunm + "crawler_ls.append(dic)"
                 elif ls_rule_len == 2:
@@ -233,7 +238,6 @@ def get_spiders_template(rule_ls):
                                             print("mmmm")
                                     else:
                                         print("nnn")
-
                             elif y["get_data_way"] == 1:
                                 print("kkkk")
             elif x["ls_rule_type"] == 1:
@@ -324,16 +328,17 @@ def modify_spiders_template(rule_ls):
             with open(config_file, "r") as fi:
                 load_dict = json.load(fi)
                 if load_dict.__contains__('celery'):
-                    load_dict["celery"]["celery_imports"].append("crawler.%s" % x["spider_en_name"].strip())
-                    load_dict["celery"]["celery_queues"].append({"exchange": "%s_task" % x["spider_en_name"],
-                                                                 "routing_key": "%s_info" % x["spider_en_name"],
-                                                                 "queue": "%s_task" % x["spider_en_name"]})
-                    load_dict["celery"]["celerybeat_schedule"].append(
-                        {"schedule_name": "crawler_%s" % x["spider_en_name"],
-                         "task": "crawler.%s.schudule_%s" % (x["spider_en_name"], x["spider_en_name"]),
-                         "schedule": x["time_interval"],
-                         "routing_key": "%s_info" % x["spider_en_name"],
-                         "queue": "%s_task" % x["spider_en_name"]})
+                    if "crawler.%s" % x["spider_en_name"].strip() not in load_dict["celery"]["celery_imports"]:
+                        load_dict["celery"]["celery_imports"].append("crawler.%s" % x["spider_en_name"].strip())
+                        load_dict["celery"]["celery_queues"].append({"exchange": "%s_task" % x["spider_en_name"],
+                                                                     "routing_key": "%s_info" % x["spider_en_name"],
+                                                                     "queue": "%s_task" % x["spider_en_name"]})
+                        load_dict["celery"]["celerybeat_schedule"].append(
+                            {"schedule_name": "crawler_%s" % x["spider_en_name"],
+                             "task": "crawler.%s.schudule_%s" % (x["spider_en_name"], x["spider_en_name"]),
+                             "schedule": x["time_interval"],
+                             "routing_key": "%s_info" % x["spider_en_name"],
+                             "queue": "%s_task" % x["spider_en_name"]})
             # 修改配置文件
             with open(config_file, "w") as fw:
                 json.dump(load_dict, fw, indent=1)
