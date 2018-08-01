@@ -306,10 +306,10 @@ def save_spiders_template(rule_ls):
     if isinstance(rule_ls, list):
         for x in rule_ls:
             # 创建数据库文件
-            if x["is_news"] == 0:
+            if x["information_type"] == 0:
                 information_template = information_database_file_template.replace("template_name", x["spider_en_name"])
                 information_template = information_template.replace("template_url", x["target_url"])
-            elif x["is_news"] == 1:
+            elif x["information_type"] == 1:
                 information_template = news_database_file_template.replace("template_name", x["spider_en_name"])
                 information_template = information_template.replace("template_url", x["target_url"])
 
