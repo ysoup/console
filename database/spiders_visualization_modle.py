@@ -6,6 +6,7 @@ parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
 from common.initDb import InitDb
 from common.constants import SpidersDataModel
+import datetime
 
 spiders_visualization = InitDb(SpidersDataModel.Model_SPIDERS_VISUALIZATION.value)
 spiders_visualization_database = spiders_visualization.connect()
@@ -68,3 +69,27 @@ class SpidersVisualizationRule(BaseModel):
     class Meta:
         table_name = 'spiders_visualization_rule'
 
+
+class AiSpiders(BaseModel):
+    seach_type = IntegerField()
+    seach_content = CharField()
+    is_useful = IntegerField()
+    num = IntegerField()
+    page_num = IntegerField()
+    headers = CharField()
+    create_time = DateTimeField(default=datetime.datetime.now)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'ai_spiders'
+
+
+class WebsiteWhite(BaseModel):
+    website_name = CharField()
+    website_url = CharField()
+    is_useful = IntegerField()
+    create_time = DateTimeField(default=datetime.datetime.now)
+    update_time = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'website_white'
