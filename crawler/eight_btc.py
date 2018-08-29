@@ -36,7 +36,7 @@ def eight_information(url):
                 except Exception as e:
                     logger.error("巴比特抓取持久化出错:%s" % e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BA_BI_TE.value, data["url"]),
-                                   json_convert_str(data))
+                                   json_convert_str(data), 24*60*60*3)
             # 去重队列
             rows = EightBiteInformation.select().where(EightBiteInformation.crawler_url == data["url"])
             for row in rows:

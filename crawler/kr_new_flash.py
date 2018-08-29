@@ -34,11 +34,11 @@ def kr_information(url):  # 币世界快讯
                 if distance > GetListLength.GET_NOMBAL_NUM.value:
                     KrInformation.update(content=data["content"]).where(KrInformation.content_id == data["content_id"])
                     connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_KR.value, data["content_id"]),
-                                       json_convert_str(data))
+                                       json_convert_str(data), 24*60*60*3)
 
             else:
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_BIAN_NEW_FLASH.value, data["content_id"]),
-                                   json_convert_str(data))
+                                   json_convert_str(data), 24*60*60*3)
                 # 去重队列
                 connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                                      json_convert_str(data))

@@ -38,7 +38,7 @@ def okex_information(url):
                 except Exception as e:
                     logger.error("okex抓取持久化出错：%s" % e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_OKEX.value,data["content_id"]),
-                                   json_convert_str(data))
+                                   json_convert_str(data), 24*60*60*3)
 
             # 去重队列
             connetcredis().lpush(

@@ -37,7 +37,7 @@ def wang_yi_information(url):
                 except Exception as e:
                     logger.error("网易资讯抓取持久化出错:%s" % e)
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_WANG_YI.value, data["content_id"]),
-                                   json_convert_str(data))
+                                   json_convert_str(data), 24*60*60*3)
             # 去重队列
             connetcredis().lpush(
                 DuplicateRemovalCache.FIRST_INFO_DUPLICATE_REMOVAL_CACHE.value,

@@ -177,15 +177,16 @@ def get_content_by_reg(content_1, content_2):
 
 def save_news_data(com_data, new_img_url):
     try:
-        NewFlashExclusiveInformation.create(content=com_data["content"],
-                                            content_id=com_data["content_id"],
-                                            source_name=com_data["source_name"],
-                                            category=com_data["category"],
-                                            img=new_img_url, title=com_data["title"],
-                                            tag=com_data["tag"], author=com_data["author"],
-                                            is_show=com_data["is_show"],
-                                            source_url=com_data["url"]
-                                            )
+        if len(com_data["content"]) > 300:
+            NewFlashExclusiveInformation.create(content=com_data["content"],
+                                                content_id=com_data["content_id"],
+                                                source_name=com_data["source_name"],
+                                                category=com_data["category"],
+                                                img=new_img_url, title=com_data["title"],
+                                                tag=com_data["tag"], author=com_data["author"],
+                                                is_show=com_data["is_show"],
+                                                source_url=com_data["url"]
+                                                )
     except Exception as e:
         logger.error("资讯持久化出错:%s" % e)
 

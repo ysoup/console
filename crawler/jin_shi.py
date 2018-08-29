@@ -39,11 +39,11 @@ def jin_shi_information(url):
                     JinShiInformation.update(content=data["content"]).where(JinShiInformation.content_id ==
                                                                             data["content_id"])
                     connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SHI.value, data["content_id"]),
-                                       json_convert_str(data))
+                                       json_convert_str(data), 24*60*60*3)
 
             else:
                 connetcredis().set("%s_%s" % (RedisConstantsKey.CRAWLER_JIN_SHI.value, data["content_id"]),
-                                   json_convert_str(data))
+                                   json_convert_str(data), 24*60*60*3)
                 # 去重队列
                 connetcredis().lpush(DuplicateRemovalCache.FIRST_DUPLICATE_REMOVAL_CACHE.value,
                                      json_convert_str(data))
