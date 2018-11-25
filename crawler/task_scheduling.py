@@ -51,6 +51,9 @@ def get_task():
                             response = requests.post(url, data=data)
                             data = json.loads(response.text)
                             print(data)
+            # 更新状态
+            ArticleUploadManage.update(send_status=1).where(ArticleUploadManage.id == x.id)
+
 
 
 
