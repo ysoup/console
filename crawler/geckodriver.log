@@ -1,0 +1,173 @@
+1542787354956	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.LizUNEOc16MA"
+1542787356488	Marionette	INFO	Listening on port 44995
+1542787356565	Marionette	WARN	TLS certificate errors will be ignored for this session
+[Parent 8765, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 8765, Gecko_IOThread] WARNING: pipe error (95): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542787387494	Marionette	INFO	Stopped listening on port 44995
+1542787408951	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.nXb9EtcTRIOr"
+1542787410255	Marionette	INFO	Listening on port 44931
+1542787410362	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542787498874	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.dfyfbDmG3Ekv"
+1542787500231	Marionette	INFO	Listening on port 33149
+1542787500280	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542792761056	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.7seXMVL3W2iq"
+1542792762984	Marionette	INFO	Listening on port 44669
+1542792763067	Marionette	WARN	TLS certificate errors will be ignored for this session
+[Parent 10162, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 10162, Gecko_IOThread] WARNING: pipe error (81): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542792785621	Marionette	INFO	Stopped listening on port 44669
+[Parent 9094, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 9094, Gecko_IOThread] WARNING: pipe error (92): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542792787950	Marionette	INFO	Stopped listening on port 44931
+1542792790656	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.7gbguw8iqzHX"
+1542792792308	Marionette	INFO	Listening on port 37241
+1542792792367	Marionette	WARN	TLS certificate errors will be ignored for this session
+[Child 10586, Chrome_ChildThread] WARNING: pipe error (3): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542792827293	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.e9Z3wgEDYYxY"
+1542792829037	Marionette	INFO	Listening on port 45695
+1542792829124	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542792866690	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.hNvyf3naZnED"
+1542792868405	Marionette	INFO	Listening on port 41085
+1542792868507	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x580027,name=PNecko::Msg_RemoveRequestContext) Channel closing: too late to send/recv, messages will be lost
+
+[Parent 10769, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 10769, Gecko_IOThread] WARNING: pipe error (95): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 10769, Gecko_IOThread] WARNING: pipe error (68): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542792870904	Marionette	INFO	Stopped listening on port 45695
+1542792926382	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.mQLd4P3TgvZ8"
+1542792928113	Marionette	INFO	Listening on port 33823
+1542792928195	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 11466, Chrome_ChildThread] WARNING: pipe error (3): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542793002652	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.AzMU1BJJc7xf"
+1542793004043	Marionette	INFO	Listening on port 36761
+1542793004067	Marionette	WARN	TLS certificate errors will be ignored for this session
+[Parent 11036, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 11036, Gecko_IOThread] WARNING: pipe error (95): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542793006194	Marionette	INFO	Stopped listening on port 41085
+1542793128146	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.oVhE6h8jCBdm"
+1542793129522	Marionette	INFO	Listening on port 33641
+1542793129554	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+[Parent 12023, Gecko_IOThread] WARNING: pipe error (99): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 12023, Gecko_IOThread] WARNING: pipe error (120): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 12023, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542793131618	Marionette	INFO	Stopped listening on port 33641
+[Parent 11666, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 11666, Gecko_IOThread] WARNING: pipe error (97): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 11666, Gecko_IOThread] WARNING: pipe error (121): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542793133252	Marionette	INFO	Stopped listening on port 36761
+1542793136890	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.OvIio3sZDCNQ"
+1542793138173	Marionette	INFO	Listening on port 33085
+1542793138199	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542793835779	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.9OkcIhDMsbL7"
+1542793837372	Marionette	INFO	Listening on port 42461
+1542793837392	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542793974670	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.1jh6DdhX3PFt"
+1542793976008	Marionette	INFO	Listening on port 43507
+1542793976081	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+[Parent 13694, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 13694, Gecko_IOThread] WARNING: pipe error (99): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 13694, Gecko_IOThread] WARNING: pipe error (68): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542794083906	Marionette	INFO	Stopped listening on port 43507
+1542794107589	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.oYC76gZye9gz"
+1542794108885	Marionette	INFO	Listening on port 33961
+1542794108894	Marionette	WARN	TLS certificate errors will be ignored for this session
+[Parent 14125, Gecko_IOThread] WARNING: pipe error (99): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542794199620	Marionette	INFO	Stopped listening on port 33961
+1542794610480	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.tzEDMA2I0Rgc"
+1542794611769	Marionette	INFO	Listening on port 32771
+1542794611792	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542794691823	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.OhWWLCesbnVi"
+1542794693238	Marionette	INFO	Listening on port 39501
+1542794693337	Marionette	WARN	TLS certificate errors will be ignored for this session
+[Parent 14993, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 14993, Gecko_IOThread] WARNING: pipe error (99): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542794694083	Marionette	INFO	Stopped listening on port 32771
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 16062, Chrome_ChildThread] WARNING: pipe error (3): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542794775551	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.ioC45NmvSyum"
+1542794776963	Marionette	INFO	Listening on port 37477
+1542794777068	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+1542945125823	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.01mqLloei3az"
+1542945127571	Marionette	INFO	Listening on port 40329
+1542945127636	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+1542945771510	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.h2gHjcVRiy4k"
+1542945773115	Marionette	INFO	Listening on port 43811
+1542945773220	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+[Parent 20907, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 20907, Gecko_IOThread] WARNING: pipe error (106): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 20907, Gecko_IOThread] WARNING: pipe error (68): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542945819393	Marionette	INFO	Stopped listening on port 43811
+[Parent 16462, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 16462, Gecko_IOThread] WARNING: pipe error (105): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542945828655	Marionette	INFO	Stopped listening on port 37477
+[Parent 20113, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 20113, Gecko_IOThread] WARNING: pipe error (97): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542945831802	Marionette	INFO	Stopped listening on port 40329
+1542946030974	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.8u6Ji1SIJipg"
+1542946032310	Marionette	INFO	Listening on port 41213
+1542946032378	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x4C0010,name=PHttpChannel::Msg___delete__) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x580027,name=PNecko::Msg_RemoveRequestContext) Channel closing: too late to send/recv, messages will be lost
+
+[Parent 21376, Gecko_IOThread] WARNING: pipe error (97): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 21376, Gecko_IOThread] WARNING: pipe error (122): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 21376, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-j7tNrI/firefox-63.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542946057432	Marionette	INFO	Stopped listening on port 41213
+1542970205318	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.KTdqnAvTgJ4N"
+1542970207265	Marionette	INFO	Listening on port 45671
+1542970208566	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+[Parent 19616, Gecko_IOThread] WARNING: pipe error (78): 连接被对方重设: file /build/firefox-Qjvn2X/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+[Parent 19616, Gecko_IOThread] WARNING: pipe error (79): 连接被对方重设: file /build/firefox-Qjvn2X/firefox-63.0.3+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 356
+1542970232625	Marionette	INFO	Stopped listening on port 45671

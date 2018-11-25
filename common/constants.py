@@ -66,6 +66,7 @@ class SpidersDataModel(Enum):
     MODEL_WALL_STREET = "wall_street"
     MODEL_JIN_SHI = "jin_shi"
     Model_SPIDERS_VISUALIZATION = "spiders_visualization"
+    Model_SPIDERS_ARTICLE = "spiders_article"
 
 
 @unique

@@ -52,5 +52,5 @@ def schudule_wang_yi_information():
                   routing_key='wang_yi_info')
 
 
-# if __name__ == "__main__":
-#     wang_yi_information("http://tech.163.com/special/blockchain_2018/")
+if __name__ == "__main__":
+    wang_yi_information("http://tech.163.com/special/blockchain_2018/")

@@ -52,5 +52,5 @@ def schudule_sina_information():
                   routing_key='sina_news_info')
 
 
-# if __name__ == "__main__":
-#     sina_information("http://roll.finance.sina.com.cn/finance/wh/btbxw/index.shtml")
+if __name__ == "__main__":
+    sina_information("http://roll.finance.sina.com.cn/finance/wh/btbxw/index.shtml")

@@ -5,6 +5,10 @@ import time
 from simhash import Simhash
 import re
 import requests
+from selenium import webdriver
+
+
+executable_path='/usr/phantomjs/phantomjs-2.1.1-linux-x86_64/bin/phantomjs'
 
 
 def compare_string(str1, str2):
@@ -163,3 +167,29 @@ def public_requests_method(req_type, target_url, req_headers, req_params, req_co
     if req_code:
         response = response + "\n    " + "respon.encoding = '%s'" % req_code
     return response
+
+
+def get_code(user_name, pass_word):
+    browser = webdriver.PhantomJS(executable_path=executable_path)
+    url = "https://auth.om.qq.com/omoauth2/authorize?response_type=code&client_id=78274d6bfded051a82975cb4f4a36b58&redirect_uri=https://www.aibilink.com/&state=STATE"
+    browser.get(url)
+    browser.find_element_by_css_selector("[class='account-input']").send_keys(user_name)
+    browser.find_element_by_css_selector("[class='password-input']").send_keys(pass_word)
+    browser.find_element_by_css_selector("[class='btn btnLogin btn-primary']").click()
+    time.sleep(3)
+    current_url = str(browser.current_url)
+    current_url = current_url.split("/")[-1]
+    code = (current_url.split("&")[0]).split("=")[-1]
+    return code
+
+
+def get_token(CLIENT_ID, client_secret, code):
+    url = "https://auth.om.qq.com/omoauth2/accesstoken?grant_type=authorization_code&client_id=%s&client_secret=%s&code=%s" % (CLIENT_ID, client_secret, code)
+
+    data = requests.post(url)
+    data = json.loads(data.text)
+    access_token = data["data"]["access_token"]
+    openid = data["data"]["openid"]
+    return access_token, openid
+
+
