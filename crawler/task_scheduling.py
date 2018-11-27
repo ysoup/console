@@ -51,6 +51,8 @@ def get_task():
                                     response = requests.post(url, data=data)
                                     data = json.loads(response.text)
                                     if data["msg"] == "SUCCESS":
+                                        w = ArticleManage.update(is_send=2).where(ArticleManage.id == int(g))
+                                        w.execute()
                                         ArticleUploadDetails.create(
                                             account_id=y,
                                             account_name=account_rows[0].account_name,
@@ -64,6 +66,8 @@ def get_task():
 
                                         )
                                     else:
+                                        w = ArticleManage.update(is_send=3).where(ArticleManage.id == int(g))
+                                        w.execute()
                                         ArticleUploadDetails.create(
                                             account_id=y,
                                             account_name=account_rows[0].account_name,
