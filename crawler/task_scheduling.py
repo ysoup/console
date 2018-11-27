@@ -84,4 +84,5 @@ def get_task():
 
 
 if __name__ == '__main__':
+    print("===服务开始启动===")
     get_task()
