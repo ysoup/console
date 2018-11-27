@@ -75,3 +75,19 @@ class AccountManage(BaseModel):
     class Meta:
         table_name = 'account_manage'
 
+
+class ArticleUploadDetails(BaseModel):
+    account_id = IntegerField(null=True)
+    account_name = CharField(null=True)
+    article_id = IntegerField(null=True)
+    article_title = CharField(null=True)
+    article_type = IntegerField(null=True)
+    article_category = IntegerField(null=True)
+    create_time = DateTimeField()
+    send_status = IntegerField(null=True)
+    upload_id = IntegerField(null=True)
+    desc = CharField(null=True)
+
+    class Meta:
+        table_name = 'article_upload_details'
+
