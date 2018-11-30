@@ -68,16 +68,13 @@ class CookieSpider(object):
                         dic["title"] = title
                         connetcredis().lpush("icook_details_url", json.dumps(dic))
 
-
     def main(self):
         base_url = 'https://icook.tw/categories/'
         # 构造所有ｕｒｌ
-        url_list = [base_url+str(num)+"?page=" + str(i) for num in all_categories for i in range(1, 100)]
+        url_list = [base_url+str(num)+"?page=" + str(i) for num in all_categories for i in range(1, 60)]
         # 创建协程并执行
-        while True:
-            url = connetcredis().lpop("icook_pages_details_url")
-            self.run(url)
-
+        for url in url_list:
+            connetcredis().lpush("icook_pages_details_url", url)
 
 
 if __name__=="__main__":
