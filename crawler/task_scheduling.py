@@ -23,18 +23,22 @@ def get_task():
             if task_rows:
                 for x in task_rows:
                     account_ids_ls = (x.account_name).split(",")
-                    for y in account_ids_ls:
+                    article_list = (x.send_ids).split(",")
+                    for i, y in enumerate(account_ids_ls):
                         account_rows = AccountManage.select().where(AccountManage.id == y)
                         if account_rows:
                             # 获取code
-                            code = get_code(account_rows[0].account_name, account_rows[0].account_password)
+                            start = i * 2 + i
+                            end = start + 2
+                            if start > len(article_list): break
+                            code = get_code(account_rows[0].account_name, account_rows[0].account_password,
+                                            login_type=0)
 
                             # 获取token
                             access_token, openid = get_token(CLIENT_ID, client_secret, code)
-
                             # 获取上传的文章
-                            article_list = (x.send_ids).split(",")
-                            for g in article_list:
+                            new_article_list = article_list[start:end]
+                            for g in new_article_list:
                                 rows = ArticleManage.select().where(ArticleManage.id == int(g))
                                 if len(rows) >= 1:
                                     # 发送
