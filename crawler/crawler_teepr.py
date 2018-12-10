@@ -89,7 +89,7 @@ class CookieSpider(object):
                 try:
                     new_img_ls = []
                     for i, y in enumerate(img_ls):
-                        new_img_url = self.upload_img(y, "icook", i)
+                        new_img_url = self.upload_img(y, "teepr", i)
                         if new_img_url:
                             dic["content"] = dic["content"].replace(y, new_img_url)
                             new_img_ls.append(new_img_url)
@@ -97,73 +97,38 @@ class CookieSpider(object):
                     title = Converter('zh-hans').convert(dic["title"])
                     dic["content"] = self.parse_content(dic["content"])
 
-                    # ArticleManage.create(
-                    #     article_content=dic["content"],
-                    #     article_id=dic["article_id"],
-                    #     article_cover=new_img_ls[0],
-                    #     article_title=title,
-                    #     category_type=9,
-                    #     source_name="teepr"
-                    # )
+                    ArticleManage.create(
+                        article_content=dic["content"],
+                        article_id=dic["article_id"],
+                        article_cover=new_img_ls[0],
+                        article_title=title,
+                        category_type=9,
+                        source_name="teepr"
+                    )
                 except Exception as e:
                     print(traceback.format_exc())
 
     def parse_content(self, tmp):
         soup = BeautifulSoup(tmp, "lxml")
         ad_ls = soup.find_all("div", "mid-post-ad-2")
-        content = ""
         for x in ad_ls:
-            content = content + tmp.replace(str(x), "")
-        print(content)
-        recipe_cover = soup.find("div", "recipe-cover")
-        recipe_cover_img = recipe_cover.find("img")
-        content = str(recipe_cover_img)
-        header_row_description = soup.find("div", "header-row description")
-        if header_row_description:
-            header_row_description_p = header_row_description.find("p")
-            del_header_row_description_a = header_row_description_p.find("a")
-            header_row_description_p = str(header_row_description_p).replace(str(del_header_row_description_a), "")
-            content = content + "<br>" + header_row_description_p
-
-        servings_info = soup.find("div", "servings-info info-block")
-        if servings_info:
-            info_tag = servings_info.find("div", "info-tag").text
-            content = content + info_tag
-
-            info_content = servings_info.find("div", "info-content").text
-            content = content + "<br>" + info_content
-
-        time_info = soup.find("div", "time-info info-block")
-        if time_info:
-            info_tag = time_info.find("div", "info-tag").text
-            content = content + "<br>" + info_tag
-
-            info_content = time_info.find("div", "info-content").text
-            content = content + "<br>" + info_content
-
-        title_info = soup.find("div", "title").text
-        content = content + "<br>" + title_info
-        ingredients = soup.find_all("div", "ingredient")
-        for x in ingredients:
-            ingredient_name = x.find("div", "ingredient-name").text
-            content = content + "<br>" + ingredient_name
-            ingredient_unit = x.find("div", "ingredient-unit").text
-            content = content + "<br>" + ingredient_unit
-
-        li_info = soup.find_all("li")
-        tmp_img = '<img alt="" height="600" src="icook_img" width="800" />'
-        for y in li_info:
-            if y.find("img"):
-                img = y.find("img").get("src")
-                new_img = tmp_img.replace("icook_img", img)
-                content = content + "<br>" + new_img
-            if y.find("big"):
-                step_instruction = y.find("big").text
-                content = content + "<br>" + step_instruction
-
-            step_instruction_content = y.find("div", "step-instruction-content").text
-            content = content + "<br>" + step_instruction_content
-        return content
+            tmp = tmp.replace(str(x), "")
+        script_ls = soup.find_all("script")
+        for x in script_ls:
+            tmp = tmp.replace(str(x), "")
+        img_ls = soup.find_all("img")
+        for x in img_ls:
+            tmp_img = '<img alt="" height="tmp_height" src="icook_img" width="tmp_width" />'
+            if "height" in str(x):
+                tmp_img = tmp_img.replace("tmp_height", x["height"])
+            if "width" in str(x):
+                tmp_img = tmp_img.replace("tmp_width", x["width"])
+            tmp_img = tmp_img.replace("icook_img", x["src"])
+            tmp = tmp.replace(str(x), tmp_img)
+        iframe_ls = soup.find_all("iframe")
+        for x in iframe_ls:
+            tmp = tmp.replace(str(x), "")
+        return tmp
 
 
 if __name__=="__main__":
