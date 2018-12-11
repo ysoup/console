@@ -8,8 +8,8 @@ import requests
 from selenium import webdriver
 
 
-# executable_path = '/usr/phantomjs/phantomjs-2.1.1-linux-x86_64/bin/phantomjs'
-executable_path = "/home/yangweidong/.pyenv/versions/3.5.2/bin/chromedriver"
+executable_path = '/usr/phantomjs/phantomjs-2.1.1-linux-x86_64/bin/phantomjs'
+# executable_path = "/home/yangweidong/.pyenv/versions/3.5.2/bin/chromedriver"
 
 def compare_string(str1, str2):
     str1 = encode(str1)
@@ -170,7 +170,7 @@ def public_requests_method(req_type, target_url, req_headers, req_params, req_co
 
 
 def get_code(user_name, pass_word, login_type):
-    browser = webdriver.Chrome(executable_path=executable_path)
+    browser = webdriver.PhantomJS(executable_path=executable_path)
     url = "https://auth.om.qq.com/omoauth2/authorize?response_type=code&client_id=78274d6bfded051a82975cb4f4a36b58&redirect_uri=https://www.aibilink.com/&state=STATE"
     browser.get(url)
     if login_type == 1:
