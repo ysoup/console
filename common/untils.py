@@ -8,8 +8,8 @@ import requests
 from selenium import webdriver
 
 
-executable_path='/usr/phantomjs/phantomjs-2.1.1-linux-x86_64/bin/phantomjs'
-
+# executable_path = '/usr/phantomjs/phantomjs-2.1.1-linux-x86_64/bin/phantomjs'
+executable_path = "/home/yangweidong/.pyenv/versions/3.5.2/bin/chromedriver"
 
 def compare_string(str1, str2):
     str1 = encode(str1)
@@ -169,13 +169,30 @@ def public_requests_method(req_type, target_url, req_headers, req_params, req_co
     return response
 
 
-def get_code(user_name, pass_word):
-    browser = webdriver.PhantomJS(executable_path=executable_path)
+def get_code(user_name, pass_word, login_type):
+    browser = webdriver.Chrome(executable_path=executable_path)
     url = "https://auth.om.qq.com/omoauth2/authorize?response_type=code&client_id=78274d6bfded051a82975cb4f4a36b58&redirect_uri=https://www.aibilink.com/&state=STATE"
     browser.get(url)
-    browser.find_element_by_css_selector("[class='account-input']").send_keys(user_name)
-    browser.find_element_by_css_selector("[class='password-input']").send_keys(pass_word)
-    browser.find_element_by_css_selector("[class='btn btnLogin btn-primary']").click()
+    if login_type == 1:
+        browser.find_element_by_css_selector("[class='login-mode-link login-qq']").click()
+        handles = browser.window_handles
+        print(handles)
+        print(type(handles))  # 结果为list类型
+        # sreach_window = browser.current_window_handle
+        browser.switch_to_window(handles[-1])
+        browser.implicitly_wait(30)
+        browser.switch_to_frame("login_frame")
+        browser.find_element_by_id("switcher_plogin").click()
+        browser.find_element_by_css_selector("[class='inputstyle']").send_keys(user_name)
+        browser.find_element_by_css_selector("[class='inputstyle password']").send_keys(pass_word)
+        browser.find_element_by_css_selector("[class='login_button']").click()
+        time.sleep(3)
+        print("aaaa")
+        pass
+    else:
+        browser.find_element_by_css_selector("[class='account-input']").send_keys(user_name)
+        browser.find_element_by_css_selector("[class='password-input']").send_keys(pass_word)
+        browser.find_element_by_css_selector("[class='btn btnLogin btn-primary']").click()
     time.sleep(3)
     current_url = str(browser.current_url)
     current_url = current_url.split("/")[-1]
