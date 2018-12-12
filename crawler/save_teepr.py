@@ -79,51 +79,20 @@ class CookieSpider(object):
 
     def parse_page(self):
         while True:
-            details_url = connetcredis().lpop("teepr_details_url")
-            if details_url:
-                dic = json.loads(details_url)
-                recipe_details = BeautifulSoup(dic["content"], "lxml")
-                img_ls = re.compile(r'<img[\s\S]*?src=[\'|"]([\s\S]*?)[\'|"][\s\S]*?>').findall(str(recipe_details))
-                # 上传图片
-                try:
-                    new_img_ls = []
-                    for i, y in enumerate(img_ls):
-                        new_img_url = self.upload_img(y, "teepr", i)
-                        if new_img_url:
-                            dic["content"] = dic["content"].replace(y, new_img_url)
-                            new_img_ls.append(new_img_url)
-                    dic["content"] = Converter('zh-hans').convert(dic["content"])
-                    title = Converter('zh-hans').convert(dic["title"])
-                    dic["content"] = self.parse_content(dic["content"])
-                    dic["article_cover"] = new_img_ls[0]
-                    dic["article_title"] = title
-                    dic["category_type"] = 156
-                    dic["source_name"] = "teepr"
-                    connetcredis().lpush("icook_details_content", json.dumps(dic))
-                except Exception as e:
-                    print(traceback.format_exc())
-
-    def parse_content(self, tmp):
-        soup = BeautifulSoup(tmp, "lxml")
-        ad_ls = soup.find_all("div", "mid-post-ad-2")
-        for x in ad_ls:
-            tmp = tmp.replace(str(x), "")
-        script_ls = soup.find_all("script")
-        for x in script_ls:
-            tmp = tmp.replace(str(x), "")
-        img_ls = soup.find_all("img")
-        for x in img_ls:
-            tmp_img = '<img alt="" height="tmp_height" src="icook_img" width="tmp_width" />'
-            if "height" in str(x):
-                tmp_img = tmp_img.replace("tmp_height", x["height"])
-            if "width" in str(x):
-                tmp_img = tmp_img.replace("tmp_width", x["width"])
-            tmp_img = tmp_img.replace("icook_img", x["src"])
-            tmp = tmp.replace(str(x), tmp_img)
-        iframe_ls = soup.find_all("iframe")
-        for x in iframe_ls:
-            tmp = tmp.replace(str(x), "")
-        return tmp
+            try:
+                details_url = connetcredis().lpop("icook_details_content")
+                if details_url:
+                    dic = json.loads(details_url)
+                    ArticleManage.create(
+                        article_content=dic["content"],
+                        article_id=dic["article_id"],
+                        article_cover=dic["article_cover"],
+                        article_title=dic["article_title"],
+                        category_type=156,
+                        source_name="teepr"
+                    )
+            except Exception as e:
+                print(traceback.format_exc())
 
 
 if __name__=="__main__":
