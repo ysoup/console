@@ -36,6 +36,7 @@ def get_task():
 
                             # 获取token
                             access_token, openid = get_token(CLIENT_ID, client_secret, code)
+                            if not access_token and not openid:continue
                             # 获取上传的文章
                             new_article_list = article_list[start:end]
                             for g in new_article_list:
