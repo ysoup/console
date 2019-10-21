@@ -42,7 +42,7 @@ MarkupSafe==1.0
 mysql-connector-python==8.0.6
 mysqlclient==1.3.12
 newspaper3k==0.2.6
-nltk==3.2.5
+nltk==3.4.5
 nowatermark==0.0.1
 numpy==1.14.1
 opencv-python==3.4.0.12
